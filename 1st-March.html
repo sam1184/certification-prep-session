@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS SAA-C03 — Certification Practice Questions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #FF9900;
+            --orange-dim: rgba(255,153,0,0.15);
+            --orange-border: rgba(255,153,0,0.3);
+            --bg: #080c14;
+            --bg2: #0f1520;
+            --bg3: #151d2e;
+            --text: #c8d6e8;
+            --text-dim: #687a92;
+            --green: #00d68f;
+            --red: #ff4757;
+            --blue: #4a90d9;
+            --purple: #a78bfa;
+            --teal: #38bdf8;
+            --card-border: rgba(255,153,0,0.18);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Lora', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container { max-width: 1180px; margin: 0 auto; padding: 30px 24px 80px; position: relative; z-index: 1; }
+
+        /* HEADER */
+        header {
+            position: relative;
+            background: linear-gradient(135deg, #0f1a2e 0%, #1a1030 100%);
+            border: 1px solid var(--orange-border);
+            border-radius: 16px;
+            padding: 48px 40px 40px;
+            margin-bottom: 48px;
+            overflow: hidden;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 320px; height: 320px;
+            background: radial-gradient(circle, rgba(255,153,0,0.12), transparent 70%);
+            pointer-events: none;
+        }
+        .header-badge {
+            display: inline-block;
+            background: var(--orange-dim);
+            border: 1px solid var(--orange-border);
+            color: var(--orange);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+        }
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(32px, 5vw, 54px);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF9900 0%, #ffcc66 55%, #ff7700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+        .header-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+        .header-meta span { color: var(--orange); }
+
+        /* SECTION TITLES */
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            margin: 52px 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 32px;
+            background: var(--orange);
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--orange);
+            margin: 24px 0 12px;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 28px 30px;
+            margin: 20px 0;
+        }
+        .card p { margin-bottom: 12px; }
+
+        /* GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 20px 0; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0; }
+        @media(max-width:760px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+        /* METRICS */
+        .metric {
+            background: rgba(255,153,0,0.07);
+            border: 1px solid rgba(255,153,0,0.22);
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .metric::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), transparent);
+        }
+        .metric-value { font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 600; color: var(--orange); }
+        .metric-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-top: 4px; }
+        .metric-sub { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+
+        /* BOXES */
+        .highlight {
+            background: linear-gradient(135deg, rgba(0,214,143,0.1), rgba(0,214,143,0.03));
+            border-left: 4px solid var(--green);
+            padding: 20px 22px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255,71,87,0.1), rgba(255,71,87,0.03));
+            border-left: 4px solid var(--red);
+            padding: 20px 22px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+        }
+        .info-box {
+            background: linear-gradient(135deg, rgba(74,144,217,0.12), rgba(74,144,217,0.03));
+            border-left: 4px solid var(--blue);
+            padding: 20px 22px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+        }
+        .exam-box {
+            background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(167,139,250,0.03));
+            border-left: 4px solid var(--purple);
+            padding: 20px 22px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+        }
+
+        /* TAGS & PILLS */
+        .tag { display: inline-block; padding: 3px 9px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-right: 4px; margin-bottom: 4px; font-family: 'IBM Plex Mono', monospace; }
+        .tag-green { background: rgba(0,214,143,0.15); color: #00d68f; border: 1px solid rgba(0,214,143,0.3); }
+        .tag-blue { background: rgba(74,144,217,0.15); color: #4a90d9; border: 1px solid rgba(74,144,217,0.3); }
+        .tag-red { background: rgba(255,71,87,0.15); color: #ff6b7a; border: 1px solid rgba(255,71,87,0.3); }
+        .tag-purple { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+        .tag-orange { background: rgba(255,153,0,0.15); color: var(--orange); border: 1px solid rgba(255,153,0,0.3); }
+        .tag-teal { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+
+        .pill { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin: 3px; font-family: 'IBM Plex Mono', monospace; }
+        .pill-green { background: rgba(0,214,143,0.15); color: #00d68f; border: 1px solid rgba(0,214,143,0.3); }
+        .pill-orange { background: rgba(255,153,0,0.15); color: var(--orange); border: 1px solid rgba(255,153,0,0.3); }
+        .pill-red { background: rgba(255,71,87,0.15); color: #ff6b7a; border: 1px solid rgba(255,71,87,0.3); }
+        .pill-blue { background: rgba(74,144,217,0.15); color: #4a90d9; border: 1px solid rgba(74,144,217,0.3); }
+        .pill-purple { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+
+        code {
+            background: rgba(255,153,0,0.12);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--orange);
+        }
+
+        strong { color: #fff; font-weight: 600; }
+        ul, ol { margin: 12px 0 12px 24px; }
+        li { margin: 8px 0; font-size: 14.5px; }
+
+        /* QUESTION CARD — matches "practice question" style from reference */
+        .q-card {
+            background: var(--bg2);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 0;
+            margin: 28px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .q-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), transparent);
+        }
+        .q-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            padding: 22px 26px 16px;
+            border-bottom: 1px solid rgba(255,153,0,0.1);
+        }
+        .q-num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--orange);
+            background: var(--orange-dim);
+            border: 1px solid var(--orange-border);
+            border-radius: 20px;
+            padding: 5px 14px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .q-tags { display: flex; flex-wrap: wrap; gap: 5px; align-items: flex-start; }
+        .q-body { padding: 22px 26px 20px; }
+        .q-stem {
+            font-size: 15.5px;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 22px;
+        }
+        .q-stem strong { color: #fff; }
+
+        /* OPTIONS */
+        .options { list-style: none; margin: 0; padding: 0; }
+        .option {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin: 8px 0;
+            border: 1px solid rgba(255,153,0,0.12);
+            background: var(--bg3);
+            font-size: 14px;
+            line-height: 1.65;
+            cursor: default;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+        }
+        .option:hover { border-color: rgba(255,153,0,0.35); background: rgba(255,153,0,0.04); }
+        .option-letter {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--orange);
+            background: var(--orange-dim);
+            border: 1px solid var(--orange-border);
+            border-radius: 6px;
+            padding: 3px 9px;
+            flex-shrink: 0;
+            min-width: 34px;
+            text-align: center;
+            margin-top: 1px;
+        }
+        .option.correct {
+            border-color: rgba(0,214,143,0.45);
+            background: rgba(0,214,143,0.06);
+        }
+        .option.correct .option-letter {
+            background: rgba(0,214,143,0.2);
+            border-color: rgba(0,214,143,0.5);
+            color: var(--green);
+        }
+        .option.distractor {
+            border-color: rgba(255,71,87,0.18);
+            background: rgba(255,71,87,0.03);
+        }
+        /* Multi-select note */
+        .multi-note {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--purple);
+            background: rgba(167,139,250,0.1);
+            border: 1px solid rgba(167,139,250,0.25);
+            border-radius: 6px;
+            padding: 5px 12px;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+
+        /* REVEAL ANSWER */
+        .reveal-btn {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            background: var(--orange-dim);
+            border: 1px solid var(--orange-border);
+            color: var(--orange);
+            border-radius: 8px;
+            padding: 8px 18px;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+        .reveal-btn:hover { background: var(--orange); color: #000; font-weight: 700; }
+        .answer-block {
+            display: none;
+            margin-top: 16px;
+            background: linear-gradient(135deg, rgba(0,214,143,0.08), rgba(0,214,143,0.02));
+            border: 1px solid rgba(0,214,143,0.3);
+            border-radius: 10px;
+            padding: 18px 20px;
+            font-size: 13.5px;
+            line-height: 1.8;
+        }
+        .answer-block.shown { display: block; }
+        .answer-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--green);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .answer-label::before {
+            content: '✅';
+            font-size: 13px;
+        }
+        .answer-why {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,214,143,0.15);
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+        .trap-note {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,71,87,0.15);
+            font-size: 13px;
+            color: #ff8c96;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .trap-note::before { content: '🚨 TRAP: '; color: var(--red); }
+
+        /* SECTION DIVIDER */
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,153,0,0.12);
+            margin: 40px 0;
+        }
+
+        /* CATEGORY LABEL BAR */
+        .cat-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,153,0,0.06);
+            border: 1px solid rgba(255,153,0,0.15);
+            border-radius: 10px;
+            padding: 10px 18px;
+            margin-bottom: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+        .cat-bar-icon { font-size: 16px; }
+        .cat-bar-label { color: var(--orange); font-weight: 700; letter-spacing: 1px; }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px 20px 20px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: var(--text-dim);
+            border-top: 1px solid rgba(255,153,0,0.1);
+            margin-top: 60px;
+        }
+
+        /* PROGRESS BAR */
+        .progress-wrap {
+            background: var(--bg2);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+        .progress-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .progress-bar-bg {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            height: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--orange), #ffcc44);
+            width: 0%;
+            transition: width 1.4s ease;
+        }
+
+        /* SCORE COUNTER */
+        #score-display {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            color: var(--green);
+            margin-top: 10px;
+        }
+
+        /* COLUMNS for question sets */
+        .q-col-2 { column-count: 1; } /* single col for readability */
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══ HEADER ═══ -->
+<header>
+    <div class="header-badge">AWS Certification Prep · SAA-C03 · Practice Question Set</div>
+    <h1>AWS Solutions Architect<br>Associate — Practice Exam</h1>
+
+    <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:24px;">
+        <div style="background:rgba(255,153,0,0.08); border:1px solid rgba(255,153,0,0.2); border-radius:8px; padding:10px 16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim);">
+            <span style="color:var(--orange); font-weight:700;">20</span> Questions
+        </div>
+        <div style="background:rgba(255,153,0,0.08); border:1px solid rgba(255,153,0,0.2); border-radius:8px; padding:10px 16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim);">
+            <span style="color:var(--orange); font-weight:700;">21</span> Services Covered
+        </div>
+        <div style="background:rgba(255,153,0,0.08); border:1px solid rgba(255,153,0,0.2); border-radius:8px; padding:10px 16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim);">
+            <span style="color:var(--orange); font-weight:700;">~40 min</span> Estimated Time
+        </div>
+        <div style="background:rgba(255,153,0,0.08); border:1px solid rgba(255,153,0,0.2); border-radius:8px; padding:10px 16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim);">
+            SAA-C03 <span style="color:var(--orange); font-weight:700;">Passing ~72%</span> = 14 of 20
+        </div>
+    </div>
+</header>
+
+<!-- SCORING TRACKER -->
+<section>
+    <h2>📊 Session Scoring Tracker</h2>
+    <div class="card">
+        <p style="font-size:14px; margin-bottom:18px;">Click <strong>Reveal Answer</strong> on each question once you've committed to your answer. Use the tracker below to record your score.</p>
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value" id="revealed-count">0</div>
+                <div class="metric-label">Questions Revealed</div>
+                <div class="metric-sub">out of 20 total</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">≥ 14</div>
+                <div class="metric-label">Target Score</div>
+                <div class="metric-sub">~72% to pass SAA-C03</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">2 min</div>
+                <div class="metric-label">Per Question Max</div>
+                <div class="metric-sub">Exam pace discipline</div>
+            </div>
+        </div>
+        <div class="warning-box" style="margin-top:16px;">
+            <strong>Instructor Note:</strong> Do not reveal answers immediately — let students commit first. Questions are intentionally designed with <em>plausible distractors</em>. The wrong choices are services that "almost work" but fail on one critical architectural constraint. Identifying the constraint is the skill being tested.
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ EXAM TIPS & TRICKS ═══════════════════ -->
+<section>
+    <h2>🧠 Exam Tips &amp; Tricks — What the Top Scorers Know</h2>
+
+    <div class="card">
+        <h3 style="margin-top:0;">📖 How to Read an SAA-C03 Question — 3-Step Attack</h3>
+        <p style="font-size:14px; margin-bottom:16px;">The SAA-C03 exam is NOT a knowledge recall test — it's a <strong>constraint-matching</strong> test. Every question hides 2–3 constraints that eliminate wrong answers. Learn to extract them before touching the options.</p>
+        <div class="grid-2">
+            <div class="info-box" style="margin:0;">
+                <strong>The 3-Step Attack:</strong>
+                <ol style="font-size:13px; margin-top:8px; line-height:2.2;">
+                    <li><strong>Step 1 — Find the HARD constraints.</strong> Keywords like "without downtime," "no code changes," "most cost-effective," "must remain private," "cannot leave the data center." These eliminate 2–3 options immediately.</li>
+                    <li><strong>Step 2 — Find the SOFT requirements.</strong> Scale, latency, protocol (NFS vs SMB vs iSCSI), OS (Linux vs Windows), managed vs self-managed.</li>
+                    <li><strong>Step 3 — Eliminate, don't guess.</strong> Cross out options that violate any single constraint. Usually one option survives cleanly.</li>
+                </ol>
+            </div>
+            <div class="warning-box" style="margin:0;">
+                <strong>🚨 Keywords That Signal the Correct Service:</strong>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:2.2; margin-top:8px;">
+                    <div><span style="color:var(--orange);">"overlapping CIDRs"</span> → PrivateLink (not Peering)</div>
+                    <div><span style="color:var(--orange);">"static IP global"</span> → Global Accelerator (not CloudFront)</div>
+                    <div><span style="color:var(--orange);">"more than 15 minutes"</span> → AWS Batch (not Lambda)</div>
+                    <div><span style="color:var(--orange);">"block specific IP"</span> → NACL (not Security Group)</div>
+                    <div><span style="color:var(--orange);">"shared Linux NFS"</span> → EFS (not EBS)</div>
+                    <div><span style="color:var(--orange);">"shared Windows SMB"</span> → FSx for Windows</div>
+                    <div><span style="color:var(--orange);">"data must not leave premises"</span> → Outposts or EKS Anywhere</div>
+                    <div><span style="color:var(--orange);">"5G ultra-low latency"</span> → Wavelength</div>
+                    <div><span style="color:var(--orange);">"no DevOps / no infra code"</span> → Elastic Beanstalk</div>
+                    <div><span style="color:var(--orange);">"immediately visible / real-time shared"</span> → EFS (not S3)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">⏱️ Time Management — 130 Minutes, 65 Questions</h3>
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">2 min</div>
+                <div class="metric-label">Target per question</div>
+                <div class="metric-sub">130 min ÷ 65 Qs = exactly 2 min each</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">≤ 3 min</div>
+                <div class="metric-label">Hard limit per question</div>
+                <div class="metric-sub">Flag and move on — don't bleed time</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">15 min</div>
+                <div class="metric-label">Reserve for review</div>
+                <div class="metric-sub">Return to flagged questions at the end</div>
+            </div>
+        </div>
+        <div class="highlight" style="margin-top:16px;">
+            <strong>The Flag Strategy:</strong> If you've spent 90 seconds and still unsure — <strong>flag it, pick your best guess, move on</strong>. Spending 5 minutes on one question costs you 2.5 other questions. The AWS exam interface has a built-in flag/review feature. Use it aggressively. Most students who fail do so because of time pressure in the final 15 questions, not because they didn't know the answers.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">⚔️ The Most Confusing Service Pairs — Always on the Exam</h3>
+        <div style="overflow-x:auto; border-radius:10px; border:1px solid var(--card-border);">
+            <table style="width:100%; border-collapse:collapse; background:var(--bg3);">
+                <thead>
+                    <tr>
+                        <th style="background:rgba(255,153,0,0.12); color:#fff; font-family:'Syne',sans-serif; font-size:13px; font-weight:600; padding:13px 15px; text-align:left;">Pair</th>
+                        <th style="background:rgba(255,153,0,0.12); color:#fff; font-family:'Syne',sans-serif; font-size:13px; font-weight:600; padding:13px 15px; text-align:left;">Choose THIS</th>
+                        <th style="background:rgba(255,153,0,0.12); color:#fff; font-family:'Syne',sans-serif; font-size:13px; font-weight:600; padding:13px 15px; text-align:left;">When scenario says…</th>
+                        <th style="background:rgba(255,153,0,0.12); color:#fff; font-family:'Syne',sans-serif; font-size:13px; font-weight:600; padding:13px 15px; text-align:left;">NOT the other because…</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>CloudFront vs Global Accelerator</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">CloudFront</td><td style="padding:12px 15px; font-size:13px;">Static/dynamic content, caching, CDN, S3 origin, HTTP/HTTPS</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">Global Accelerator doesn't cache — it just routes faster</td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>CloudFront vs Global Accelerator</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">Global Accelerator</td><td style="padding:12px 15px; font-size:13px;">Static IPs for whitelisting, TCP/UDP non-HTTP, instant failover</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">CloudFront IPs are dynamic; no static IPs ever</td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>EFS vs EBS vs FSx</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">EFS</td><td style="padding:12px 15px; font-size:13px;">Multiple Linux EC2 instances, NFS protocol, POSIX, auto-scaling storage</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">EBS attaches to ONE instance; FSx is for Windows/HPC</td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>EFS vs EBS vs FSx</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">FSx for Windows</td><td style="padding:12px 15px; font-size:13px;">Windows EC2, SMB protocol, Active Directory integration</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">EFS uses NFS — Linux only. Cannot speak SMB.</td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>EFS vs EBS vs FSx</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">FSx for Lustre</td><td style="padding:12px 15px; font-size:13px;">HPC, ML training, millions of IOPS, data linked from S3</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">EFS throughput is lower; not built for HPC parallelism</td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>ALB vs NLB</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">ALB</td><td style="padding:12px 15px; font-size:13px;">HTTP/HTTPS, path-based routing, host-based routing, microservices</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">NLB is Layer 4 — cannot inspect URLs or paths</td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>ALB vs NLB</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">NLB</td><td style="padding:12px 15px; font-size:13px;">TCP/UDP, static IP required, extreme low latency, PrivateLink backend</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">ALB is Layer 7 only — cannot handle raw TCP/UDP</td></tr>
+                    <tr style="border-bottom:1px solid rgba(255,153,0,0.07);"><td style="padding:12px 15px; font-size:13px;"><strong>Outposts vs EKS Anywhere</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">Outposts</td><td style="padding:12px 15px; font-size:13px;">Full AWS service set on-premises, AWS manages hardware, data residency</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">EKS Anywhere is Kubernetes only on YOUR hardware</td></tr>
+                    <tr><td style="padding:12px 15px; font-size:13px;"><strong>S3 Transfer Acceleration vs CloudFront</strong></td><td style="padding:12px 15px; font-size:13px; color:var(--green);">S3 Transfer Acceleration</td><td style="padding:12px 15px; font-size:13px;">Faster S3 <strong>uploads</strong> from global users to a single bucket</td><td style="padding:12px 15px; font-size:13px; color:var(--text-dim);">CloudFront is for downloads/delivery — not upload acceleration</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">💰 Cost Optimization — A Separate Skill (~18% of exam)</h3>
+        <div class="grid-2">
+            <div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Storage Cost Ladder (cheapest → most expensive)</div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <div style="background:rgba(0,214,143,0.12); border:1px solid rgba(0,214,143,0.3); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; justify-content:space-between;"><span>S3 Glacier Deep Archive</span><span style="color:var(--green); font-family:'IBM Plex Mono',monospace;">~$0.001/GB</span></div>
+                    <div style="background:rgba(0,214,143,0.08); border:1px solid rgba(0,214,143,0.2); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; justify-content:space-between;"><span>S3 Glacier Flexible Retrieval</span><span style="color:var(--green); font-family:'IBM Plex Mono',monospace;">~$0.004/GB</span></div>
+                    <div style="background:rgba(74,144,217,0.08); border:1px solid rgba(74,144,217,0.2); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; justify-content:space-between;"><span>S3 Glacier Instant Retrieval</span><span style="color:var(--blue); font-family:'IBM Plex Mono',monospace;">~$0.004/GB</span></div>
+                    <div style="background:rgba(74,144,217,0.06); border:1px solid rgba(74,144,217,0.15); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; justify-content:space-between;"><span>S3 Standard-IA / One Zone-IA</span><span style="color:var(--blue); font-family:'IBM Plex Mono',monospace;">~$0.0125/GB</span></div>
+                    <div style="background:rgba(255,153,0,0.08); border:1px solid rgba(255,153,0,0.2); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; justify-content:space-between;"><span>S3 Intelligent-Tiering</span><span style="color:var(--orange); font-family:'IBM Plex Mono',monospace;">Varies</span></div>
+                    <div style="background:rgba(255,71,87,0.06); border:1px solid rgba(255,71,87,0.2); border-radius:8px; padding:10px 14px; font-size:13px; display:flex; justify-content:space-between;"><span>S3 Standard</span><span style="color:var(--red); font-family:'IBM Plex Mono',monospace;">~$0.023/GB</span></div>
+                </div>
+            </div>
+            <div>
+                <div class="exam-box" style="margin:0 0 12px;">
+                    <strong>Glacier Tier Selector:</strong><br>
+                    <span style="font-size:13px;">• "Retrieved within milliseconds" → <strong>Glacier Instant Retrieval</strong><br>
+                    • "Retrieved within 1–5 hours" → <strong>Glacier Flexible Retrieval</strong><br>
+                    • "Retrieved within 12 hours is acceptable" → <strong>Glacier Deep Archive</strong><br>
+                    • Always use <strong>Lifecycle Policies</strong> to automate transitions — never "write a Lambda to move files"</span>
+                </div>
+                <div class="highlight" style="margin:0;">
+                    <strong>Spot vs On-Demand vs Reserved:</strong><br>
+                    <span style="font-size:13px;">• "Cheapest, can be interrupted" → <strong>Spot</strong><br>
+                    • "Long-running batch, retry on failure" → <strong>Spot + AWS Batch</strong><br>
+                    • "Steady-state 24/7, 1–3 year" → <strong>Reserved / Savings Plan</strong><br>
+                    • "Unpredictable traffic, reliability required" → <strong>On-Demand</strong><br>
+                    • Never use Spot for databases — data loss risk on interruption</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">🔐 Security Architecture — Must-Know Patterns</h3>
+        <div class="grid-2">
+            <div class="warning-box" style="margin:0;">
+                <strong>IAM Decision Tree:</strong><br>
+                <span style="font-size:13px;">
+                • "EC2 needs to access S3/DynamoDB" → <strong>IAM Role on EC2</strong> (never use access keys on EC2)<br>
+                • "Lambda needs AWS access" → <strong>Execution Role</strong><br>
+                • "ECS container needs AWS access" → <strong>Task Role</strong> (not EC2 instance profile)<br>
+                • "Cross-account access" → <strong>IAM Role + sts:AssumeRole</strong><br>
+                • "Temporary credentials for mobile users" → <strong>Cognito + STS</strong><br>
+                • "300 users, change S3 permissions" → <strong>IAM Group</strong> (never per-user policies)
+                </span>
+            </div>
+            <div class="exam-box" style="margin:0;">
+                <strong>Encryption Decision Tree:</strong><br>
+                <span style="font-size:13px;">
+                • "Encrypt S3, AWS manages keys" → <strong>SSE-S3</strong><br>
+                • "Encrypt S3, need audit trail" → <strong>SSE-KMS</strong><br>
+                • "Customer provides own key material" → <strong>SSE-C</strong><br>
+                • "FIPS 140-2 Level 3 hardware" → <strong>CloudHSM</strong> (not KMS)<br>
+                • "Auto-rotate keys annually" → <strong>KMS automatic rotation</strong><br>
+                • "EBS encryption" → KMS CMK, snapshots inherit encryption
+                </span>
+            </div>
+        </div>
+        <div class="info-box" style="margin-top:16px;">
+            <strong>🛡️ VPC Security — Layered Model:</strong>
+            <span style="font-size:13px; display:block; margin-top:6px; line-height:2.1;">
+                <strong>Security Group</strong> (instance level) → Stateful · Allow-only · Use for port allowlisting, inter-tier rules<br>
+                <strong>NACL</strong> (subnet level) → Stateless · Allow AND Deny · Need both inbound + outbound rules · Use to block specific IPs<br>
+                <strong>WAF</strong> (ALB/CloudFront level) → Layer 7 · SQL injection, XSS, rate limiting, geo-blocking<br>
+                <strong>Shield Standard</strong> (free, automatic) → Basic DDoS for all resources<br>
+                <strong>Shield Advanced</strong> (paid) → Enhanced DDoS + 24/7 DRT + cost protection
+            </span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">🏗️ Architecture Patterns — The 5-Second Rule</h3>
+        <div class="grid-3">
+            <div style="background:var(--bg3); border:1px solid rgba(56,189,248,0.2); border-radius:10px; padding:16px;">
+                <div style="font-family:'Syne',sans-serif; font-weight:700; color:var(--teal); margin-bottom:10px; font-size:14px;">High Availability</div>
+                <div style="font-size:13px; line-height:2; color:var(--text-dim);">
+                    ✦ Always spread across <strong>≥ 2 AZs</strong><br>
+                    ✦ ALB + ASG = HA web tier<br>
+                    ✦ RDS Multi-AZ = HA database<br>
+                    ✦ Route 53 Failover = HA across regions<br>
+                    ✦ S3 = 11 nines durability by design<br>
+                    ✦ EFS = multi-AZ by default
+                </div>
+            </div>
+            <div style="background:var(--bg3); border:1px solid rgba(0,214,143,0.2); border-radius:10px; padding:16px;">
+                <div style="font-family:'Syne',sans-serif; font-weight:700; color:var(--green); margin-bottom:10px; font-size:14px;">Decoupling / Scalability</div>
+                <div style="font-size:13px; line-height:2; color:var(--text-dim);">
+                    ✦ <strong>SQS</strong> between tiers = absorb bursts<br>
+                    ✦ <strong>SNS</strong> = fan-out to multiple subscribers<br>
+                    ✦ <strong>Kinesis</strong> = real-time streaming data<br>
+                    ✦ ASG scales <strong>out</strong> (horizontal), not up<br>
+                    ✦ Lambda = infinite scale, zero idle cost<br>
+                    ✦ DynamoDB = serverless NoSQL at scale
+                </div>
+            </div>
+            <div style="background:var(--bg3); border:1px solid rgba(167,139,250,0.2); border-radius:10px; padding:16px;">
+                <div style="font-family:'Syne',sans-serif; font-weight:700; color:var(--purple); margin-bottom:10px; font-size:14px;">Disaster Recovery Tiers</div>
+                <div style="font-size:13px; line-height:2; color:var(--text-dim);">
+                    ✦ <strong>Backup &amp; Restore</strong>: hours RTO, cheapest<br>
+                    ✦ <strong>Pilot Light</strong>: core infra pre-provisioned<br>
+                    ✦ <strong>Warm Standby</strong>: scaled-down live copy<br>
+                    ✦ <strong>Multi-Site Active/Active</strong>: near-zero RTO<br>
+                    ✦ Route 53 Failover is key for all DR patterns<br>
+                    ✦ RTO ↓ = cost ↑ (always a trade-off)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0;">🎯 Exam Day — 10 Rules That Improve Your Score</h3>
+        <div class="grid-2">
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="background:var(--bg3); border-left:3px solid var(--orange); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--orange); font-family:'IBM Plex Mono',monospace;">RULE 1</strong> — Read the <em>last sentence</em> of the question first. That's where the requirement lives ("Which is <strong>most cost-effective</strong>?").</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--orange); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--orange); font-family:'IBM Plex Mono',monospace;">RULE 2</strong> — Eliminate options that violate a hard constraint before comparing remaining ones. Don't debate two valid options — find which one is actually invalid.</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--orange); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--orange); font-family:'IBM Plex Mono',monospace;">RULE 3</strong> — "Managed" beats "self-managed" unless the question explicitly requires self-management. AWS fully managed = less operational overhead = correct answer.</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--orange); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--orange); font-family:'IBM Plex Mono',monospace;">RULE 4</strong> — "Most cost-effective" and "least operational overhead" are often the SAME answer — fully managed serverless services tick both boxes simultaneously.</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--orange); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--orange); font-family:'IBM Plex Mono',monospace;">RULE 5</strong> — If an option involves writing custom Lambda/code to replicate something a native AWS feature already does — it's wrong. AWS rewards built-in feature usage over custom code.</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="background:var(--bg3); border-left:3px solid var(--teal); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--teal); font-family:'IBM Plex Mono',monospace;">RULE 6</strong> — Multi-select ("select TWO"): eliminate clearly wrong options first. No partial credit — both must be correct. If you only see one obvious answer, re-read the constraints.</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--teal); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--teal); font-family:'IBM Plex Mono',monospace;">RULE 7</strong> — The correct answer is usually the <em>most specific</em> service for the job. "S3 Lifecycle Policy" beats "Lambda to move files." "AWS Batch" beats "ECS + custom scheduler."</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--teal); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--teal); font-family:'IBM Plex Mono',monospace;">RULE 8</strong> — Never choose an option that creates a single point of failure unless the question explicitly trades reliability for cost. HA is the default expectation on this exam.</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--teal); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--teal); font-family:'IBM Plex Mono',monospace;">RULE 9</strong> — When two options "both work" — pick the one with fewer moving parts, less custom code, and more AWS-native automation. Simplicity is a design value on the exam.</div>
+                <div style="background:var(--bg3); border-left:3px solid var(--teal); border-radius:0 8px 8px 0; padding:12px 14px; font-size:13.5px;"><strong style="color:var(--teal); font-family:'IBM Plex Mono',monospace;">RULE 10</strong> — Don't change your first answer unless you find a specific, concrete reason. Gut instinct built through practice is more reliable than second-guessing under exam pressure.</div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- ═══════════════════ BLOCK A: NETWORKING & CONNECTIVITY ═══════════════════ -->
+<section>
+    <h2>🌐 Block A — Networking &amp; Connectivity</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">📡</span>
+        <span class="cat-bar-label">Questions 1–5</span>
+        <span style="margin-left:auto; font-size:11px;">VPC · Transit Gateway · PrivateLink · Wavelength · Global Accelerator · Route 53</span>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 01</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Networking</span>
+                <span class="tag tag-blue">Architecture</span>
+                <span class="tag tag-red">HIGH WEIGHT</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A financial services company operates <strong>15 VPCs</strong> across three AWS accounts — one for each business unit — and maintains a connection to its on-premises data center via AWS Direct Connect. The network team reports that as new VPCs are added, the number of peering connections is becoming unmanageable and on-premises routing tables are growing exponentially. A Solutions Architect must redesign the network so that all VPCs and the on-premises network can communicate with each other through a <strong>single, centrally-managed hub</strong> that scales without manual peering between every VPC pair.
+                <br><br>Which solution meets these requirements with the <strong>least operational overhead</strong>?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Create VPC peering connections between every VPC pair and advertise all CIDR ranges through the Direct Connect connection using Border Gateway Protocol (BGP).
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Deploy an AWS Transit Gateway, attach all 15 VPCs and the Direct Connect gateway to it, and configure route tables on the Transit Gateway to control inter-VPC and on-premises traffic.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Enable VPC sharing using AWS Resource Access Manager (RAM) to share subnets across accounts and use a single shared VPC for all business units.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Create a hub-and-spoke model using AWS PrivateLink endpoint services. Expose each VPC's resources through NLB-backed endpoint services and have other VPCs connect using Interface VPC Endpoints.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>AWS Transit Gateway</strong> is purpose-built for this architecture. A single TGW attachment point per VPC — regardless of how many VPCs exist — replaces O(N²) peering connections with O(N) attachments. TGW natively integrates with Direct Connect Gateway for on-premises connectivity, and route tables on TGW control exactly which VPCs can talk to each other. You can even share the TGW across accounts using AWS RAM, making this the canonical enterprise hub-and-spoke solution on AWS.
+                <div class="trap-note">Option A (VPC Peering) is the classic trap — peering is non-transitive, so 15 VPCs need 105 individual peering connections, and on-premises routing explodes. Option D (PrivateLink) exposes services, not full network routing — it doesn't solve inter-VPC full-mesh communication.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 02</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Networking</span>
+                <span class="tag tag-purple">Security</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A SaaS company provides a <strong>payroll processing API</strong> to enterprise customers. Each customer operates their own AWS VPC. The SaaS company wants to expose the API privately — without sending traffic over the internet — to customer VPCs. The VPC CIDR ranges of customers often overlap with the SaaS company's VPC CIDR. The security team requires that customers can only access the API endpoint and <strong>cannot initiate any other communication</strong> into the SaaS VPC.
+                <br><br>Which solution satisfies all requirements?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Set up VPC peering between the SaaS company's VPC and each customer VPC. Add routes in both VPCs' route tables to direct API traffic through the peering connection.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Create a public API Gateway endpoint fronting the payroll API. Provide customers with the API Gateway URL and require API key authentication.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Create a VPC Endpoint Service using AWS PrivateLink backed by a Network Load Balancer in the SaaS VPC. Allow customers to create Interface VPC Endpoints in their own VPCs to connect to the service.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Attach all customer VPCs to an AWS Transit Gateway along with the SaaS VPC and configure Transit Gateway route tables to allow only port 443 traffic to the API servers.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: C</div>
+                <strong>AWS PrivateLink</strong> is the exact solution for exposing services privately across VPCs — even with overlapping CIDRs. The SaaS company creates a VPC Endpoint Service (backed by an NLB); customers create Interface VPC Endpoints in their own VPCs. Traffic flows entirely within the AWS network. Critically, PrivateLink is <em>unidirectional</em> — customers can only reach the endpoint service, not anything else in the SaaS VPC. The SaaS company controls which customer accounts are whitelisted.
+                <div class="trap-note">Option A (VPC Peering) fails immediately — VPC peering does NOT work when CIDR ranges overlap. This is the most common PrivateLink exam trigger. Option D (Transit Gateway) gives full network access, violating the "only API endpoint" security requirement.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 03</div>
+            <div class="q-tags">
+                <span class="tag tag-teal">Edge / 5G</span>
+                <span class="tag tag-orange">Latency</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A startup is building a <strong>real-time multiplayer mobile game</strong> that is being launched in partnership with a major 5G carrier. The game requires that game state updates reach players' mobile devices in <strong>under 10 milliseconds</strong>. Testing shows that deploying the game servers in the nearest AWS Region adds 35–60ms of latency — which causes an unacceptable player experience. The engineering team wants to keep the game servers inside the AWS ecosystem (same APIs, IAM, monitoring) but must bring compute physically closer to the 5G radio towers.
+                <br><br>Which AWS service should the Solutions Architect recommend?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Deploy EC2 instances in the AWS Region with the shortest geographic distance to the target city and use Route 53 Latency-Based Routing to direct players to the nearest region.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Use AWS Global Accelerator to onboard traffic at the nearest AWS edge location and route it over the AWS backbone to the Region for processing.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Deploy the game servers in an AWS Wavelength Zone embedded inside the 5G carrier's network infrastructure so that game traffic never leaves the carrier's backbone before reaching compute.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Install AWS Outposts racks at co-location facilities near the 5G towers and run game servers on the Outposts hardware, connected back to the parent AWS Region.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: C</div>
+                <strong>AWS Wavelength</strong> places AWS compute directly inside carrier data centers at the edge of the 5G network. When a player sends data via 5G, it travels from the radio tower into the carrier's backbone and hits the Wavelength Zone compute <em>without ever traversing the public internet or routing to an AWS Region</em>. This achieves single-digit millisecond latency. Wavelength instances use the same EC2 APIs, IAM, and CloudWatch as regular regions.
+                <div class="trap-note">Option B (Global Accelerator) reduces latency from internet jitter but still routes to an AWS Region — the fundamental 35–60ms problem remains. Option D (Outposts) brings AWS compute on-premises but doesn't integrate with the carrier's 5G backbone the way Wavelength does. The key discriminator: Wavelength = inside carrier 5G network; Outposts = inside YOUR facility.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 04</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">DNS</span>
+                <span class="tag tag-blue">High Availability</span>
+                <span class="tag tag-red">HIGH WEIGHT</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A global retail company has its primary application stack deployed in <strong>us-east-1</strong>. The company recently experienced a regional outage and lost 45 minutes of revenue. The disaster recovery team is now building a warm standby environment in <strong>eu-west-1</strong>. The DNS solution must automatically detect the primary region's health every 30 seconds and redirect all traffic to the EU region within <strong>60 seconds of failure</strong>, with no manual intervention. The application load balancer endpoints in each region have different DNS names.
+                <br><br>Which DNS and routing configuration achieves this?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Create two Route 53 Alias records — one pointing to each ALB. Assign equal weight to both records so traffic is split 50/50 in normal operations and the healthy one continues when one fails.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Create a Route 53 Failover routing policy with an active Primary record pointing to the us-east-1 ALB and a Secondary record pointing to the eu-west-1 ALB. Attach a Route 53 Health Check to the primary record that evaluates the us-east-1 ALB endpoint every 30 seconds.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Use AWS Global Accelerator with two endpoint groups — one per region — and configure endpoint weights so that all traffic goes to us-east-1. Enable health checks on both endpoint groups to trigger automatic failover.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Create Route 53 Latency-Based routing records pointing to both ALBs. Since us-east-1 is geographically closer to most customers, they will be routed there by default and automatically rerouted if latency increases due to an outage.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>Route 53 Failover routing policy</strong> with active/passive configuration and a Health Check is the exact pattern for this DR scenario. The Health Check polls the primary endpoint every 30 seconds. When the endpoint fails the configured health threshold, Route 53 automatically serves the secondary record. Failover is DNS-based, so the 60-second window is achievable (30s health check + DNS TTL propagation). Alias records to ALBs are required since CNAME at root domain isn't supported — use Alias records.
+                <div class="trap-note">Option A (Weighted) does NOT perform health-check-driven failover — it still sends 50% to a failed region. Option D (Latency-Based) routes based on measured latency; an outage doesn't necessarily show higher latency immediately — health checks are missing. Note: Option C (Global Accelerator) ALSO works technically but the question specifically asks about DNS routing configuration, which points to Route 53.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 05</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Networking</span>
+                <span class="tag tag-green">Security</span>
+                <span class="tag tag-purple">Multi-Select</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <span class="multi-note">⚠️ SELECT TWO — Multiple answers required</span>
+            <p class="q-stem">
+                A company has a three-tier web application running in a VPC. The web tier sits in public subnets, the application tier in private subnets, and the database tier in isolated subnets. The security team performs an audit and identifies two problems: <strong>(1)</strong> EC2 instances in the private app tier can communicate with each other on ALL ports, which violates least privilege. <strong>(2)</strong> A specific competitor's IP address range (<code>203.0.113.0/26</code>) has been scraping the web tier. The team needs to block the competitor's IPs <strong>and</strong> restrict inter-application communication at the subnet level.
+                <br><br>Which two changes address both findings?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Modify the Security Group on the application tier EC2 instances to allow only specific required ports from other application tier instances using the Security Group ID as source.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Add an explicit DENY rule for <code>203.0.113.0/26</code> on the inbound rules of the Security Group attached to the web tier EC2 instances.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Update the Network ACL (NACL) associated with the private app subnets to allow only the specific required ports between app tier instances, removing the implicit all-allow behavior.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Add an inbound DENY rule for <code>203.0.113.0/26</code> to the Network ACL associated with the public subnets hosting the web tier, with a lower rule number than the existing ALLOW rules.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answers: A and D</div>
+                <strong>A:</strong> Security Groups support <em>referencing another Security Group as the source</em> — this is the cleanest way to restrict inter-tier traffic to only specific ports. Only instances sharing that Security Group are allowed, on only the ports configured.
+                <br><br><strong>D:</strong> Network ACLs are the only VPC construct that supports <strong>explicit DENY rules</strong>. Security Groups are allow-only — you cannot add a deny rule to a Security Group. Adding a DENY for the competitor IP range at the NACL level (with a lower rule number so it's evaluated first) blocks it at the subnet boundary before it reaches any EC2 instance.
+                <div class="trap-note">Option B is the classic exam trap — Security Groups DO NOT support DENY rules. You cannot block a specific IP using a Security Group. Always use NACLs for IP blocking. Option C confuses the tool — NACLs control traffic entering and exiting subnets; intra-subnet traffic between instances in the SAME subnet does NOT traverse the NACL. Use Security Groups for that.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════ BLOCK B: CDN, PERFORMANCE & CONTENT DELIVERY ═══════════════════ -->
+<section>
+    <h2>⚡ Block B — Content Delivery &amp; Performance</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">🌍</span>
+        <span class="cat-bar-label">Questions 6–9</span>
+        <span style="margin-left:auto; font-size:11px;">CloudFront · Global Accelerator · ELB · S3</span>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 06</div>
+            <div class="q-tags">
+                <span class="tag tag-teal">CDN</span>
+                <span class="tag tag-green">Security</span>
+                <span class="tag tag-red">HIGH WEIGHT</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A media company stores all of its video assets in an <strong>Amazon S3 bucket</strong>. The bucket is currently private. The company wants to distribute these videos globally with <strong>low latency</strong> using a CDN. The security team requires that <strong>users can never access S3 directly</strong> — all requests must flow through the CDN, and the S3 bucket must remain private with no public access. The company also wants to ensure that the CDN can serve content even if a user guesses the S3 bucket URL.
+                <br><br>Which configuration achieves this?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Enable S3 static website hosting, make the bucket public, and set the CloudFront origin to the S3 website endpoint so CloudFront can cache the content.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Create a CloudFront distribution with the S3 bucket as the origin. Configure an Origin Access Control (OAC) on the distribution and update the S3 bucket policy to allow <code>s3:GetObject</code> only from the CloudFront service principal.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Create a CloudFront distribution with the S3 bucket as origin. Enable S3 Transfer Acceleration on the bucket so global users get faster uploads, and set a bucket policy to only allow requests from the CloudFront IP range list.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Use AWS Global Accelerator with the S3 bucket as an endpoint group. This routes users to the nearest AWS edge node and then to S3, keeping the bucket private because Global Accelerator acts as a proxy.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>CloudFront + Origin Access Control (OAC)</strong> is the current best practice for restricting S3 bucket access to CloudFront only. OAC (which replaced the older OAI) allows CloudFront to sign requests to S3 using SigV4. The S3 bucket policy then explicitly denies all principals EXCEPT the CloudFront service principal — so even if someone discovers the S3 bucket URL, their direct request is denied by the bucket policy.
+                <div class="trap-note">Option A defeats the entire purpose — making the bucket public means S3 is directly accessible. Option C is wrong because CloudFront IP ranges change dynamically and AWS publishes them but maintaining IP-based policies is NOT recommended — it breaks. Option D (Global Accelerator) is an Anycast TCP/UDP accelerator — it does not proxy S3 in the same way CloudFront does, and does not keep S3 private.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 07</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Load Balancing</span>
+                <span class="tag tag-blue">Containers</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A company is running a microservices application on Amazon ECS. The application has <strong>four distinct services</strong>: an authentication service (<code>/auth/*</code>), a product catalog (<code>/products/*</code>), a shopping cart (<code>/cart/*</code>), and a checkout service (<code>/checkout/*</code>). The team wants to use a <strong>single load balancer with a single DNS name</strong> to front all four services, routing requests to the correct ECS service based on the URL path. The checkout service handles credit card data and requires its own <strong>separate SSL certificate</strong> for PCI compliance on a dedicated subdomain.
+                <br><br>Which load balancer configuration is correct?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Use a Network Load Balancer with four target groups — one per service. Configure port-based routing rules to direct traffic from different ports to each target group.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Use an Application Load Balancer with listener rules that match path patterns (<code>/auth/*</code>, <code>/products/*</code>, etc.) and route to separate target groups. Add a second listener or use SNI to attach the PCI SSL certificate for the checkout subdomain.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Use a Classic Load Balancer and configure health checks per service. Create separate DNS CNAME records pointing to the same CLB for each service path.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Use an Application Load Balancer for the three non-PCI services and a separate Network Load Balancer for the checkout service. Use Route 53 to route traffic between the two load balancers.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>Application Load Balancer (ALB)</strong> operates at Layer 7 and natively supports <em>path-based routing rules</em> — directing different URL paths to different target groups with a single load balancer. ALB supports <strong>Server Name Indication (SNI)</strong>, allowing multiple SSL certificates on a single listener — so the checkout subdomain gets its own PCI certificate without requiring a separate load balancer. ALB integrates natively with ECS, allowing dynamic port mapping for containers.
+                <div class="trap-note">Option A (NLB) is wrong — NLB operates at Layer 4 (TCP/UDP). It has no concept of HTTP paths or URL inspection; it cannot do path-based routing. Option C (CLB) is legacy and does not support path-based routing. Option D uses two load balancers unnecessarily — ALB's SNI support handles multiple certificates on one LB.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 08</div>
+            <div class="q-tags">
+                <span class="tag tag-teal">Global Accelerator</span>
+                <span class="tag tag-orange">Performance</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A global trading platform serves institutional clients from offices in Tokyo, Frankfurt, London, and New York. The application is deployed in <strong>two AWS Regions</strong> (us-east-1, ap-northeast-1). The compliance team requires that the platform's <strong>IP addresses are static and fixed</strong> — clients whitelist specific IPs in their corporate firewalls and cannot tolerate IP changes. The platform also needs <strong>sub-second automatic failover</strong> between regions if one becomes unhealthy, without relying on DNS TTL expiry. Currently the platform uses Route 53 with a 60-second TTL failover, which the team finds too slow.
+                <br><br>Which service should replace or supplement the current DNS-based approach?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Replace Route 53 failover with Route 53 health checks using a 10-second interval and reduce the TTL on records to 10 seconds to achieve faster failover.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Deploy AWS Global Accelerator with two endpoint groups (one per region). Global Accelerator provides two static Anycast IP addresses. Health checks run continuously; if a region becomes unhealthy, traffic is rerouted at the network layer in under 30 seconds — no DNS propagation required.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Use Amazon CloudFront with two origins — one per region — configured with origin failover. CloudFront's edge network provides static IPs and automatic failover.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Configure an Elastic IP address in each region and advertise them through BGP using a third-party global load balancer appliance running on EC2.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>AWS Global Accelerator</strong> is specifically designed for this scenario — two requirements uniquely identify it: <em>static IP addresses</em> and <em>non-DNS-based failover</em>. Global Accelerator provides two static Anycast IP addresses that are globally routable. Traffic enters the AWS network at the nearest edge POP and routes over the AWS private backbone. Health checks run every 10 seconds; failover happens at the network level without requiring DNS changes or TTL expiry. Clients never need to update their firewall whitelists.
+                <div class="trap-note">Option A is wrong — reducing TTL to 10 seconds helps but DNS still requires client-side cache expiry, and some corporate clients override TTL. Critically, Route 53 cannot provide static IPs. Option C is wrong — CloudFront IP addresses are NOT static; they are managed by AWS and change. CloudFront is a CDN, not a TCP-level accelerator for trading APIs.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 09</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Auto Scaling</span>
+                <span class="tag tag-blue">Compute</span>
+                <span class="tag tag-red">HIGH WEIGHT</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A ride-sharing platform experiences highly predictable traffic patterns: usage spikes every weekday morning between 7–9 AM and evening between 5–7 PM, and drops significantly overnight. The application runs on an <strong>EC2 Auto Scaling group behind an Application Load Balancer</strong>. Currently the group is configured with a fixed minimum of 50 instances to handle peak load — resulting in 50 idle instances overnight. The engineering team wants to <strong>reduce overnight costs by 80%</strong> while still meeting peak capacity without impacting user experience.
+                <br><br>Which Auto Scaling strategy achieves this?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Configure Target Tracking Scaling based on ALB RequestCountPerTarget metric. Set the target to the expected request count at peak, so Auto Scaling will add instances when traffic increases.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Configure Scheduled Scaling actions to increase the minimum and desired capacity before the 7 AM and 5 PM peaks, and reduce them overnight. Optionally layer a Target Tracking policy on top to handle unexpected traffic spikes.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Enable Predictive Scaling on the Auto Scaling group, which will analyze EC2 usage history and automatically pre-scale capacity using machine learning.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Create an AWS Lambda function triggered by CloudWatch Events at 6:45 AM and 4:45 PM to call the Auto Scaling API and update the desired capacity, and another at 9:01 AM and 7:01 PM to scale back down.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>Scheduled Scaling</strong> is the optimal primary strategy when traffic patterns are <em>known and predictable</em> (specific times). By scheduling capacity increases 15 minutes before peak (warm-up time for EC2 instances to launch and pass health checks), you ensure readiness. Setting minimum to 10 instances overnight vs. 50 during peak directly achieves the ~80% cost reduction. Layering a Target Tracking policy on top handles unexpected spikes that fall outside the scheduled windows — this is a defense-in-depth approach.
+                <div class="trap-note">Option A (Target Tracking alone) is reactive — it responds after traffic increases, causing a lag where users experience degraded performance while instances spin up. For truly predictable patterns, Scheduled Scaling is superior. Option C (Predictive Scaling) also works well and is newer, but the question specifies "without impacting user experience" and "predictable patterns" — Scheduled Scaling is the most direct and controlled answer. Option D is an anti-pattern — using Lambda for this is reinventing what Scheduled Scaling already does natively.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════ BLOCK C: STORAGE ARCHITECTURE ═══════════════════ -->
+<section>
+    <h2>💾 Block C — Storage Architecture</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">🗄️</span>
+        <span class="cat-bar-label">Questions 10–14</span>
+        <span style="margin-left:auto; font-size:11px;">S3 · S3 Glacier · EBS · EFS · FSx · Storage Gateway</span>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 10</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">S3</span>
+                <span class="tag tag-green">Cost Optimization</span>
+                <span class="tag tag-red">HIGH WEIGHT</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A healthcare company stores medical imaging files (DICOM) in Amazon S3. Files are accessed frequently in the first <strong>30 days</strong> after creation (doctors review recent scans). Between days 30 and 90, they are rarely accessed. After <strong>90 days</strong>, they must be archived for regulatory compliance for <strong>7 years</strong> and must remain retrievable, but retrieval within <strong>12 hours</strong> is acceptable. After 7 years, they must be permanently deleted. The company wants to automate this entire lifecycle with <strong>minimum cost</strong>.
+                <br><br>Which S3 configuration implements this correctly?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Store objects in S3 Standard. Write a Lambda function that runs nightly, checks object creation dates, and moves files to S3 Standard-IA at 30 days, then deletes them at 90 days.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Configure an S3 Lifecycle Policy: transition to <strong>S3 Standard-IA at 30 days</strong>, transition to <strong>S3 Glacier Flexible Retrieval at 90 days</strong>, and add an expiration action to permanently delete objects after <strong>7 years (2,555 days)</strong>.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Store all files in S3 Intelligent-Tiering from day one. Intelligent-Tiering will automatically optimize costs as access patterns change, and no lifecycle policy is needed.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Store in S3 Standard. Transition to S3 Glacier Deep Archive at 30 days for lowest cost. Configure a 7-year expiration rule to delete objects automatically.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>S3 Lifecycle Policies</strong> automate storage tier transitions without any code. The chain: S3 Standard (0–30 days, frequent access) → S3 Standard-IA (30–90 days, infrequent access, lower storage cost) → S3 Glacier Flexible Retrieval (90 days–7 years, archival, 1–12hr retrieval which meets the ≤12hr requirement) → Expiration action deletes at 2,555 days. All fully automated, no Lambda needed, and each tier is cheaper than the last.
+                <div class="trap-note">Option D (Glacier Deep Archive at 30 days) is wrong — Deep Archive has a minimum 12-hour retrieval time AND a 12-hour delay. More importantly, moving to Glacier at 30 days misses the 30–90 day infrequent (not zero) access window, where Standard-IA is correct. Option C (Intelligent-Tiering) doesn't support automatic permanent deletion via lifecycle rules in the same integrated way, and the question specifies a known access pattern — Intelligent-Tiering is for unknown/changing patterns.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 11</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Block Storage</span>
+                <span class="tag tag-blue">Database</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A company runs a <strong>PostgreSQL database</strong> on an EC2 instance using a gp2 EBS volume. The database currently handles 3,000 IOPS. The DBAs report that during peak periods, I/O wait times spike, indicating that the volume is being throttled. The team's investigation shows the application needs <strong>sustained 16,000 IOPS</strong> at consistent low latency. They also want the ability to <strong>increase IOPS without stopping or restarting the EC2 instance</strong>.
+                <br><br>Which EBS volume type and change approach should the Solutions Architect recommend?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Create a new io1 EBS volume with 16,000 provisioned IOPS. Detach the existing gp2 volume, attach the new io1 volume to the EC2 instance, and restore the database from a snapshot.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Use the Amazon EC2 console or CLI to modify the existing gp2 volume to <strong>gp3</strong> and configure the provisioned IOPS to 16,000 and throughput to 1,000 MiB/s. The modification happens in-place with no downtime.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Add a second gp2 EBS volume to the instance and configure software RAID-0 (striping) across both volumes to double the available IOPS.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Replace the EBS-backed EC2 instance with an instance store (ephemeral storage) for maximum IOPS, accepting the data loss risk on instance termination.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>gp3 EBS volumes</strong> support up to 16,000 IOPS and 1,000 MiB/s throughput — independently configurable from volume size. Crucially, Amazon EBS supports <em>elastic modification</em>: you can change the volume type, IOPS, and throughput of an <em>in-use, attached</em> volume with no downtime required. gp3 is also approximately 20% cheaper than gp2 per GB. For databases needing 16,000 IOPS, gp3 is the recommended modern standard; io1/io2 is for workloads needing >16,000 IOPS.
+                <div class="trap-note">Option A (detach/restore) causes unnecessary downtime — EBS Elastic Volumes allow in-place modification. Option D (instance store) is a critical trap for database workloads — instance store data is LOST when the instance stops, hibernates, or fails. NEVER use instance store for databases unless explicitly required for temp/cache workloads.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 12</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Shared Storage</span>
+                <span class="tag tag-blue">Linux</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A data science team runs a machine learning training cluster with <strong>200 EC2 Linux instances</strong> across three Availability Zones. The training job requires all instances to read from a <strong>shared dataset simultaneously</strong>. The dataset is 4 TB and grows by approximately 50 GB per week. Instances frequently add new training data files that other instances must immediately see without any synchronization mechanism. The solution must <strong>scale automatically</strong> without pre-provisioning storage capacity, and it must be mountable using standard Linux file system tools (<code>mount</code>, POSIX-compliant).
+                <br><br>Which storage solution is architecturally correct?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Provision a 5 TB EBS io2 volume and attach it to a single "master" EC2 instance. Have the other 199 instances access the data via NFS exported from the master instance.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Use Amazon EFS (Elastic File System) in the Bursting throughput mode, mount it on all 200 EC2 instances using the NFS v4.1 protocol. EFS automatically scales capacity as data grows.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Store the dataset in Amazon S3 and have each EC2 instance download the required files at job start using the AWS CLI or boto3. Use an S3 Lifecycle Policy to manage growing data.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Use Amazon FSx for Lustre configured with an S3 data repository. Mount it on all EC2 instances; FSx for Lustre delivers high-throughput shared access and links directly to S3 for data ingestion and export.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>Amazon EFS</strong> is the purpose-built AWS service for shared Linux file storage across multiple EC2 instances. It: auto-scales with no capacity provisioning, supports POSIX-compliant NFS v4.1 mount across thousands of instances simultaneously, spans multiple AZs, and provides consistent access to all instances. When one instance writes a file, it is immediately visible to all others — no synchronization needed.
+                <br><br><em>Note: Option D (FSx for Lustre) is also technically valid and would deliver significantly higher throughput for HPC/ML — the question does NOT emphasize throughput requirements, making EFS the cleaner match. In a real exam, if the question mentions "high performance" or "millions of IOPS" → FSx for Lustre. If it just says "shared concurrent access, POSIX, Linux" → EFS.</em>
+                <div class="trap-note">Option A (EBS via NFS from master) introduces a single point of failure — if the master instance fails, all 199 workers lose storage. Option C (S3 download at start) is not a shared file system — it's object storage requiring API calls. Files added by one instance are NOT immediately visible as file system paths to others without re-downloading.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 13</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Storage Gateway</span>
+                <span class="tag tag-purple">Hybrid</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A manufacturing company has a <strong>legacy ERP system</strong> running on-premises that writes files to a local NFS share. The company wants to <strong>migrate this storage to AWS</strong> without modifying the ERP application (which cannot be changed — it only speaks NFS). They want frequently-accessed files to remain cached on-premises for low-latency reads, while the data of record is stored in Amazon S3. The IT team wants a managed solution that doesn't require them to build and maintain a custom sync mechanism.
+                <br><br>Which AWS solution meets these requirements?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Deploy an AWS DataSync agent on-premises. Configure a task to continuously sync the NFS share to an Amazon EFS file system in AWS. The ERP continues writing to the on-premises NFS share.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Deploy AWS Storage Gateway as a <strong>File Gateway</strong> on-premises. Present a local NFS mount point to the ERP system. The File Gateway stores all data in Amazon S3 and maintains a local cache of frequently accessed files.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Deploy AWS Storage Gateway as a <strong>Volume Gateway</strong> in stored mode. Present an iSCSI volume to the ERP system. The full dataset is stored on-premises and asynchronously backed up to S3 as EBS snapshots.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Install the Amazon S3 File System (s3fs) FUSE driver on the on-premises server and mount the S3 bucket as a local NFS share. The ERP writes directly to S3 through the FUSE mount.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>AWS Storage Gateway — File Gateway</strong> is the exact fit: it presents an NFS (or SMB) interface to on-premises applications, stores the data in S3 as objects (the data of record is in S3), and maintains a local cache on-premises for low-latency access to frequently-used files. The ERP application continues writing to NFS — zero code changes required. The gateway handles all sync to S3 automatically, managed by AWS.
+                <div class="trap-note">Option A (DataSync) is for one-time or scheduled data migrations — not for ongoing application storage with a local cache. It doesn't replace a file share. Option C (Volume Gateway stored mode) keeps the primary data on-premises (full volume) and backs up to S3 — the data of record remains on-prem, NOT in S3. This is for backup, not for cloud-native storage migration. Option D (s3fs) is community software, not an AWS service, not managed, and not recommended for production.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 14</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">S3 Glacier</span>
+                <span class="tag tag-green">Compliance</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A financial services firm is required by regulation to retain audit log files for a <strong>minimum of 5 years</strong>. These files must be stored in a way that makes them <strong>immutable</strong> — no one, including the AWS account root user, must be able to delete or overwrite them during the retention period. The CISO wants assurance that even if the AWS account is compromised, the audit logs are safe. Cost must be minimized since the logs are never accessed once archived.
+                <br><br>Which combination of services and features satisfies the compliance requirement?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Store audit logs in Amazon S3. Enable S3 Versioning and configure a bucket policy that denies <code>s3:DeleteObject</code> and <code>s3:PutObject</code> for all users including root.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Store audit logs in S3 Glacier, then configure a <strong>Glacier Vault Lock</strong> policy with a WORM compliance rule for 5 years (1,825 days). Once the Vault Lock policy is locked, it cannot be changed or deleted even by root.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Store audit logs in Amazon S3 with <strong>Object Lock</strong> in Compliance Mode with a 5-year retention period. Transition objects to S3 Glacier Instant Retrieval immediately using a Lifecycle Policy for cost savings.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Use AWS CloudTrail with log file integrity validation enabled. Store CloudTrail logs in a dedicated S3 bucket with MFA delete enabled.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: C</div>
+                <strong>S3 Object Lock in Compliance Mode</strong> with a 5-year retention period creates a legally binding WORM (Write Once, Read Many) lock at the object level. In Compliance Mode — unlike Governance Mode — the retention period <em>cannot be shortened or overridden by ANY user including the AWS account root user</em>. Transitioning to S3 Glacier Instant Retrieval (or Flexible Retrieval) via Lifecycle Policy immediately reduces storage cost while maintaining the Object Lock protection. S3 Object Lock works correctly with S3 Glacier storage classes.
+                <br><br><em>Note: Option B (Vault Lock) is also a valid WORM mechanism for Glacier specifically — it is similarly unbreakable once locked. If the question said "S3 Glacier only with no S3 Standard," Vault Lock would be the answer. Here, the combined Object Lock + Glacier Lifecycle approach gives cost optimization flexibility.</em>
+                <div class="trap-note">Option A (Bucket Policy deny) is NOT immutable — the AWS account root user can always modify or delete bucket policies, even if the policy includes a root deny. Root user is not constrained by resource-based policies. Object Lock Compliance Mode is the only mechanism that constrains root. Option D (MFA delete) protects against accidental deletion but can still be bypassed by the root user.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════ BLOCK D: COMPUTE, CONTAINERS & SERVERLESS ═══════════════════ -->
+<section>
+    <h2>💻 Block D — Compute, Containers &amp; Serverless</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">🚀</span>
+        <span class="cat-bar-label">Questions 15–18</span>
+        <span style="margin-left:auto; font-size:11px;">ECS · EKS Anywhere · AWS Batch · Elastic Beanstalk · Serverless App Repo</span>
+    </div>
+
+    <!-- Q15 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 15</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Containers</span>
+                <span class="tag tag-blue">Batch Processing</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A pharmaceutical company runs <strong>drug simulation jobs</strong> using Docker containers. Each simulation takes between <strong>4 and 48 hours</strong> to complete, depending on the molecule complexity. The company processes approximately 500 simulations per month. The infrastructure must <strong>automatically provision compute</strong> when jobs are submitted, use <strong>Spot Instances</strong> to minimize cost, and automatically <strong>retry</strong> any job interrupted by Spot reclamation — without requiring DevOps teams to build or manage custom job schedulers.
+                <br><br>Which AWS service is the best fit?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Use AWS Lambda with a 15-minute maximum duration. For jobs exceeding 15 minutes, chain multiple Lambda functions using AWS Step Functions and pass simulation state between invocations.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Deploy an Amazon ECS cluster with a managed Spot capacity provider. Write a custom Python scheduler that submits ECS tasks, monitors for Spot interruption notices, and re-submits failed tasks.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Use AWS Batch with a managed Spot compute environment. Define job definitions using the Docker container images. Submit jobs to a job queue; AWS Batch handles provisioning, scheduling, retries on Spot interruption, and termination when complete.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Use AWS Elastic Beanstalk with a worker tier. Upload the simulation container as a Beanstalk application, configure auto-scaling, and use SQS to queue simulation jobs.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: C</div>
+                <strong>AWS Batch</strong> is purpose-built for this exact scenario. It manages: job queuing, compute environment provisioning (EC2 Spot), scheduling, automatic retries when Spot instances are reclaimed, and compute termination when the queue is empty. Job Definitions wrap Docker containers. There is no time limit on AWS Batch jobs (unlike Lambda's 15-minute maximum). AWS Batch supports array jobs for parallelism and cost-effectively scales to zero between bursts. No custom scheduler required.
+                <div class="trap-note">Option A (Lambda) is the top distractor — <strong>Lambda maximum duration is 15 minutes</strong>. Jobs taking 4–48 hours CANNOT run on Lambda under any circumstances. Chaining Step Functions doesn't overcome this for a single continuous computation. This is the #1 exam trap for long-running batch workloads. Option B (ECS + custom scheduler) technically works but defeats the "without custom scheduler" requirement — that's exactly what AWS Batch provides.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 16</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">PaaS</span>
+                <span class="tag tag-blue">Deployment</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A three-person startup is building a <strong>Python Django web application</strong>. The founders have strong software development skills but <strong>no infrastructure or DevOps experience</strong>. They need to: deploy the application to AWS, configure auto-scaling, set up a load balancer, and establish a CI/CD process — but they want to write as little infrastructure code as possible. The application uses RDS PostgreSQL as the database. A zero-downtime deployment mechanism is also required for future updates.
+                <br><br>Which AWS service is the most appropriate platform for this team?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Write AWS CloudFormation templates to define the EC2 instances, ALB, Auto Scaling group, and RDS. Deploy using the AWS Management Console. Update the stack for each application deployment.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Deploy the Django app on AWS Elastic Beanstalk. Upload the application code (or Git commit via EB CLI). Beanstalk automatically provisions and manages ALB, Auto Scaling, EC2, and CloudWatch. Choose the "Rolling with additional batch" deployment policy for zero downtime.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Containerize the Django app, push the image to Amazon ECR, and deploy it on Amazon ECS with Fargate. Configure an ALB in front of ECS, set up ECS Service Auto Scaling, and use CodePipeline for CI/CD.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Create an AMI with Django pre-installed, launch EC2 instances in an Auto Scaling group, configure the ALB manually, and write userdata scripts to pull and deploy code from CodeCommit on each instance boot.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>AWS Elastic Beanstalk</strong> is specifically designed for developers who want to focus on code, not infrastructure. It supports Python/Django natively. With a single <code>eb deploy</code> command (or Git push), Beanstalk handles: EC2 provisioning, ALB configuration, Auto Scaling group setup, RDS integration, CloudWatch monitoring, and deployment orchestration. Elastic Beanstalk is <em>free</em> — you only pay for the underlying resources it creates. Zero downtime is achieved via the "Rolling with additional batch" or "Immutable" deployment policy — configurable without infrastructure code.
+                <div class="trap-note">Option C (ECS Fargate) is also a modern approach, but requires containerization knowledge (Dockerfile, ECR, ECS task definitions, CodePipeline) — significantly more infrastructure expertise than Beanstalk. For teams with "no DevOps experience," Beanstalk is the stated answer. Option A (CloudFormation) requires writing and maintaining IaC templates — the exact overhead the team wants to avoid.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 17</div>
+            <div class="q-tags">
+                <span class="tag tag-purple">Hybrid</span>
+                <span class="tag tag-orange">Kubernetes</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A government agency runs a <strong>classified workload</strong> that processes citizen data. By law, all data must remain within the agency's own data center and can <strong>never transit the public internet or any external cloud</strong>. The agency's development team has invested heavily in Kubernetes tooling — Helm charts, <code>kubectl</code> workflows, GitOps pipelines — and wants to maintain this standardized approach for both classified on-premises workloads and their future unclassified cloud workloads (which will run on Amazon EKS). The agency wants to <strong>use AWS for ongoing Kubernetes distribution support and tooling</strong>, even for the on-premises cluster.
+                <br><br>Which service enables this hybrid Kubernetes strategy?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Deploy Amazon EKS in the AWS GovCloud region. Use AWS Direct Connect to connect the on-premises data center to GovCloud, and run classified containers with strict IAM and network policies.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Use AWS Outposts to deploy an AWS-managed rack in the agency's data center. Run Amazon EKS on Outposts, which provides Kubernetes within the facility. Outposts requires a connection back to the parent AWS Region.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Deploy <strong>Amazon EKS Anywhere</strong> on the agency's own bare-metal servers. The cluster runs entirely within the data center with no mandatory connectivity to AWS. The same Kubernetes distribution, tooling, and Helm charts work identically on-premises and on Amazon EKS in the cloud.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Install an open-source Kubernetes distribution (k3s or RKE2) on the agency's servers and manage it independently. Use infrastructure-as-code tools to maintain consistency between on-premises and cloud clusters.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: C</div>
+                <strong>Amazon EKS Anywhere</strong> runs the same EKS Kubernetes distribution on the customer's own hardware with <em>no mandatory connectivity to AWS</em> (it can operate fully air-gapped). The agency's existing Helm charts, <code>kubectl</code> commands, and GitOps workflows work identically. When the agency eventually runs workloads on EKS in the cloud, the same tools and manifests apply — true hybrid consistency. AWS provides the K8s distribution, tooling, and optional support subscription.
+                <div class="trap-note">Option B (EKS on Outposts) requires persistent connectivity back to the AWS parent Region — making it non-viable for a fully air-gapped classified environment where data can never transit externally. Option A (GovCloud) still runs workloads IN AWS infrastructure, violating the "data center only" requirement. Option D (open-source) doesn't use AWS tooling — the question requires AWS-supported distribution and tooling.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 18</div>
+            <div class="q-tags">
+                <span class="tag tag-teal">Serverless</span>
+                <span class="tag tag-orange">Code Reuse</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A large enterprise has <strong>200 development teams</strong>, each building serverless applications on AWS. The platform engineering team has built a set of <strong>reusable Lambda-based components</strong> — including a common audit logging function, a GDPR data redaction processor, and an automated cost-tagging pipeline. The team wants to make these components available to all 200 teams so they can be deployed into any account with a <strong>single click, without sharing source code</strong>. The components should be deployable via the AWS Management Console or CLI.
+                <br><br>Which AWS capability enables this?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Package each Lambda function as a .zip file and upload to a shared S3 bucket. Grant all teams read access to the bucket so they can download and deploy the function in their own accounts.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Publish each component to the <strong>AWS Serverless Application Repository (SAR)</strong> as a private application. Teams deploy by searching SAR in the console or CLI and clicking Deploy — it creates a CloudFormation stack with all resources in their account. Source code is not exposed.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Create AWS CloudFormation StackSets for each component and deploy them to all 200 accounts simultaneously from a centralized management account, ensuring all teams have the components installed.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Share Lambda function ARNs across accounts using resource-based policies. Each team invokes the shared function cross-account instead of deploying their own copy.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>AWS Serverless Application Repository (SAR)</strong> is exactly the "App Store for Lambda applications." The platform team publishes applications using AWS SAM templates (SAM = Serverless Application Model, a simplified CloudFormation). Applications can be private (org-only) or public. Each application in SAR deploys as a CloudFormation stack into the target account — so each team gets their own isolated copy. Critically, the source code is packaged and abstracted — the consuming team doesn't see the Lambda source code if the publisher chooses not to share it. Deployable via console search or <code>aws serverlessrepo</code> CLI.
+                <div class="trap-note">Option D (cross-account Lambda invocation) introduces a shared resource that becomes a dependency — if the shared function goes down or has a breaking change, all 200 teams are impacted simultaneously. SAR gives each team their own isolated deployment. Option C (StackSets push-to-all) removes team autonomy — teams can't choose which components to adopt or when to update them.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════ BLOCK E: HYBRID, EDGE & ARCHITECTURE ═══════════════════ -->
+<section>
+    <h2>🏗️ Block E — Hybrid, Edge &amp; Architectural Thinking</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">🌐</span>
+        <span class="cat-bar-label">Questions 19–20</span>
+        <span style="margin-left:auto; font-size:11px;">AWS Outposts · Multi-Service Architecture · Cost &amp; Reliability</span>
+    </div>
+
+    <!-- Q19 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 19</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Hybrid Cloud</span>
+                <span class="tag tag-red">Multi-Service</span>
+                <span class="tag tag-purple">Architecture</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <p class="q-stem">
+                A semiconductor manufacturer operates an <strong>automated chip inspection system</strong> on the factory floor. The system uses machine learning to analyze wafer images in real time and must respond in <strong>under 5 milliseconds</strong> — far too fast to make a round-trip to any cloud region. The factory loses internet connectivity for short periods due to electromagnetic interference from production equipment. The manufacturer requires that the inspection system <strong>continues operating during connectivity outages</strong>. The engineering team wants to use the <strong>same AWS APIs</strong> they use for all other workloads, and AWS must manage the hardware lifecycle.
+                <br><br>Which solution meets all requirements?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Deploy the inspection system on EC2 instances in the nearest AWS Region and use AWS Direct Connect with a redundant backup VPN for near-zero-latency connectivity to the factory floor cameras.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Deploy an <strong>AWS Outposts rack</strong> on the factory floor. Run the ML inference workload on EC2 instances on the Outpost. The Outpost continues to operate locally during connectivity interruptions to the parent region. AWS manages and maintains the hardware.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Use AWS Wavelength Zones inside a carrier's 5G network near the factory. Deploy EC2 instances in the Wavelength Zone to process wafer images with ultra-low latency via 5G connectivity.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Deploy EKS Anywhere on the factory's own servers. Run the ML inference containers using Kubernetes and use GitOps to manage deployments. Connect to AWS for monitoring only when connectivity is available.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answer: B</div>
+                <strong>AWS Outposts</strong> delivers a fully managed AWS rack to the factory floor. Key discriminators here: (1) <strong>Sub-5ms latency</strong> — Outposts are on-premises, eliminating all network round-trips. (2) <strong>Operates during connectivity outage</strong> — Outposts instances continue running and processing locally when the parent Region connection is interrupted. (3) <strong>Same AWS APIs</strong> — EC2, SageMaker, S3 on Outposts use identical APIs. (4) <strong>AWS manages hardware</strong> — AWS handles patching, monitoring, and hardware replacement.
+                <div class="trap-note">Option A (Region + Direct Connect) fundamentally cannot achieve sub-5ms for camera-to-compute — even Direct Connect has 1–10ms latency for regional round-trips, plus camera interface overhead. Option C (Wavelength) requires a 5G carrier network and carrier gateway — manufacturing floors don't have 5G-based architectures built into the electromagnetic-interference environment described. Option D (EKS Anywhere) uses YOUR hardware — "AWS manages hardware lifecycle" eliminates this choice.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="q-card">
+        <div class="q-header">
+            <div class="q-num">Question 20</div>
+            <div class="q-tags">
+                <span class="tag tag-orange">Multi-Service</span>
+                <span class="tag tag-red">Architect Thinking</span>
+                <span class="tag tag-purple">Multi-Select</span>
+            </div>
+        </div>
+        <div class="q-body">
+            <span class="multi-note">⚠️ SELECT TWO — Multiple answers required</span>
+            <p class="q-stem">
+                A media streaming company serves <strong>pre-recorded video content</strong> to millions of global users. The architecture team reviews their current setup and identifies two problems that are causing cost overruns and performance issues:
+                <br><br>
+                <strong>Problem 1:</strong> Video files stored in Amazon S3 (us-east-1) are being served directly from S3 to users globally. International users experience high latency and download speeds are slow. Data transfer costs from S3 are significant.
+                <br><br>
+                <strong>Problem 2:</strong> The company stores video files for 6 months post-publication with active streaming, then they become "library content" rarely watched. These library files use S3 Standard storage indefinitely, costing full Standard pricing even though they're accessed once a month or less.
+                <br><br>
+                Which two changes address each problem independently?
+            </p>
+            <ul class="options">
+                <li class="option">
+                    <span class="option-letter">A</span>
+                    Enable S3 Transfer Acceleration on the bucket. This uses CloudFront edge locations to accelerate uploads and downloads globally and reduces data transfer costs.
+                </li>
+                <li class="option">
+                    <span class="option-letter">B</span>
+                    Create an Amazon CloudFront distribution with the S3 bucket as origin. Configure appropriate cache TTLs. Global users fetch from the nearest CloudFront edge POP; cache hits don't consume S3 data transfer bandwidth.
+                </li>
+                <li class="option">
+                    <span class="option-letter">C</span>
+                    Configure an S3 Lifecycle Policy to transition video objects to <strong>S3 Standard-IA</strong> after 180 days (6 months). This reduces storage cost for library content while maintaining availability for streaming with millisecond access.
+                </li>
+                <li class="option">
+                    <span class="option-letter">D</span>
+                    Move all video files to Amazon S3 Glacier Flexible Retrieval immediately after upload and use Glacier's expedited retrieval (1–5 minutes) whenever a user requests a stream.
+                </li>
+            </ul>
+            <button class="reveal-btn" onclick="reveal(this)">Reveal Answer</button>
+            <div class="answer-block">
+                <div class="answer-label">Correct Answers: B and C</div>
+                <strong>B — CloudFront:</strong> Purpose-built CDN for global video delivery. Video files are cached at 450+ edge locations worldwide. Users stream from the nearest PoP instead of origin S3 in us-east-1. Cache hits dramatically reduce S3 data transfer costs (CloudFront-to-internet pricing is lower than S3-to-internet, and cache hits reduce origin fetches). This directly solves Problem 1.
+                <br><br>
+                <strong>C — S3 Standard-IA Lifecycle:</strong> After 6 months of active streaming, transitioning to Standard-IA reduces storage cost by ~58% vs Standard while keeping objects immediately available (millisecond access) for streaming. Standard-IA has a per-GB retrieval fee, but for occasional streaming this is cheaper than paying full Standard pricing indefinitely. This directly solves Problem 2.
+                <div class="trap-note">Option A (S3 Transfer Acceleration) optimizes <em>uploads</em> — not content delivery for streaming. It also doesn't reduce per-GB transfer costs; it adds cost. Choosing this is the classic mix-up between Transfer Acceleration (upload speed) and CloudFront (distribution/delivery). Option D (Glacier) is disqualifying — Glacier Flexible Retrieval takes 1–5 minutes minimum for expedited retrieval. You CANNOT stream a video in real-time with 1–5 minute retrieval delay. Glacier is for archival, never for active serving.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ RESULTS SUMMARY ═══════════════════ -->
+<section>
+    <h2>🎯 Session Wrap-Up — Answer Key &amp; Scoring</h2>
+    <div class="card">
+        <div class="grid-2">
+            <div>
+                <h3 style="color:var(--green);">✅ Answer Key</h3>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; line-height:2.2;">
+                    <div><span style="color:var(--orange);">Q01</span> — B &nbsp;|&nbsp; Transit Gateway (hub-and-spoke)</div>
+                    <div><span style="color:var(--orange);">Q02</span> — C &nbsp;|&nbsp; AWS PrivateLink (overlapping CIDRs)</div>
+                    <div><span style="color:var(--orange);">Q03</span> — C &nbsp;|&nbsp; AWS Wavelength (5G carrier compute)</div>
+                    <div><span style="color:var(--orange);">Q04</span> — B &nbsp;|&nbsp; Route 53 Failover + Health Check</div>
+                    <div><span style="color:var(--orange);">Q05</span> — A, D &nbsp;|&nbsp; SG (inter-tier) + NACL (block IP)</div>
+                    <div><span style="color:var(--orange);">Q06</span> — B &nbsp;|&nbsp; CloudFront + OAC (private S3)</div>
+                    <div><span style="color:var(--orange);">Q07</span> — B &nbsp;|&nbsp; ALB (path routing + SNI)</div>
+                    <div><span style="color:var(--orange);">Q08</span> — B &nbsp;|&nbsp; Global Accelerator (static IP + failover)</div>
+                    <div><span style="color:var(--orange);">Q09</span> — B &nbsp;|&nbsp; Scheduled Scaling + Target Tracking</div>
+                    <div><span style="color:var(--orange);">Q10</span> — B &nbsp;|&nbsp; S3 Lifecycle (Standard → IA → Glacier)</div>
+                    <div><span style="color:var(--orange);">Q11</span> — B &nbsp;|&nbsp; EBS gp3 elastic modification</div>
+                    <div><span style="color:var(--orange);">Q12</span> — B &nbsp;|&nbsp; Amazon EFS (shared Linux storage)</div>
+                    <div><span style="color:var(--orange);">Q13</span> — B &nbsp;|&nbsp; Storage Gateway File Gateway</div>
+                    <div><span style="color:var(--orange);">Q14</span> — C &nbsp;|&nbsp; S3 Object Lock Compliance Mode</div>
+                    <div><span style="color:var(--orange);">Q15</span> — C &nbsp;|&nbsp; AWS Batch (long-running containers)</div>
+                    <div><span style="color:var(--orange);">Q16</span> — B &nbsp;|&nbsp; Elastic Beanstalk (no-ops deploy)</div>
+                    <div><span style="color:var(--orange);">Q17</span> — C &nbsp;|&nbsp; EKS Anywhere (air-gapped K8s)</div>
+                    <div><span style="color:var(--orange);">Q18</span> — B &nbsp;|&nbsp; Serverless App Repository</div>
+                    <div><span style="color:var(--orange);">Q19</span> — B &nbsp;|&nbsp; AWS Outposts (factory floor)</div>
+                    <div><span style="color:var(--orange);">Q20</span> — B, C &nbsp;|&nbsp; CloudFront + S3 Standard-IA lifecycle</div>
+                </div>
+            </div>
+            <div>
+                <h3 style="color:var(--red);">🚨 Top 7 Traps in This Set</h3>
+                <div style="font-size:13.5px; line-height:2.1;">
+                    <div>❌ <strong>VPC Peering with overlapping CIDRs</strong> → Use PrivateLink</div>
+                    <div>❌ <strong>Lambda for &gt;15 min jobs</strong> → Use AWS Batch</div>
+                    <div>❌ <strong>Security Group DENY rule</strong> → Use NACL (SGs are allow-only)</div>
+                    <div>❌ <strong>CloudFront has static IPs</strong> → Global Accelerator has static IPs</div>
+                    <div>❌ <strong>S3 Transfer Acceleration for CDN</strong> → Use CloudFront</div>
+                    <div>❌ <strong>Glacier for active streaming</strong> → Use S3 Standard-IA</div>
+                    <div>❌ <strong>Instance Store for databases</strong> → Use EBS (data persists)</div>
+                </div>
+
+                <div class="highlight" style="margin-top:20px;">
+                    <strong>Your Score:</strong>
+                    <div style="margin-top:8px; font-family:'IBM Plex Mono',monospace;">
+                        <div>20/20 = 🏆 Exam Ready</div>
+                        <div>17–19 = ✅ Strong — review missed traps</div>
+                        <div>14–16 = 🔶 On target — reinforce weak areas</div>
+                        <div>10–13 = 🔴 Re-study flagged services</div>
+                        <div>&lt; 10 &nbsp;= 📚 Schedule more practice sessions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning-box" style="margin-top:24px;">
+            <strong>The Architect's Mindset for SAA-C03:</strong> Every wrong answer in this exam is wrong for <em>one specific reason</em> — a constraint in the scenario that the distractor violates. Train yourself to ask: "What constraint does Option X fail?" rather than "What does Option X do?" The service knowledge gets you to 50%; understanding the architectural constraint is what gets you to 72%+.
+        </div>
+    </div>
+</section>
+
+<footer>
+    <strong>AWS Solutions Architect Associate — SAA-C03 Practice Question Set</strong><br>
+    <span style="margin-top:6px; display:block;">Principal AWS Architect Edition · 20 Questions · 21 Services · All Exam Domains Covered</span>
+    <span style="margin-top:4px; display:block; color:rgba(103,122,146,0.6);">Know the WHY behind every answer — that's what separates a pass from a fail. Good luck! 🚀</span>
+</footer>
+
+</div>
+
+<script>
+/* ── REVEAL ANSWER ── */
+function reveal(btn) {
+    const block = btn.nextElementSibling;
+    block.classList.add('shown');
+    btn.textContent = '✅ Answer Revealed';
+    btn.style.background = 'rgba(0,214,143,0.15)';
+    btn.style.borderColor = 'rgba(0,214,143,0.4)';
+    btn.style.color = '#00d68f';
+    btn.disabled = true;
+
+    // Update revealed counter
+    const counter = document.getElementById('revealed-count');
+    if (counter) {
+        counter.textContent = parseInt(counter.textContent || 0) + 1;
+    }
+}
+
+/* ── ANIMATED COUNTERS ── */
+function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const dur = 1600;
+    const step = 16;
+    const inc = target / (dur / step);
+    let cur = 0;
+    const timer = setInterval(() => {
+        cur = Math.min(cur + inc, target);
+        el.textContent = Math.floor(cur).toLocaleString() + (el.dataset.suffix || '');
+        if (cur >= target) clearInterval(timer);
+    }, step);
+}
+const cObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); cObserver.unobserve(e.target); } });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => cObserver.observe(el));
+</script>
+</body>
+</html>
