@@ -1,0 +1,1631 @@
+html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS SAA Cert Prep — 2-Hour Power Session 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #FF9900;
+            --orange-dim: rgba(255,153,0,0.15);
+            --orange-border: rgba(255,153,0,0.3);
+            --bg: #080c14;
+            --bg2: #0f1520;
+            --bg3: #151d2e;
+            --text: #c8d6e8;
+            --text-dim: #687a92;
+            --green: #00d68f;
+            --red: #ff4757;
+            --blue: #4a90d9;
+            --purple: #a78bfa;
+            --teal: #38bdf8;
+            --card-border: rgba(255,153,0,0.18);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Lora', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container { max-width: 1180px; margin: 0 auto; padding: 30px 24px 80px; position: relative; z-index: 1; }
+        header {
+            position: relative;
+            background: linear-gradient(135deg, #0f1a2e 0%, #1a1030 100%);
+            border: 1px solid var(--orange-border);
+            border-radius: 16px;
+            padding: 48px 40px 40px;
+            margin-bottom: 48px;
+            overflow: hidden;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 320px; height: 320px;
+            background: radial-gradient(circle, rgba(255,153,0,0.12), transparent 70%);
+            pointer-events: none;
+        }
+        .header-badge {
+            display: inline-block;
+            background: var(--orange-dim);
+            border: 1px solid var(--orange-border);
+            color: var(--orange);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+        }
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(32px, 5vw, 54px);
+            font-weight: 800;
+            background: linear-gradient(135deg, #FF9900 0%, #ffcc66 55%, #ff7700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+        .header-meta { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-dim); }
+        .header-meta span { color: var(--orange); }
+        .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 28px; }
+        .toc-item { background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.18); border-radius: 8px; padding: 10px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-dim); }
+        .toc-item span { color: var(--orange); font-weight: 600; }
+        h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; color: #fff; margin: 52px 0 24px; display: flex; align-items: center; gap: 14px; }
+        h2::before { content: ''; display: inline-block; width: 5px; height: 32px; background: var(--orange); border-radius: 3px; flex-shrink: 0; }
+        h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--orange); margin: 24px 0 12px; }
+        .card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 12px; padding: 28px 30px; margin: 20px 0; }
+        .card p { margin-bottom: 12px; }
+        .service-card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 14px; padding: 26px 28px; margin: 24px 0; position: relative; overflow: hidden; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--orange), transparent); }
+        .service-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .service-icon { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
+        .service-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: #fff; }
+        .service-subtitle { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 16px 0; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 16px 0; }
+        .metric { background: var(--bg3); border: 1px solid rgba(255,153,0,0.15); border-radius: 10px; padding: 16px; text-align: center; }
+        .metric-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--orange); margin-bottom: 6px; }
+        .metric-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .metric-sub { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+        .table-wrap { overflow-x: auto; margin: 16px 0; }
+        table { width: 100%; border-collapse: collapse; background: var(--bg3); }
+        th { background: rgba(255,153,0,0.12); color: #fff; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; padding: 13px 15px; text-align: left; letter-spacing: 0.5px; }
+        td { padding: 12px 15px; font-size: 14px; border-bottom: 1px solid rgba(255,153,0,0.07); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,153,0,0.04); }
+        .highlight { background: linear-gradient(135deg, rgba(0,214,143,0.1), rgba(0,214,143,0.03)); border-left: 4px solid var(--green); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .warning-box { background: linear-gradient(135deg, rgba(255,71,87,0.1), rgba(255,71,87,0.03)); border-left: 4px solid var(--red); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .info-box { background: linear-gradient(135deg, rgba(74,144,217,0.12), rgba(74,144,217,0.03)); border-left: 4px solid var(--blue); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .exam-box { background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(167,139,250,0.03)); border-left: 4px solid var(--purple); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .tag { display: inline-block; padding: 3px 9px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-right: 4px; margin-bottom: 4px; font-family: 'IBM Plex Mono', monospace; }
+        .tag-green { background: rgba(0,214,143,0.15); color: #00d68f; border: 1px solid rgba(0,214,143,0.3); }
+        .tag-blue { background: rgba(74,144,217,0.15); color: #4a90d9; border: 1px solid rgba(74,144,217,0.3); }
+        .tag-red { background: rgba(255,71,87,0.15); color: #ff6b7a; border: 1px solid rgba(255,71,87,0.3); }
+        .tag-purple { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+        .tag-orange { background: rgba(255,153,0,0.15); color: var(--orange); border: 1px solid rgba(255,153,0,0.3); }
+        .tag-teal { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+        code { background: rgba(255,153,0,0.12); padding: 2px 7px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--orange); }
+        strong { color: #fff; font-weight: 600; }
+        ul, ol { margin: 12px 0 12px 24px; }
+        li { margin: 8px 0; font-size: 14.5px; }
+        .scenario { background: linear-gradient(135deg, #0f1a2e, #1c1030); border: 1px solid rgba(255,71,87,0.3); border-radius: 12px; padding: 28px; margin: 20px 0; position: relative; }
+        .scenario-badge { position: absolute; top: -12px; left: 20px; background: var(--red); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 12px; border-radius: 12px; }
+        .scenario-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: #ff6b7a; margin-bottom: 10px; }
+        .usecase { background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(56,189,248,0.02)); border: 1px solid rgba(56,189,248,0.25); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+        .usecase-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 6px; }
+        .usecase-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
+        .timeline { position: relative; padding-left: 32px; margin: 20px 0; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--orange), transparent); }
+        .timeline-item { position: relative; margin-bottom: 20px; }
+        .timeline-item::before { content: ''; position: absolute; left: -28px; top: 8px; width: 10px; height: 10px; background: var(--orange); border-radius: 50%; }
+        .timeline-time { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--orange); margin-bottom: 2px; }
+        .timeline-topic { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: #fff; }
+        .timeline-services { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+        footer { text-align: center; padding: 40px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-dim); border-top: 1px solid rgba(255,153,0,0.1); margin-top: 60px; }
+        .cat-bar { display: flex; align-items: center; gap: 12px; background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.15); border-radius: 8px; padding: 10px 18px; margin-bottom: 20px; }
+        .cat-bar-icon { font-size: 20px; }
+        .cat-bar-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--orange); }
+        .cat-bar-desc { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+        section { margin-bottom: 16px; }
+        .cheat-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(255,153,0,0.07); }
+        .cheat-row:last-child { border-bottom: none; }
+        .cheat-keyword { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--orange); background: var(--orange-dim); border: 1px solid var(--orange-border); border-radius: 6px; padding: 4px 10px; white-space: nowrap; min-width: 170px; text-align: center; }
+        .cheat-answer { font-size: 13px; color: var(--text); padding-top: 4px; }
+        .practice-question { background: var(--bg3); border: 1px solid rgba(167,139,250,0.25); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+        .question-number { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--purple); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .question-text { font-size: 15px; color: var(--text); margin-bottom: 16px; line-height: 1.6; }
+        .answer-options { margin: 12px 0; }
+        .answer-option { background: var(--bg2); border: 1px solid rgba(255,153,0,0.1); border-radius: 6px; padding: 10px 14px; margin: 8px 0; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .answer-option:hover { border-color: var(--orange); background: rgba(255,153,0,0.05); }
+        .answer-option.correct { border-color: var(--green); background: rgba(0,214,143,0.08); }
+        .answer-option.wrong { border-color: var(--red); background: rgba(255,71,87,0.08); }
+        .answer-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; color: var(--orange); margin-right: 8px; }
+        .explanation { background: linear-gradient(135deg, rgba(0,214,143,0.08), rgba(0,214,143,0.02)); border-left: 3px solid var(--green); padding: 14px 18px; margin-top: 12px; border-radius: 0 6px 6px 0; display: none; }
+        .explanation-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--green); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+        .explanation-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+        .show-answer-btn { background: var(--orange); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: all 0.2s; }
+        .show-answer-btn:hover { background: #ffaa33; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══ HEADER ═══ -->
+<header>
+    <div class="header-badge">AWS Certification Prep · SAA-C03 · 2-Hour Power Session · Part 3</div>
+    <h1>AWS Solutions Architect<br>Associate — DevOps & Databases</h1>
+    <div class="header-meta">
+        <span>19 Services</span> · CLI · Databases · Serverless · Monitoring · Optimization · Container Orchestration
+
+    </div>
+    <div class="toc">
+        <div class="toc-item">⚡ <span>COMPUTE & SERVERLESS</span><br>Lambda · Fargate · Auto Scaling</div>
+        <div class="toc-item">🗄️ <span>DATABASES</span><br>RDS · Aurora · DynamoDB · DocumentDB · ElastiCache · Keyspaces</div>
+        <div class="toc-item">📊 <span>MONITORING</span><br>X-Ray · Prometheus · Grafana · Health Dashboard</div>
+        <div class="toc-item">🔧 <span>OPTIMIZATION</span><br>Config · Well-Architected · Compute Optimizer · License Manager</div>
+        <div class="toc-item">🖥️ <span>DEVELOPER TOOLS</span><br>CLI</div>
+    </div>
+</header>
+
+<!-- SESSION ROADMAP -->
+<section>
+    <h2>🗺️ 2-Hour Session Roadmap</h2>
+    <div class="card">
+        <p>This session focuses on the <strong>operational backbone of AWS</strong> — databases, serverless compute, monitoring, and optimization tools. These services are heavily tested in SAA-C03 because they're fundamental to real-world architectures. We'll follow the proven framework: <strong>Concept → Exam Trap → Real-World Story → Practice Question</strong>.</p>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">00:00 – 00:30</div>
+                <div class="timeline-topic">🗄️ Block 1 — Database Deep Dive</div>
+                <div class="timeline-services">RDS · Aurora · Aurora Serverless · DynamoDB · DocumentDB · ElastiCache · Keyspaces</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">00:30 – 00:55</div>
+                <div class="timeline-topic">⚡ Block 2 — Serverless & Compute</div>
+                <div class="timeline-services">Lambda · Fargate · Auto Scaling</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">00:55 – 01:20</div>
+                <div class="timeline-topic">📊 Block 3 — Monitoring & Observability</div>
+                <div class="timeline-services">X-Ray · AWS Config · Managed Prometheus · Managed Grafana · Health Dashboard</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">01:20 – 01:45</div>
+                <div class="timeline-topic">🔧 Block 4 — Optimization & Management</div>
+                <div class="timeline-services">Well-Architected Tool · Compute Optimizer · License Manager · AWS CLI</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">01:45 – 02:00</div>
+                <div class="timeline-topic">🎯 Block 5 — Practice Questions & Rapid Review</div>
+                <div class="timeline-services">15 Real Exam-Style Questions · Decision Tree Cheat Sheet</div>
+            </div>
+        </div>
+        <div class="highlight">
+            <strong>SAA-C03 Exam Facts:</strong> 65 questions · 130 minutes · Passing score ~72% · These 19 services appear in roughly <strong>40-45% of exam questions</strong>. Master the decision criteria: "When to use Aurora vs DynamoDB?" "When Lambda vs Fargate?" "When ElastiCache Redis vs Memcached?" The exam tests your ability to choose the right tool for the right scenario.
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ BLOCK 1: DATABASES ═══════════════════ -->
+<section>
+    <h2>🗄️ Block 1 — Database Deep Dive</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 00:00 – 00:30</span>
+        <span class="cat-bar-desc">7 Database Services · Critical for 25% of exam</span>
+    </div>
+
+    <!-- AMAZON RDS -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2C5282;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#2C5282"/>
+                    <rect x="20" y="20" width="40" height="8" rx="2" fill="white" opacity="0.9"/>
+                    <rect x="20" y="32" width="40" height="8" rx="2" fill="white" opacity="0.7"/>
+                    <rect x="20" y="44" width="40" height="8" rx="2" fill="white" opacity="0.5"/>
+                    <circle cx="66" cy="62" r="8" fill="#FF9900"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon RDS</div>
+                <div class="service-subtitle">Managed Relational Database · MySQL · PostgreSQL · Oracle · SQL Server · MariaDB</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Database</span>
+                <span class="tag tag-red">HIGH EXAM WEIGHT</span>
+            </div>
+        </div>
+
+        <p><strong>Amazon RDS (Relational Database Service)</strong> is AWS's managed SQL database service. Think of it as "we run the database engine for you." You get <strong>automated backups, patching, Multi-AZ failover, and read replicas</strong> — but you still pick the instance size and storage. RDS supports 6 engines: MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, and Aurora (which we'll cover separately).</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">Multi-AZ</div>
+                <div class="metric-label">High Availability</div>
+                <div class="metric-sub">Synchronous standby in different AZ — automatic failover in 1-2 min</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Read Replicas</div>
+                <div class="metric-label">Scale Reads</div>
+                <div class="metric-sub">Up to 15 async replicas — can be cross-region for DR</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">35 Days</div>
+                <div class="metric-label">Backup Retention</div>
+                <div class="metric-sub">Automated daily snapshots + transaction logs for point-in-time recovery</div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 #1 Exam Trap — Multi-AZ vs Read Replicas:</strong> Students constantly confuse these. <strong>Multi-AZ = High Availability</strong> (standby is NOT readable, only for failover). <strong>Read Replicas = Performance</strong> (readable copies for scaling reads). You can have both! Multi-AZ with 5 read replicas is valid.
+        </div>
+
+        <h3>RDS Engine Decision Matrix</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Engine</th><th>Use When</th><th>Exam Keyword</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>MySQL / MariaDB</strong></td><td>Open-source, WordPress, general OLTP apps</td><td>"cost-effective", "open-source"</td></tr>
+                    <tr><td><strong>PostgreSQL</strong></td><td>Advanced features, JSON support, geospatial (PostGIS)</td><td>"complex queries", "JSON"</td></tr>
+                    <tr><td><strong>Oracle / SQL Server</strong></td><td>Enterprise apps that require these specific engines</td><td>"license included", "Windows auth"</td></tr>
+                    <tr><td><strong>Aurora</strong></td><td>Best performance, cloud-native features (see Aurora section)</td><td>"5x faster", "serverless", "global"</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏢 Real-World Use Case</div>
+            <div class="usecase-title">E-Commerce Site — Black Friday Traffic Spike</div>
+            <p style="font-size:14px;">An online retailer runs their product catalog on <strong>RDS MySQL Multi-AZ</strong>. During Black Friday, read traffic spikes 10x (everyone browsing products). They spin up <strong>5 Read Replicas</strong> and point their read-heavy queries (product searches, recommendations) to the replicas. Write traffic (checkouts, orders) still hits the primary. When the primary instance accidentally fails at peak traffic, <strong>Multi-AZ automatically fails over to the standby in 90 seconds</strong> — users see a brief slowdown but no downtime. After the sale, they delete 4 read replicas to save cost.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Minimize downtime for database maintenance" → <strong>RDS Multi-AZ</strong> (patches standby first, then failover)<br>
+            • "Disaster recovery in another region" → <strong>Cross-region Read Replica</strong> (promote to master if primary region fails)<br>
+            • "Scale read performance without changing app code" → <strong>Read Replicas</strong><br>
+            • "Restore database to 5 minutes ago" → <strong>Point-in-time restore</strong> (enabled by default, uses backups + transaction logs)<br>
+            • RDS encrypts data at rest with <strong>KMS</strong> — can't enable encryption on existing unencrypted DB (must create encrypted snapshot and restore)
+        </div>
+    </div>
+
+    <!-- AMAZON AURORA -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#1A5490;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#1A5490"/>
+                    <circle cx="40" cy="40" r="18" fill="none" stroke="white" stroke-width="2" opacity="0.9"/>
+                    <circle cx="40" cy="40" r="12" fill="none" stroke="white" stroke-width="2" opacity="0.7"/>
+                    <circle cx="40" cy="40" r="6" fill="white" opacity="0.9"/>
+                    <circle cx="40" cy="22" r="3" fill="#FF9900"/>
+                    <circle cx="58" cy="40" r="3" fill="#FF9900"/>
+                    <circle cx="40" cy="58" r="3" fill="#FF9900"/>
+                    <circle cx="22" cy="40" r="3" fill="#FF9900"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Aurora</div>
+                <div class="service-subtitle">Cloud-Native Relational DB · MySQL & PostgreSQL Compatible · 5x Performance</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Database</span>
+                <span class="tag tag-red">HIGH EXAM WEIGHT</span>
+                <span class="tag tag-green">PERFORMANCE</span>
+            </div>
+        </div>
+
+        <p><strong>Amazon Aurora</strong> is AWS's proprietary relational database engine built for the cloud. It's <strong>MySQL-compatible</strong> or <strong>PostgreSQL-compatible</strong> (you pick), but the storage layer is custom AWS magic: data is automatically replicated <strong>6 copies across 3 AZs</strong>, self-healing, and can scale up to <strong>128 TB</strong>. It's <strong>5x faster than standard MySQL on RDS</strong> because of distributed storage and custom caching.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">6 Copies</div>
+                <div class="metric-label">Storage Replication</div>
+                <div class="metric-sub">2 copies per AZ across 3 AZs — survives loss of entire AZ + 1 copy</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">15 Replicas</div>
+                <div class="metric-label">Aurora Replicas</div>
+                <div class="metric-sub">Low-latency (<10ms lag), auto-failover, shared storage (not copied like RDS)</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">128 TB</div>
+                <div class="metric-label">Max Storage</div>
+                <div class="metric-sub">Auto-scaling storage in 10GB increments — no pre-provisioning</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>Aurora vs RDS — The Key Differences:</strong><br>
+            <strong>Storage:</strong> RDS uses EBS (tied to instance). Aurora uses custom distributed storage (shared across all replicas).<br>
+            <strong>Replicas:</strong> RDS Read Replicas have their own storage copy (async replication). Aurora Replicas share the same storage (no replication lag for reads, only writes).<br>
+            <strong>Failover:</strong> RDS Multi-AZ takes 1-2 min (DNS change). Aurora failover to replica takes <strong><30 seconds</strong> (just promotes a replica).<br>
+            <strong>Cost:</strong> Aurora is 20% more expensive than RDS MySQL/PostgreSQL, but often cheaper at scale due to less operational overhead.
+        </div>
+
+        <h3>Aurora Exclusive Features</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Feature</th><th>What It Does</th><th>Exam Trigger</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Aurora Global Database</strong></td><td>1 primary region + up to 5 secondary regions, <1 sec replication lag, <1 min RPO</td><td>"disaster recovery across regions", "global app"</td></tr>
+                    <tr><td><strong>Aurora Serverless</strong></td><td>Auto-scales capacity (ACUs) based on load, pay per second (see next section)</td><td>"intermittent workload", "unpredictable traffic"</td></tr>
+                    <tr><td><strong>Backtrack</strong></td><td>"Rewind" database to any point in last 72 hours without restore (instant)</td><td>"undo accidental DELETE", "rollback data corruption"</td></tr>
+                    <tr><td><strong>Database Cloning</strong></td><td>Create copy-on-write clone in minutes (uses same storage, only diverged data is copied)</td><td>"test environment from prod", "staging clone"</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🚀 Real-World Use Case</div>
+            <div class="usecase-title">SaaS Platform — Multi-Tenant Database with Global DR</div>
+            <p style="font-size:14px;">A SaaS company serves 10,000 enterprise customers from a single <strong>Aurora PostgreSQL cluster</strong>. They use <strong>Aurora Global Database</strong> with primary in us-east-1 and secondary in eu-west-1. European customers read from the eu-west-1 replica (low latency). If us-east-1 fails, they can promote eu-west-1 to primary in <strong>under 1 minute</strong>. They use <strong>Backtrack</strong> when a customer accidentally runs a bad SQL migration — instead of restoring from backup (30+ min), they backtrack to 5 minutes ago in <strong>30 seconds</strong>. They create staging environments using <strong>Aurora Cloning</strong> — a perfect copy of 2TB production database is ready in 10 minutes without doubling storage costs.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Best performance for MySQL/PostgreSQL" → <strong>Aurora</strong> (5x faster)<br>
+            • "Disaster recovery in another region with <1 second lag" → <strong>Aurora Global Database</strong><br>
+            • "Undo accidental data deletion without restore" → <strong>Aurora Backtrack</strong><br>
+            • "Create test environment from production in minutes" → <strong>Aurora Cloning</strong><br>
+            • Aurora automatically fails over to a replica if primary fails — <strong>no Multi-AZ flag needed</strong> (built-in HA)
+        </div>
+    </div>
+
+    <!-- AMAZON AURORA SERVERLESS -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#0D3D5C;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#0D3D5C"/>
+                    <path d="M25 45 L40 30 L55 45" fill="none" stroke="white" stroke-width="3" opacity="0.8"/>
+                    <path d="M25 55 L40 40 L55 55" fill="none" stroke="white" stroke-width="3" opacity="0.6"/>
+                    <circle cx="40" cy="25" r="4" fill="#FF9900"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Aurora Serverless</div>
+                <div class="service-subtitle">Auto-Scaling Database · Pay-Per-Second · No Instance Management</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Database</span>
+                <span class="tag tag-blue">Serverless</span>
+                <span class="tag tag-green">Auto-Scaling</span>
+            </div>
+        </div>
+
+        <p><strong>Aurora Serverless</strong> is Aurora without the "pick an instance size" step. Instead of db.r5.2xlarge, you specify <strong>min/max ACUs (Aurora Capacity Units)</strong>. The database automatically scales up when load increases, scales down (even to 0) when idle, and you pay <strong>only for the capacity you use per second</strong>. There are two versions: <strong>v1</strong> (older, more limitations) and <strong>v2</strong> (current, recommended).</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">Scale to Zero</div>
+                <div class="metric-label">Cost Optimization</div>
+                <div class="metric-sub">Aurora Serverless v2 can pause after inactivity — pay nothing when idle (v1 only)</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Instant Scale</div>
+                <div class="metric-label">Auto-Scaling</div>
+                <div class="metric-sub">v2 scales in <1 sec — no connection drops. v1 takes seconds and drops connections</div>
+            </div>
+        </div>
+
+        <h3>Aurora Serverless v1 vs v2</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Aspect</th><th>Aurora Serverless v1</th><th>Aurora Serverless v2</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Scaling Speed</strong></td><td>Seconds (drops connections during scale)</td><td><1 second (no connection drops)</td></tr>
+                    <tr><td><strong>Scale to Zero</strong></td><td>✅ Yes (pauses after inactivity)</td><td>❌ No (min 0.5 ACU always running in v2)</td></tr>
+                    <tr><td><strong>Read Replicas</strong></td><td>❌ Not supported</td><td>✅ Supported (can mix serverless + provisioned)</td></tr>
+                    <tr><td><strong>Use Case</strong></td><td>Infrequent, unpredictable workloads (dev/test)</td><td>Variable production workloads, microservices</td></tr>
+                    <tr><td><strong>Exam Preference</strong></td><td>Mentioned for "scale to zero" scenarios</td><td>Preferred for modern serverless DB questions</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">💡 Real-World Use Case</div>
+            <div class="usecase-title">Startup Analytics Dashboard — Weekend Silence, Weekday Chaos</div>
+            <p style="font-size:14px;">A startup runs an internal analytics dashboard used by 200 employees. Usage pattern: <strong>8am-6pm weekdays = high traffic, nights/weekends = zero traffic</strong>. With provisioned Aurora, they'd pay for a db.r5.large 24/7 (~$200/month). With <strong>Aurora Serverless v1</strong>, they set min=0.5 ACU, max=16 ACU. During work hours, it scales to 8-12 ACUs. At night and weekends, it <strong>pauses completely — $0 cost</strong>. Monthly cost drops to ~$60. When a data science team runs a heavy query at 2am, it auto-resumes and scales up in seconds.</p>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — "Scale to Zero" Language:</strong> The exam may ask "which database can scale to zero when not in use?" The answer is <strong>Aurora Serverless v1</strong>. However, if the question mentions "production workload" or "instant scaling", prefer <strong>Aurora Serverless v2</strong> (even though it can't pause). Read carefully!
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Infrequent database access, minimize cost when idle" → <strong>Aurora Serverless v1</strong> (scale to zero)<br>
+            • "Variable production workload, avoid connection drops during scaling" → <strong>Aurora Serverless v2</strong><br>
+            • "Development database used only during business hours" → <strong>Aurora Serverless v1</strong> (pauses at night)<br>
+            • Serverless Aurora still provides all core Aurora features: 6-way replication, automated backups, Multi-AZ
+        </div>
+    </div>
+
+    <!-- AMAZON DYNAMODB -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2C5F8D;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#2C5F8D"/>
+                    <rect x="15" y="20" width="50" height="12" rx="2" fill="white" opacity="0.9"/>
+                    <rect x="20" y="36" width="40" height="10" rx="2" fill="white" opacity="0.7"/>
+                    <rect x="25" y="50" width="30" height="8" rx="2" fill="white" opacity="0.5"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon DynamoDB</div>
+                <div class="service-subtitle">Serverless NoSQL · Key-Value & Document · Single-Digit Millisecond Latency</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Database</span>
+                <span class="tag tag-red">HIGH EXAM WEIGHT</span>
+                <span class="tag tag-blue">NoSQL</span>
+            </div>
+        </div>
+
+        <p><strong>DynamoDB</strong> is AWS's fully managed NoSQL database. It's <strong>serverless</strong> (no servers to provision), scales automatically to any workload, and provides <strong>single-digit millisecond latency</strong> at any scale. Data is stored as <strong>items</strong> (like rows) in <strong>tables</strong>. Each item must have a <strong>partition key</strong> (and optionally a sort key). DynamoDB is ideal for key-value lookups, session stores, shopping carts, mobile backends, IoT, and gaming leaderboards.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">Serverless</div>
+                <div class="metric-label">No Infra Management</div>
+                <div class="metric-sub">Auto-scales to millions of requests/sec — no instance sizing</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value"><10ms</div>
+                <div class="metric-label">Latency</div>
+                <div class="metric-sub">Consistent single-digit millisecond read/write latency</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Global Tables</div>
+                <div class="metric-label">Multi-Region</div>
+                <div class="metric-sub">Multi-master replication across regions — active-active</div>
+            </div>
+        </div>
+
+        <h3>DynamoDB Core Concepts</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Concept</th><th>What It Is</th><th>Exam Importance</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Partition Key (PK)</strong></td><td>Unique identifier for each item — determines which partition stores it</td><td>❗ HIGH — must understand how to design keys</td></tr>
+                    <tr><td><strong>Sort Key (SK)</strong></td><td>Optional second part of key — enables range queries (e.g., PK=UserID, SK=Timestamp)</td><td>❗ HIGH — "query items in date range" scenarios</td></tr>
+                    <tr><td><strong>Global Secondary Index (GSI)</strong></td><td>Alternate partition key + sort key for different query patterns</td><td>❗ CRITICAL — exam loves "query on non-key attribute"</td></tr>
+                    <tr><td><strong>Local Secondary Index (LSI)</strong></td><td>Same partition key, different sort key (must create at table creation)</td><td>LOW — rarely appears</td></tr>
+                    <tr><td><strong>On-Demand Mode</strong></td><td>Pay-per-request — no capacity planning, auto-scales instantly</td><td>❗ HIGH — "unpredictable traffic" = on-demand</td></tr>
+                    <tr><td><strong>Provisioned Mode</strong></td><td>Set Read/Write Capacity Units (RCU/WCU) — cheaper if predictable</td><td>MEDIUM — "cost optimization" scenarios</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 #1 Exam Trap — DynamoDB is NOT a Relational Database:</strong> Students try to apply SQL thinking. DynamoDB has NO JOINS, NO SQL queries, NO foreign keys. If question says "complex JOIN queries across tables" or "ACID transactions across tables" → <strong>NOT DynamoDB</strong> → use Aurora/RDS. DynamoDB is for simple key-value lookups or range scans on a single table.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🎮 Real-World Use Case</div>
+            <div class="usecase-title">Mobile Gaming — Player Profiles & Leaderboards</div>
+            <p style="font-size:14px;">A mobile game has 50 million players. They store player profiles in DynamoDB: <strong>Partition Key = PlayerID</strong>. Lookups like "get player stats" are <strong><5ms</strong>. For the global leaderboard, they use a <strong>Global Secondary Index</strong> with Partition Key = "LeaderboardName", Sort Key = "Score" — this lets them query "top 100 players" efficiently. During a viral event, traffic spikes 100x in 10 minutes. Because DynamoDB is in <strong>On-Demand mode</strong>, it auto-scales from 1,000 reads/sec to 100,000 reads/sec <strong>with zero manual intervention</strong>. They use <strong>DynamoDB Global Tables</strong> to replicate data across us-east-1, eu-west-1, ap-southeast-1 for low-latency access worldwide.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "NoSQL database with single-digit millisecond latency" → <strong>DynamoDB</strong><br>
+            • "Unpredictable spiky traffic, auto-scale without provisioning" → <strong>DynamoDB On-Demand</strong><br>
+            • "Query on non-key attribute" → <strong>Global Secondary Index (GSI)</strong><br>
+            • "Multi-region active-active database" → <strong>DynamoDB Global Tables</strong><br>
+            • "Session store for web app" → <strong>DynamoDB</strong> (or ElastiCache — DynamoDB for durability, ElastiCache for speed)<br>
+            • DynamoDB Streams = change data capture — triggers Lambda on every insert/update/delete (exam loves this pattern)
+        </div>
+    </div>
+
+    <!-- AMAZON DOCUMENTDB -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2D5F4F;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#2D5F4F"/>
+                    <path d="M40 20 L50 30 L50 60 L30 60 L30 30 Z" fill="white" opacity="0.9"/>
+                    <line x1="34" y1="36" x2="46" y2="36" stroke="#2D5F4F" stroke-width="2"/>
+                    <line x1="34" y1="42" x2="46" y2="42" stroke="#2D5F4F" stroke-width="2"/>
+                    <line x1="34" y1="48" x2="42" y2="48" stroke="#2D5F4F" stroke-width="2"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon DocumentDB</div>
+                <div class="service-subtitle">MongoDB-Compatible · Managed Document Database · JSON Storage</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Database</span>
+                <span class="tag tag-blue">NoSQL</span>
+                <span class="tag tag-purple">Document</span>
+            </div>
+        </div>
+
+        <p><strong>Amazon DocumentDB</strong> is AWS's MongoDB-compatible document database. If you have an app built on MongoDB and want to migrate to AWS without rewriting code, DocumentDB is the answer. It's NOT actual MongoDB — it's AWS's implementation of the MongoDB API. It supports the same query language, drivers, and tools, so <strong>existing MongoDB apps work with minimal changes</strong>.</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">MongoDB API</div>
+                <div class="metric-label">Compatibility</div>
+                <div class="metric-sub">Drop-in replacement for MongoDB 3.6, 4.0, 5.0 — use existing drivers/tools</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">15 Replicas</div>
+                <div class="metric-label">Read Scaling</div>
+                <div class="metric-sub">Like Aurora — shared storage, low-latency failover</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>When to Use DocumentDB vs DynamoDB:</strong><br>
+            <strong>DocumentDB:</strong> You need MongoDB. Your app already uses MongoDB. You have complex nested JSON documents. You query by multiple fields within documents.<br>
+            <strong>DynamoDB:</strong> You need extreme scale (millions of requests/sec). You want serverless (no instance management). Your access patterns are simple key-value lookups.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">📱 Real-World Use Case</div>
+            <div class="usecase-title">Content Management System — Flexible Schema Migration</div>
+            <p style="font-size:14px;">A media company runs a CMS storing articles as <strong>MongoDB documents</strong>. Each article has flexible schema: some have videos, some have image galleries, some have polls. They migrate from self-managed MongoDB on EC2 to <strong>DocumentDB</strong>. Migration is easy: they use <strong>AWS DMS (Database Migration Service)</strong> to replicate data from MongoDB to DocumentDB with near-zero downtime. They change the connection string in their app from MongoDB endpoint to DocumentDB endpoint — <strong>code works unchanged</strong>. They get automatic backups, Multi-AZ, and read replicas without managing MongoDB sharding/replication.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Migrate MongoDB application to AWS" → <strong>DocumentDB</strong><br>
+            • "MongoDB-compatible managed database" → <strong>DocumentDB</strong><br>
+            • "Store JSON documents with flexible schema" → <strong>DocumentDB</strong> (or DynamoDB — depends on scale/access pattern)<br>
+            • DocumentDB architecture mirrors Aurora: 6-way replicated storage, up to 15 read replicas, automatic failover
+        </div>
+    </div>
+
+    <!-- AMAZON ELASTICACHE -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#C93434;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#C93434"/>
+                    <circle cx="40" cy="40" r="20" fill="none" stroke="white" stroke-width="3" opacity="0.9"/>
+                    <path d="M40 25 L40 40 L52 40" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="40" cy="40" r="3" fill="white"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon ElastiCache</div>
+                <div class="service-subtitle">In-Memory Cache · Redis & Memcached · Sub-Millisecond Latency</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Database</span>
+                <span class="tag tag-red">HIGH EXAM WEIGHT</span>
+                <span class="tag tag-green">Performance</span>
+            </div>
+        </div>
+
+        <p><strong>Amazon ElastiCache</strong> is AWS's managed in-memory caching service. It supports two engines: <strong>Redis</strong> and <strong>Memcached</strong>. Use it to cache frequently-accessed data (database query results, session data, API responses) in RAM for <strong>sub-millisecond latency</strong>. This dramatically reduces load on your database and speeds up your app.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value"><1ms</div>
+                <div class="metric-label">Latency</div>
+                <div class="metric-sub">In-memory reads/writes — 1000x faster than disk-based DBs</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Redis</div>
+                <div class="metric-label">Advanced Features</div>
+                <div class="metric-sub">Persistence, replication, transactions, pub/sub, sorted sets</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Memcached</div>
+                <div class="metric-label">Simple & Fast</div>
+                <div class="metric-sub">Pure cache, multi-threaded, no persistence — simpler than Redis</div>
+            </div>
+        </div>
+
+        <h3>Redis vs Memcached — The Decision Tree</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Feature</th><th>Redis</th><th>Memcached</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Data Persistence</strong></td><td>✅ Yes (AOF/RDB snapshots)</td><td>❌ No (pure in-memory)</td></tr>
+                    <tr><td><strong>Replication</strong></td><td>✅ Multi-AZ with automatic failover</td><td>❌ No replication</td></tr>
+                    <tr><td><strong>Data Structures</strong></td><td>✅ Strings, Lists, Sets, Sorted Sets, Hashes, Bitmaps, HyperLogLog</td><td>❌ Only key-value strings</td></tr>
+                    <tr><td><strong>Pub/Sub</strong></td><td>✅ Yes (real-time messaging)</td><td>❌ No</td></tr>
+                    <tr><td><strong>Transactions</strong></td><td>✅ Yes (MULTI/EXEC)</td><td>❌ No</td></tr>
+                    <tr><td><strong>Multi-Threaded</strong></td><td>❌ Single-threaded per core</td><td>✅ Yes (better for simple multi-CPU workloads)</td></tr>
+                    <tr><td><strong>Backup/Restore</strong></td><td>✅ Snapshots to S3</td><td>❌ No backup</td></tr>
+                    <tr><td><strong>Use Case</strong></td><td>Session store, leaderboards, pub/sub, complex caching</td><td>Simple cache, object caching (HTML fragments, API responses)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — Redis vs Memcached:</strong> The exam will give you subtle hints. <strong>"Need persistence/backup"</strong> → Redis. <strong>"High availability/Multi-AZ"</strong> → Redis. <strong>"Simple object cache, multi-threaded"</strong> → Memcached. <strong>"Leaderboard / sorted set"</strong> → Redis (Memcached can't do sorted sets). <strong>"Session store that survives cache restart"</strong> → Redis (persists to disk).
+        </warning-box>
+
+        <div class="usecase">
+            <div class="usecase-label">⚡ Real-World Use Case</div>
+            <div class="usecase-title">E-Commerce — Product Catalog Cache</div>
+            <p style="font-size:14px;">An e-commerce site has 1 million products in <strong>RDS MySQL</strong>. Product detail pages are hit millions of times per day. Without caching, every page view = 1 database query = slow performance + high RDS load. They add <strong>ElastiCache for Redis</strong>. First request: app checks Redis, misses, queries RDS, writes result to Redis with 5-minute TTL. Next 10,000 requests in 5 minutes: app gets data from Redis in <strong><1ms</strong> — zero RDS queries. During flash sale, traffic spikes 50x. RDS query load stays flat because <strong>90% of reads are served from Redis</strong>. They use <strong>Redis Cluster mode</strong> for horizontal scaling (sharding) across multiple nodes. Because it's Redis (not Memcached), cache data persists to disk — if a node reboots, data isn't lost.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Reduce database load with caching" → <strong>ElastiCache</strong><br>
+            • "Need sorted leaderboard / ranking" → <strong>ElastiCache for Redis</strong> (sorted sets)<br>
+            • "Session store with Multi-AZ failover" → <strong>ElastiCache for Redis</strong><br>
+            • "Simple cache, no persistence needed" → <strong>ElastiCache for Memcached</strong><br>
+            • Caching pattern: <strong>Lazy Loading</strong> (cache on miss) vs <strong>Write-Through</strong> (cache on write) — know the tradeoffs
+        </div>
+    </div>
+
+    <!-- AMAZON KEYSPACES -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#4A5568;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#4A5568"/>
+                    <rect x="20" y="25" width="15" height="15" rx="2" fill="white" opacity="0.9"/>
+                    <rect x="45" y="25" width="15" height="15" rx="2" fill="white" opacity="0.7"/>
+                    <rect x="20" y="45" width="15" height="15" rx="2" fill="white" opacity="0.7"/>
+                    <rect x="45" y="45" width="15" height="15" rx="2" fill="white" opacity="0.5"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Keyspaces (for Apache Cassandra)</div>
+                <div class="service-subtitle">Cassandra-Compatible · Serverless · Wide-Column NoSQL</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Database</span>
+                <span class="tag tag-blue">NoSQL</span>
+                <span class="tag tag-purple">Cassandra</span>
+            </div>
+        </div>
+
+        <p><strong>Amazon Keyspaces</strong> is AWS's managed Apache Cassandra-compatible database service. If you have apps built on Cassandra (wide-column NoSQL database), Keyspaces lets you run them on AWS without managing Cassandra clusters. It's <strong>serverless</strong>, auto-scales, and uses the Cassandra Query Language (CQL). Think of it as "Cassandra without the operational nightmare."</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">CQL</div>
+                <div class="metric-label">Cassandra Compatible</div>
+                <div class="metric-sub">Use existing Cassandra drivers, tools, and CQL queries — minimal code changes</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Serverless</div>
+                <div class="metric-label">No Cluster Management</div>
+                <div class="metric-sub">Auto-scales tables up/down — pay per read/write request</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>When to Use Keyspaces:</strong> You're migrating a Cassandra application to AWS. You need wide-column data model (partition key + clustering columns). You have time-series data at massive scale. You don't want to manage Cassandra ring topology, gossip protocol, compaction, repairs.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">📡 Real-World Use Case</div>
+            <div class="usecase-title">IoT Platform — Sensor Data at Scale</div>
+            <p style="font-size:14px;">An IoT company collects data from 10 million sensors (temperature, humidity, pressure) every 30 seconds. They need to store time-series data and query by sensor ID + time range. They use <strong>Amazon Keyspaces</strong> with partition key = SensorID, clustering column = Timestamp. This allows efficient queries like "get all readings for sensor ABC from last 7 days." Because Keyspaces is <strong>serverless</strong>, they don't provision capacity — it auto-scales as sensor count grows from 10M to 50M. They migrate from self-managed Cassandra on EC2, reusing their existing CQL queries with <strong>zero code changes</strong>.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Migrate Cassandra application to AWS" → <strong>Amazon Keyspaces</strong><br>
+            • "Wide-column NoSQL database" → <strong>Amazon Keyspaces</strong><br>
+            • "Time-series data at scale with CQL" → <strong>Amazon Keyspaces</strong><br>
+            • Keyspaces provides automatic Multi-AZ replication, encryption, backups — fully managed
+        </div>
+    </div>
+
+</section>
+
+<!-- ═══════════════════ BLOCK 2: SERVERLESS & COMPUTE ═══════════════════ -->
+<section>
+    <h2>⚡ Block 2 — Serverless & Compute</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 00:30 – 00:55</span>
+        <span class="cat-bar-desc">3 Services · Foundation of modern AWS architectures</span>
+    </div>
+
+    <!-- AWS LAMBDA -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#D86613;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#D86613"/>
+                    <path d="M25 60 L40 20 L45 20 L60 60 L55 60 L51 48 L34 48 L30 60 Z M36 43 L49 43 L42.5 26 Z" fill="white"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Lambda</div>
+                <div class="service-subtitle">Serverless Compute · Event-Driven · Pay-Per-Invocation</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Compute</span>
+                <span class="tag tag-red">CRITICAL EXAM SERVICE</span>
+                <span class="tag tag-blue">Serverless</span>
+            </div>
+        </div>
+
+        <p><strong>AWS Lambda</strong> is the cornerstone of serverless computing on AWS. You upload your code (function), Lambda runs it in response to events (API call, file upload, database change, schedule), and you pay <strong>only for compute time consumed</strong> (billed per millisecond). No servers to manage, automatic scaling, built-in high availability. Lambda is the #1 integration point in AWS — it connects everything.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">15 Min</div>
+                <div class="metric-label">Max Execution Time</div>
+                <div class="metric-sub">Functions timeout after 15 minutes (default 3 sec) — use Step Functions for longer workflows</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">10 GB</div>
+                <div class="metric-label">Max Memory</div>
+                <div class="metric-sub">128 MB to 10,240 MB — CPU scales proportionally with memory</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">1000x</div>
+                <div class="metric-label">Concurrent Scale</div>
+                <div class="metric-sub">Auto-scales to handle 1000 concurrent executions per account (can increase via quota)</div>
+            </div>
+        </div>
+
+        <h3>Lambda Invocation Models</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Model</th><th>How It Works</th><th>Exam Keyword</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Synchronous (Push)</strong></td><td>Caller waits for response — used by API Gateway, ALB, SDK calls</td><td>"real-time response", "API endpoint"</td></tr>
+                    <tr><td><strong>Asynchronous (Event)</strong></td><td>Lambda queues event and returns immediately — used by S3, SNS, EventBridge</td><td>"fire and forget", "S3 event"</td></tr>
+                    <tr><td><strong>Stream-Based (Poll)</strong></td><td>Lambda polls stream and invokes function with batch — used by Kinesis, DynamoDB Streams, SQS</td><td>"process stream", "DynamoDB trigger"</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 #1 Exam Trap — Lambda Limitations:</strong> Lambda is NOT for everything. <strong>Cannot run >15 minutes</strong> → use ECS/Fargate or Step Functions. <strong>Cannot use GPU</strong> → use EC2. <strong>Needs persistent filesystem</strong> → use ECS with EFS. <strong>Needs always-on WebSocket server</strong> → use EC2/Fargate. Know when NOT to use Lambda!
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🖼️ Real-World Use Case</div>
+            <div class="usecase-title">Image Processing Pipeline — Thumbnail Generation</div>
+            <p style="font-size:14px;">A photo-sharing app stores user uploads in <strong>S3</strong>. When a user uploads an image, S3 triggers a <strong>Lambda function</strong>. The function: (1) downloads the image from S3, (2) generates 3 thumbnail sizes using ImageMagick, (3) uploads thumbnails back to S3, (4) writes metadata to DynamoDB. This happens in <strong><2 seconds</strong> for most images. No servers to manage. If 1,000 users upload photos simultaneously, Lambda scales to 1,000 concurrent executions automatically. During low-traffic periods, cost is near $0 (no idle servers). They use <strong>Lambda Layers</strong> to share the ImageMagick library across functions.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Run code in response to S3 upload" → <strong>Lambda with S3 trigger</strong><br>
+            • "Process DynamoDB changes in real-time" → <strong>Lambda with DynamoDB Streams</strong><br>
+            • "Serverless API backend" → <strong>API Gateway + Lambda</strong><br>
+            • "Schedule function to run every hour" → <strong>EventBridge (CloudWatch Events) + Lambda</strong><br>
+            • Lambda execution role = IAM role that grants Lambda permissions to access AWS services (S3, DynamoDB, etc.)<br>
+            • Lambda@Edge = run Lambda at CloudFront edge locations — manipulate requests/responses globally
+        </div>
+    </div>
+
+    <!-- AWS FARGATE -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#D86613;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#D86613"/>
+                    <rect x="20" y="25" width="18" height="18" rx="2" fill="white" opacity="0.9"/>
+                    <rect x="42" y="25" width="18" height="18" rx="2" fill="white" opacity="0.7"/>
+                    <rect x="20" y="47" width="18" height="18" rx="2" fill="white" opacity="0.7"/>
+                    <rect x="42" y="47" width="18" height="18" rx="2" fill="white" opacity="0.5"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Fargate</div>
+                <div class="service-subtitle">Serverless Containers · ECS & EKS · No EC2 Management</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Compute</span>
+                <span class="tag tag-blue">Serverless</span>
+                <span class="tag tag-purple">Containers</span>
+            </div>
+        </div>
+
+        <p><strong>AWS Fargate</strong> is serverless compute for containers. It works with <strong>ECS (Elastic Container Service)</strong> and <strong>EKS (Elastic Kubernetes Service)</strong>. Instead of managing EC2 instances to run your containers, Fargate runs them for you. You define CPU/memory requirements, Fargate provisions the infrastructure, runs the container, and you pay only for the resources your container uses.</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">No Servers</div>
+                <div class="metric-label">Serverless Containers</div>
+                <div class="metric-sub">No EC2 to patch, scale, or monitor — AWS handles infrastructure</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">ECS + EKS</div>
+                <div class="metric-label">Orchestration</div>
+                <div class="metric-sub">Use with ECS for AWS-native orchestration or EKS for Kubernetes</div>
+            </div>
+        </div>
+
+        <h3>Fargate vs Lambda vs EC2</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Aspect</th><th>Lambda</th><th>Fargate</th><th>EC2</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Execution Model</strong></td><td>Function (event-driven)</td><td>Long-running container</td><td>Long-running server</td></tr>
+                    <tr><td><strong>Max Duration</strong></td><td>15 minutes</td><td>Unlimited</td><td>Unlimited</td></tr>
+                    <tr><td><strong>Startup Time</strong></td><td>Cold start: 100ms-10s</td><td>Warm start: <1s</td><td>Warm start: <1s</td></tr>
+                    <tr><td><strong>Infrastructure Mgmt</strong></td><td>None</td><td>None</td><td>Full (OS, patching, scaling)</td></tr>
+                    <tr><td><strong>Cost Model</strong></td><td>Per invocation + duration</td><td>Per vCPU + GB RAM per hour</td><td>Per instance-hour</td></tr>
+                    <tr><td><strong>Use Case</strong></td><td>Short tasks, event processing, APIs</td><td>Microservices, batch jobs, long processes</td><td>Custom requirements, GPU, full OS control</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-box">
+            <strong>When to Choose Fargate:</strong> Your app is containerized. It runs longer than 15 minutes (so Lambda won't work). You don't want to manage EC2 instances. You need persistent connections (WebSockets, gRPC). You want to use existing Docker images. You need more than 10 GB RAM (Lambda limit).
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🔄 Real-World Use Case</div>
+            <div class="usecase-title">Batch Processing — Video Transcoding</div>
+            <p style="font-size:14px;">A video platform receives uploaded videos in S3. Each video needs to be transcoded to 3 formats (1080p, 720p, 480p). The transcoding process takes 5-30 minutes per video (too long for Lambda's 15-min limit). They use <strong>Fargate with ECS</strong>. When S3 receives a video, it sends a message to SQS. An ECS Service running on Fargate polls SQS, picks up the message, spins up a container with FFmpeg, transcodes the video, uploads outputs to S3. Each container runs for 10-30 minutes, then terminates. They use <strong>Fargate Spot</strong> (70% cheaper) for non-urgent jobs. During peak upload hours, ECS auto-scales Fargate tasks from 5 to 50 to handle the queue. No EC2 instances to manage.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Run containers without managing servers" → <strong>Fargate</strong><br>
+            • "Long-running containerized microservices" → <strong>Fargate with ECS</strong><br>
+            • "Use Kubernetes on AWS without managing nodes" → <strong>Fargate with EKS</strong><br>
+            • "Batch job that runs for 2 hours" → <strong>Fargate</strong> (Lambda maxes at 15 min)<br>
+            • Fargate pricing = vCPU/hour + GB RAM/hour (more expensive than EC2 for always-on workloads, cheaper for sporadic)
+        </div>
+    </div>
+
+    <!-- AWS AUTO SCALING -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#3B6B99;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#3B6B99"/>
+                    <path d="M25 50 L35 50 L35 40 L45 40 L45 30 L55 30" fill="none" stroke="white" stroke-width="3"/>
+                    <circle cx="25" cy="50" r="3" fill="white"/>
+                    <circle cx="45" cy="40" r="3" fill="white"/>
+                    <circle cx="55" cy="30" r="3" fill="#FF9900"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Auto Scaling</div>
+                <div class="service-subtitle">Dynamic Capacity Scaling · EC2 · ECS · DynamoDB · Aurora</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-orange">Compute</span>
+                <span class="tag tag-green">Cost Optimization</span>
+                <span class="tag tag-red">HIGH EXAM WEIGHT</span>
+            </div>
+        </div>
+
+        <p><strong>AWS Auto Scaling</strong> automatically adjusts capacity for your resources based on demand. The most common use is <strong>EC2 Auto Scaling</strong> (add/remove instances), but Auto Scaling also works for ECS tasks, DynamoDB tables, Aurora replicas, and more. The goal: maintain performance during peaks, save money during low traffic.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">EC2 ASG</div>
+                <div class="metric-label">Auto Scaling Group</div>
+                <div class="metric-sub">Core service — launches/terminates EC2 instances based on policies</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Target Tracking</div>
+                <div class="metric-label">Easiest Policy</div>
+                <div class="metric-sub">"Keep CPU at 70%" — Auto Scaling adjusts to maintain target</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Predictive</div>
+                <div class="metric-label">ML-Based Scaling</div>
+                <div class="metric-sub">Uses ML to forecast load and scale proactively</div>
+            </div>
+        </div>
+
+        <h3>Auto Scaling Policies</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Policy Type</th><th>How It Works</th><th>Use When</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Target Tracking</strong></td><td>Set target value (e.g., CPU 70%) — Auto Scaling adds/removes to maintain</td><td>Most common — simple and effective</td></tr>
+                    <tr><td><strong>Step Scaling</strong></td><td>Define scaling steps based on CloudWatch alarm thresholds</td><td>Need granular control (e.g., +2 instances if CPU >80%, +5 if >90%)</td></tr>
+                    <tr><td><strong>Simple Scaling</strong></td><td>Single scaling action per alarm (legacy — use Step instead)</td><td>Rarely used — superseded by Step Scaling</td></tr>
+                    <tr><td><strong>Scheduled Scaling</strong></td><td>Scale at specific times (e.g., 9am every Monday)</td><td>Predictable traffic patterns</td></tr>
+                    <tr><td><strong>Predictive Scaling</strong></td><td>ML analyzes historical patterns and scales proactively</td><td>Complex patterns, want to pre-warm capacity</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — Scale-Out vs Scale-Up:</strong> <strong>Scale-Out (horizontal)</strong> = add more instances (Auto Scaling). <strong>Scale-Up (vertical)</strong> = upgrade instance type (requires stop → change type → start — causes downtime). Auto Scaling is ONLY scale-out. If question asks "scale without downtime" → <strong>Auto Scaling (scale-out)</strong>, not "change instance type (scale-up)."
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">📈 Real-World Use Case</div>
+            <div class="usecase-title">News Website — Traffic Surges During Breaking News</div>
+            <p style="font-size:14px;">A news site runs on EC2 behind an ALB. Typical traffic: 1,000 req/sec (handled by 5 m5.large instances). During breaking news (e.g., election results), traffic spikes to 50,000 req/sec. They configure <strong>EC2 Auto Scaling</strong> with <strong>Target Tracking policy: CPU 70%</strong>. When traffic surges, CPU hits 90% → Auto Scaling launches 45 more instances over 10 minutes → CPU drops back to 70%. When the news cycle calms down (3 hours later), CPU drops to 40% → Auto Scaling terminates excess instances down to 8. They use <strong>Scheduled Scaling</strong> to pre-warm 10 instances at 6am (before morning rush). This saved 65% on compute cost vs. running 50 instances 24/7.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Automatically adjust EC2 capacity based on demand" → <strong>Auto Scaling Group (ASG)</strong><br>
+            • "Maintain CPU at 70%" → <strong>Target Tracking Scaling Policy</strong><br>
+            • "Scale at 8am every weekday" → <strong>Scheduled Scaling</strong><br>
+            • "Proactively scale before predicted traffic spike" → <strong>Predictive Scaling</strong><br>
+            • Auto Scaling works with <strong>Launch Templates</strong> (modern) or Launch Configurations (legacy)<br>
+            • Health checks: EC2 status check or ELB health check — ASG replaces unhealthy instances automatically<br>
+            • Cooldown period = time to wait after scaling action before next one (prevents thrashing)
+        </div>
+    </div>
+
+</section>
+
+<!-- ═══════════════════ BLOCK 3: MONITORING & OBSERVABILITY ═══════════════════ -->
+<section>
+    <h2>📊 Block 3 — Monitoring & Observability</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 00:55 – 01:20</span>
+        <span class="cat-bar-desc">5 Services · Visibility into your AWS environment</span>
+    </div>
+
+    <!-- AWS X-RAY -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#945EB0;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#945EB0"/>
+                    <circle cx="30" cy="30" r="8" fill="white" opacity="0.9"/>
+                    <circle cx="50" cy="50" r="8" fill="white" opacity="0.7"/>
+                    <line x1="35" y1="35" x2="45" y2="45" stroke="white" stroke-width="3"/>
+                    <line x1="30" y1="40" x2="40" y2="56" stroke="white" stroke-width="2" opacity="0.6"/>
+                    <line x1="40" y1="25" x2="56" y2="40" stroke="white" stroke-width="2" opacity="0.6"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS X-Ray</div>
+                <div class="service-subtitle">Distributed Tracing · Performance Analysis · Debug Microservices</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-purple">Monitoring</span>
+                <span class="tag tag-blue">DevOps</span>
+            </div>
+        </div>
+
+        <p><strong>AWS X-Ray</strong> helps you <strong>trace requests as they flow through your distributed application</strong>. When a user hits your API, the request might touch API Gateway → Lambda → DynamoDB → Lambda → S3. X-Ray shows you the entire journey: which service took how long, where errors occurred, where latency spikes happened. It creates a <strong>service map</strong> (visual graph of your architecture) and <strong>trace timelines</strong> (waterfall of each request).</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">Service Map</div>
+                <div class="metric-label">Visual Architecture</div>
+                <div class="metric-sub">Auto-generated graph of how your services call each other</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Trace Analysis</div>
+                <div class="metric-label">Request Tracking</div>
+                <div class="metric-sub">See every hop a request makes — pinpoint slow/failing components</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>How X-Ray Works:</strong> You instrument your code (add X-Ray SDK to Lambda, EC2 app, ECS task). When a request comes in, X-Ray assigns it a <strong>trace ID</strong>. As the request flows through services, each service reports segments (sub-parts of the trace) to X-Ray. X-Ray assembles these segments into a complete trace and displays timing, status, metadata.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🐛 Real-World Use Case</div>
+            <div class="usecase-title">Debugging Slow API — Finding the Bottleneck</div>
+            <p style="font-size:14px;">A company's checkout API suddenly slows from 200ms to 3 seconds. The flow: API Gateway → Lambda (validate cart) → DynamoDB (fetch prices) → Lambda (calculate total) → RDS (save order). Using <strong>X-Ray</strong>, they see the service map and traces. Discovery: <strong>DynamoDB query is taking 2.8 seconds</strong> (normally 20ms). They drill into X-Ray annotations — the query is doing a table scan (missing index). They add a GSI to DynamoDB → query drops to 15ms → API is fast again. Without X-Ray, they would've wasted days guessing which component was slow.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Debug performance in microservices architecture" → <strong>X-Ray</strong><br>
+            • "Visualize request flow across Lambda, API Gateway, DynamoDB" → <strong>X-Ray Service Map</strong><br>
+            • "Find which service in a chain is causing latency" → <strong>X-Ray Trace Analysis</strong><br>
+            • X-Ray integrates with Lambda, ECS, Elastic Beanstalk, API Gateway, EC2 (requires X-Ray daemon)
+        </div>
+    </div>
+
+    <!-- AWS CONFIG -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#4D6B8A;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#4D6B8A"/>
+                    <circle cx="40" cy="40" r="18" fill="none" stroke="white" stroke-width="2" opacity="0.9"/>
+                    <circle cx="40" cy="40" r="4" fill="white"/>
+                    <line x1="40" y1="28" x2="40" y2="35" stroke="white" stroke-width="2"/>
+                    <line x1="52" y1="40" x2="45" y2="40" stroke="white" stroke-width="2"/>
+                    <line x1="40" y1="52" x2="40" y2="45" stroke="white" stroke="width="2"/>
+                    <line x1="28" y1="40" x2="35" y2="40" stroke="white" stroke-width="2"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Config</div>
+                <div class="service-subtitle">Resource Inventory · Configuration History · Compliance Auditing</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-purple">Monitoring</span>
+                <span class="tag tag-orange">Compliance</span>
+                <span class="tag tag-red">HIGH EXAM WEIGHT</span>
+            </div>
+        </div>
+
+        <p><strong>AWS Config</strong> continuously records the configuration of your AWS resources and evaluates them against desired settings (Config Rules). It answers questions like: "Who changed the security group on this EC2 instance?" "Is every S3 bucket encrypted?" "Show me all resources that are non-compliant with our security policy." It's the <strong>audit trail for configuration changes</strong>.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">Config Rules</div>
+                <div class="metric-label">Compliance Checks</div>
+                <div class="metric-sub">Managed rules (AWS-provided) or custom (Lambda) — evaluate resources for compliance</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Configuration History</div>
+                <div class="metric-label">Change Tracking</div>
+                <div class="metric-sub">See what changed, when, and who changed it — audit trail for resources</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Conformance Packs</div>
+                <div class="metric-label">Pre-Built Compliance</div>
+                <div class="metric-sub">Bundle of Config Rules for frameworks (PCI-DSS, HIPAA, CIS Benchmarks)</div>
+            </div>
+        </div>
+
+        <h3>Config Rules Examples</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Rule</th><th>What It Checks</th><th>Exam Keyword</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>s3-bucket-public-read-prohibited</strong></td><td>S3 buckets are not publicly readable</td><td>"prevent public S3 buckets"</td></tr>
+                    <tr><td><strong>encrypted-volumes</strong></td><td>EBS volumes are encrypted</td><td>"ensure all volumes encrypted"</td></tr>
+                    <tr><td><strong>rds-multi-az-support</strong></td><td>RDS instances have Multi-AZ enabled</td><td>"enforce Multi-AZ for databases"</td></tr>
+                    <tr><td><strong>iam-password-policy</strong></td><td>IAM password policy meets requirements</td><td>"audit password complexity"</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — Config vs CloudTrail:</strong> Students confuse these. <strong>CloudTrail = WHO did WHAT</strong> (API calls, "john.doe deleted S3 bucket at 2pm"). <strong>Config = WHAT is the current/past STATE</strong> (resource configuration, "this EC2 instance changed from t2.micro to t2.large on Tuesday"). Use both together for full visibility.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🔒 Real-World Use Case</div>
+            <div class="usecase-title">Security Audit — Ensure No Public S3 Buckets</div>
+            <p style="font-size:14px;">A healthcare company must comply with HIPAA — no patient data can be in public S3 buckets. They enable <strong>AWS Config</strong> with the <strong>s3-bucket-public-read-prohibited</strong> rule across all accounts. Every hour, Config evaluates all S3 buckets. If a developer accidentally makes a bucket public, Config marks it <strong>NON_COMPLIANT</strong> and sends an SNS alert to the security team. They use <strong>Config Remediation</strong> to automatically trigger a Lambda function that revokes public access within 1 minute. During an audit, they pull Config's <strong>compliance report</strong> showing "100% of S3 buckets have been compliant for the past 90 days."</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Track configuration changes over time" → <strong>AWS Config</strong><br>
+            • "Ensure all resources comply with security policy" → <strong>Config Rules</strong><br>
+            • "Automatically remediate non-compliant resources" → <strong>Config Remediation (SSM Automation or Lambda)</strong><br>
+            • "Who changed this security group?" → <strong>CloudTrail (API logs)</strong> or <strong>Config (configuration history)</strong> — both work!<br>
+            • Config stores data in S3 bucket — you own the data and can query it with Athena
+        </div>
+    </div>
+
+    <!-- AWS MANAGED PROMETHEUS -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#E6522C;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#E6522C"/>
+                    <circle cx="40" cy="35" r="12" fill="white" opacity="0.9"/>
+                    <rect x="30" y="45" width="20" height="20" rx="2" fill="white" opacity="0.7"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Managed Service for Prometheus</div>
+                <div class="service-subtitle">Prometheus-Compatible Metrics · Kubernetes Monitoring · Serverless</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-purple">Monitoring</span>
+                <span class="tag tag-blue">Kubernetes</span>
+            </div>
+        </div>
+
+        <p><strong>Amazon Managed Service for Prometheus (AMP)</strong> is a Prometheus-compatible monitoring service. Prometheus is an open-source metrics system widely used for container/Kubernetes monitoring. AMP gives you <strong>serverless Prometheus</strong> — no servers to run, automatic scaling, high availability, integrated with AWS services. You send metrics using Prometheus remote write, query using PromQL.</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">Prometheus API</div>
+                <div class="metric-label">Compatibility</div>
+                <div class="metric-sub">Works with existing Prometheus exporters, collectors, and PromQL queries</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Serverless</div>
+                <div class="metric-label">No Infrastructure</div>
+                <div class="metric-sub">Auto-scales, HA built-in — just send metrics and query</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>When to Use AMP:</strong> You're running containers on EKS or ECS. You already use Prometheus and want to offload operational burden. You need to collect metrics from Kubernetes pods, nodes, and services. You want to centralize Prometheus metrics from multiple clusters.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">☸️ Real-World Use Case</div>
+            <div class="usecase-title">EKS Cluster Monitoring — Centralized Metrics</div>
+            <p style="font-size:14px;">A company runs 10 EKS clusters (dev, staging, prod across multiple regions). Each cluster has microservices exposing Prometheus metrics. They use <strong>AMP</strong> as the central metrics store. Each cluster's Prometheus server sends metrics to AMP via remote write. They use <strong>Amazon Managed Grafana</strong> (next section) to visualize metrics from all clusters in one dashboard. When a pod crashes, they query AMP with PromQL to see CPU/memory trends before the crash. They don't manage Prometheus servers — AMP handles storage, HA, scaling.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Monitor Kubernetes clusters with Prometheus" → <strong>AMP</strong><br>
+            • "Centralize Prometheus metrics from multiple EKS clusters" → <strong>AMP</strong><br>
+            • "Serverless Prometheus" → <strong>AWS Managed Service for Prometheus</strong><br>
+            • AMP is often paired with <strong>Amazon Managed Grafana</strong> for visualization
+        </div>
+    </div>
+
+    <!-- AMAZON MANAGED GRAFANA -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#F46800;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#F46800"/>
+                    <rect x="20" y="25" width="40" height="30" rx="2" fill="white" opacity="0.9"/>
+                    <line x1="25" y1="45" x2="35" y2="35" stroke="#F46800" stroke-width="2"/>
+                    <line x1="35" y1="35" x2="45" y2="40" stroke="#F46800" stroke-width="2"/>
+                    <line x1="45" y1="40" x2="55" y2="30" stroke="#F46800" stroke-width="2"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Managed Grafana</div>
+                <div class="service-subtitle">Grafana Dashboards · Metrics Visualization · Multi-Source Querying</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-purple">Monitoring</span>
+                <span class="tag tag-blue">Visualization</span>
+            </div>
+        </div>
+
+        <p><strong>Amazon Managed Grafana (AMG)</strong> is a fully managed Grafana service. Grafana is the #1 open-source visualization platform for metrics dashboards. AMG lets you create dashboards that query data from <strong>Prometheus, CloudWatch, X-Ray, Athena, Redshift, and more</strong>. You get Grafana without managing servers, upgrades, or HA.</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">Multi-Source</div>
+                <div class="metric-label">Data Sources</div>
+                <div class="metric-sub">Query Prometheus, CloudWatch, X-Ray, Timestream, IoT, Athena in one dashboard</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Grafana 9+</div>
+                <div class="metric-label">Compatibility</div>
+                <div class="metric-sub">Use existing Grafana dashboards, plugins, and community templates</div>
+            </div>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">📊 Real-World Use Case</div>
+            <div class="usecase-title">Unified Observability Dashboard — All Metrics in One Place</div>
+            <p style="font-size:14px;">A DevOps team monitors infrastructure across AWS. They use <strong>CloudWatch</strong> for EC2 metrics, <strong>AMP</strong> for EKS metrics, <strong>X-Ray</strong> for traces, and <strong>Athena</strong> for log analysis. Instead of switching between 4 consoles, they build a <strong>Managed Grafana</strong> dashboard. One screen shows: EC2 CPU (CloudWatch), Kubernetes pod health (Prometheus/AMP), API latency trends (X-Ray), and top error messages (Athena query). When an incident occurs, they see the full picture instantly. They use Grafana's alerting to send Slack notifications when CPU >90%.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Visualize metrics from multiple data sources (Prometheus + CloudWatch)" → <strong>Amazon Managed Grafana</strong><br>
+            • "Create dashboards without managing Grafana servers" → <strong>AMG</strong><br>
+            • AMG is often used with <strong>AMP</strong> for Kubernetes monitoring (AMP = metrics storage, AMG = visualization)
+        </div>
+    </div>
+
+    <!-- AWS HEALTH DASHBOARD -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#3B8686;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#3B8686"/>
+                    <path d="M40 30 C35 30 32 33 32 37 C32 40 34 42 37 44 L40 50 L43 44 C46 42 48 40 48 37 C48 33 45 30 40 30 Z" fill="white" opacity="0.9"/>
+                    <circle cx="40" cy="60" r="4" fill="#FF9900"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Health Dashboard</div>
+                <div class="service-subtitle">Service Health Notifications · Personalized Alerts · Event Tracking</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-purple">Monitoring</span>
+                <span class="tag tag-orange">Operations</span>
+            </div>
+        </div>
+
+        <p><strong>AWS Health Dashboard</strong> (formerly Personal Health Dashboard) provides <strong>personalized information about AWS events that affect your resources</strong>. It shows two types of events: (1) <strong>Service Health</strong> — AWS-wide service issues (e.g., "EC2 in us-east-1 is experiencing increased API errors"), and (2) <strong>Account-Specific Events</strong> — issues affecting YOUR resources (e.g., "Your EC2 instance i-abc123 is scheduled for maintenance on June 15").</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">Proactive Alerts</div>
+                <div class="metric-label">Scheduled Events</div>
+                <div class="metric-sub">Get notified days in advance about planned maintenance affecting your resources</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Event History</div>
+                <div class="metric-label">90-Day Timeline</div>
+                <div class="metric-sub">See past events, outages, and maintenance windows</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>Health Dashboard vs Service Health vs CloudWatch:</strong><br>
+            <strong>Service Health Dashboard (global)</strong> = Public AWS status page (status.aws.amazon.com) — anyone can see it.<br>
+            <strong>AWS Health Dashboard (personal)</strong> = Your account's view — shows only events affecting YOUR resources + historical events.<br>
+            <strong>CloudWatch</strong> = Metrics, logs, alarms for your resources — not for AWS service health.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🔔 Real-World Use Case</div>
+            <div class="usecase-title">Proactive Incident Response — EC2 Maintenance Window</div>
+            <p style="font-size:14px;">A company gets an <strong>AWS Health event</strong>: "Your EC2 instance i-xyz789 is scheduled for maintenance on June 15, 1:00-3:00 AM UTC. The instance will be stopped and restarted." They use <strong>EventBridge</strong> (CloudWatch Events) to automatically trigger a Lambda function when Health events arrive. The Lambda posts to Slack: "⚠️ EC2 maintenance in 7 days — instance i-xyz789." The ops team schedules a controlled failover to the standby instance before the maintenance window, avoiding unexpected downtime. They also use Health API to query all upcoming events across 50 accounts programmatically.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Get notified about AWS service issues affecting your resources" → <strong>AWS Health Dashboard</strong><br>
+            • "Automate response to scheduled EC2 maintenance" → <strong>EventBridge rule triggered by Health event</strong><br>
+            • "See historical AWS events for compliance reporting" → <strong>Health Dashboard event history</strong><br>
+            • Health events can trigger EventBridge → Lambda, SNS, SQS for automation
+        </div>
+    </div>
+
+</section>
+
+<!-- ═══════════════════ BLOCK 4: OPTIMIZATION & MANAGEMENT ═══════════════════ -->
+<section>
+    <h2>🔧 Block 4 — Optimization & Management</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 01:20 – 01:45</span>
+        <span class="cat-bar-desc">4 Services · Cost & performance optimization tools</span>
+    </div>
+
+    <!-- AWS WELL-ARCHITECTED TOOL -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2C5F7C;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#2C5F7C"/>
+                    <path d="M40 20 L60 35 L60 60 L20 60 L20 35 Z" fill="none" stroke="white" stroke-width="3" opacity="0.9"/>
+                    <rect x="35" y="45" width="10" height="15" fill="white" opacity="0.7"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Well-Architected Tool</div>
+                <div class="service-subtitle">Architecture Review · Best Practices · Risk Assessment</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-blue">Optimization</span>
+                <span class="tag tag-purple">Governance</span>
+            </div>
+        </div>
+
+        <p>The <strong>AWS Well-Architected Tool</strong> helps you review your workloads against AWS best practices. It asks you questions across <strong>6 pillars</strong> (Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability) and generates a report with <strong>high-risk/medium-risk issues</strong> and <strong>improvement recommendations</strong>. Think of it as a self-assessment checklist to find architectural gaps.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">6 Pillars</div>
+                <div class="metric-label">Framework</div>
+                <div class="metric-sub">OpEx, Security, Reliability, Performance, Cost, Sustainability</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Milestones</div>
+                <div class="metric-label">Track Progress</div>
+                <div class="metric-sub">Save snapshots of your review over time to measure improvements</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Free</div>
+                <div class="metric-label">No Cost</div>
+                <div class="metric-sub">Well-Architected Tool is free to use</div>
+            </div>
+        </div>
+
+        <h3>Well-Architected Framework — 6 Pillars</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Pillar</th><th>Focus Area</th><th>Example Question</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Operational Excellence</strong></td><td>Operations as code, small frequent changes, anticipate failure</td><td>"Do you use IaC to manage resources?"</td></tr>
+                    <tr><td><strong>Security</strong></td><td>Identity, detective controls, data protection, incident response</td><td>"Is data encrypted at rest and in transit?"</td></tr>
+                    <tr><td><strong>Reliability</strong></td><td>Recover from failures, scale, test recovery procedures</td><td>"Do you use Multi-AZ for critical databases?"</td></tr>
+                    <tr><td><strong>Performance Efficiency</strong></td><td>Use right resource types, monitor, adapt to changing needs</td><td>"Do you use the optimal instance types?"</td></tr>
+                    <tr><td><strong>Cost Optimization</strong></td><td>Avoid unnecessary costs, match supply with demand</td><td>"Do you use Savings Plans or Reserved Instances?"</td></tr>
+                    <tr><td><strong>Sustainability</strong></td><td>Minimize environmental impact, maximize resource efficiency</td><td>"Are you using energy-efficient instance types?"</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏗️ Real-World Use Case</div>
+            <div class="usecase-title">Startup Pre-Launch Review — Find Gaps Before Go-Live</div>
+            <p style="font-size:14px;">A startup is 2 weeks from launching their SaaS product. They run a <strong>Well-Architected Review</strong> using the tool. Results: <strong>3 high-risk issues</strong> — (1) No Multi-AZ for RDS (reliability risk), (2) No encryption on S3 buckets (security risk), (3) Using on-demand EC2 instead of Savings Plans (cost waste). They fix all 3 before launch. Post-launch, they save a <strong>milestone</strong> and re-review quarterly. Six months later, they see improvements: from 15 medium-risk issues to 3. The tool helps them prepare for enterprise customer audits by showing they follow AWS best practices.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Review architecture against AWS best practices" → <strong>Well-Architected Tool</strong><br>
+            • "Assess workload across 6 pillars" → <strong>Well-Architected Framework</strong><br>
+            • Well-Architected is a <strong>questionnaire/checklist tool</strong> — it doesn't automatically scan your account (that's Trusted Advisor)<br>
+            • You can also engage <strong>AWS Well-Architected Partners</strong> or AWS Solutions Architects for formal reviews
+        </div>
+    </div>
+
+    <!-- AWS COMPUTE OPTIMIZER -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#3A7A5F;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#3A7A5F"/>
+                    <circle cx="40" cy="40" r="18" fill="none" stroke="white" stroke-width="3" opacity="0.9"/>
+                    <path d="M40 28 L40 40 L48 40" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="55" cy="30" r="3" fill="#FF9900"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Compute Optimizer</div>
+                <div class="service-subtitle">ML-Powered Recommendations · Right-Sizing · Cost Savings</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-green">Cost Optimization</span>
+                <span class="tag tag-blue">ML-Powered</span>
+            </div>
+        </div>
+
+        <p><strong>AWS Compute Optimizer</strong> uses <strong>machine learning</strong> to analyze your resource usage (EC2, Auto Scaling Groups, EBS volumes, Lambda) and recommends optimal configurations to <strong>reduce cost and improve performance</strong>. It looks at CloudWatch metrics (CPU, memory, network) and suggests: "downsize this instance from m5.large to m5.medium and save 30%," or "upgrade to m5.xlarge for better performance."</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">14 Days</div>
+                <div class="metric-label">Analysis Period</div>
+                <div class="metric-sub">Analyzes last 14 days of metrics — can extend to 3 months with enhanced infrastructure metrics</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">ML Models</div>
+                <div class="metric-label">Smart Recommendations</div>
+                <div class="metric-sub">Learns from billions of AWS usage patterns to suggest optimal configs</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Free</div>
+                <div class="metric-label">No Cost</div>
+                <div class="metric-sub">Compute Optimizer is free (but enhanced metrics cost extra)</div>
+            </div>
+        </div>
+
+        <h3>Compute Optimizer Coverage</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Resource Type</th><th>What It Optimizes</th><th>Recommendation Type</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>EC2 Instances</strong></td><td>Instance type, size (e.g., m5.large → m5.medium)</td><td>Over-provisioned, under-provisioned, or optimized</td></tr>
+                    <tr><td><strong>Auto Scaling Groups</strong></td><td>Instance type within ASG</td><td>Suggests instance type changes for ASG launch template</td></tr>
+                    <tr><td><strong>EBS Volumes</strong></td><td>Volume type (gp2 → gp3), size, IOPS/throughput</td><td>Cost savings by switching to gp3 or downsizing</td></tr>
+                    <tr><td><strong>Lambda Functions</strong></td><td>Memory allocation (128MB → 512MB or vice versa)</td><td>Right-size memory to balance cost & performance</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — Compute Optimizer vs Trusted Advisor:</strong> Both give recommendations. <strong>Trusted Advisor</strong> = broad checks across all services (security, cost, performance, fault tolerance) — high-level. <strong>Compute Optimizer</strong> = deep ML-based analysis of compute/storage utilization — more granular. If question says "ML-based right-sizing" or "analyze CloudWatch metrics for instance recommendations" → <strong>Compute Optimizer</strong>.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">💰 Real-World Use Case</div>
+            <div class="usecase-title">Cost Optimization — Downsize Idle Development Instances</div>
+            <p style="font-size:14px;">A company has 200 EC2 instances across dev, test, prod. They enable <strong>Compute Optimizer</strong>. It analyzes 14 days of CloudWatch metrics and finds: <strong>60 instances are over-provisioned</strong> (using <20% CPU/memory). Recommendations: downsize 40 instances from m5.xlarge to m5.large (save $500/month each), downsize 20 from m5.large to m5.medium (save $250/month each). Total savings: <strong>$25,000/month</strong>. They also see 5 production instances that are <strong>under-provisioned</strong> (CPU >90% frequently) — Compute Optimizer suggests upsizing to avoid performance bottlenecks. They implement recommendations in dev/test first, monitor, then roll out to prod.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Use ML to recommend optimal EC2
+instance types" → <strong>Compute Optimizer</strong><br>
+            • "Analyze CloudWatch metrics for right-sizing" → <strong>Compute Optimizer</strong><br>
+            • "Downsize over-provisioned instances" → <strong>Compute Optimizer recommendations</strong><br>
+            • Compute Optimizer is FREE — no cost to use (enhanced metrics cost extra)
+        </div>
+    </div>
+
+    <!-- AWS LICENSE MANAGER -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#5A4A7C;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#5A4A7C"/>
+                    <rect x="25" y="25" width="30" height="35" rx="2" fill="white" opacity="0.9"/>
+                    <rect x="30" y="30" width="20" height="3" fill="#5A4A7C"/>
+                    <rect x="30" y="37" width="20" height="3" fill="#5A4A7C"/>
+                    <rect x="30" y="44" width="15" height="3" fill="#5A4A7C"/>
+                    <circle cx="60" cy="60" r="6" fill="#FF9900"/>
+                    <path d="M57 60 L59 62 L63 58" stroke="white" stroke-width="2" fill="none"/>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS License Manager</div>
+                <div class="service-subtitle">Software License Tracking · Compliance · Cost Control</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-blue">Optimization</span>
+                <span class="tag tag-orange">Compliance</span>
+            </div>
+        </div>
+
+        <p><strong>AWS License Manager</strong> helps you manage software licenses from vendors like Microsoft, Oracle, SAP, and IBM. It tracks license usage across EC2, on-premises servers, and prevents over-deployment (which violates license agreements and costs money). You define <strong>license rules</strong> (e.g., "max 50 SQL Server licenses"), and License Manager enforces them — blocking new instances if you'd exceed the limit.</p>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">License Rules</div>
+                <div class="metric-label">Enforcement</div>
+                <div class="metric-sub">Set limits on license usage — prevent over-deployment and compliance violations</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Hybrid Tracking</div>
+                <div class="metric-label">AWS + On-Premises</div>
+                <div class="metric-sub">Track licenses across cloud and data center from one console</div>
+            </div>
+        </div>
+
+        <h3>Common License Types Managed</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Software</th><th>License Model</th><th>Why Track It</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Microsoft SQL Server</strong></td><td>Per-core or per-user</td><td>Expensive — over-deployment = audit risk + cost</td></tr>
+                    <tr><td><strong>Oracle Database</strong></td><td>Per-processor or named user</td><td>Oracle audits are aggressive — must prove compliance</td></tr>
+                    <tr><td><strong>Windows Server</strong></td><td>Per-instance or per-core</td><td>License included in EC2 or BYOL (bring your own)</td></tr>
+                    <tr><td><strong>SAP</strong></td><td>Per-user or per-core</td><td>Complex licensing — easy to violate accidentally</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-box">
+            <strong>BYOL (Bring Your Own License) vs License Included:</strong><br>
+            <strong>License Included:</strong> AWS provides the license (e.g., RDS SQL Server) — simpler, but more expensive per hour.<br>
+            <strong>BYOL:</strong> You use your existing licenses on AWS (e.g., EC2 with Dedicated Hosts) — cheaper if you already own licenses, but you must track usage to stay compliant.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">📋 Real-World Use Case</div>
+            <div class="usecase-title">Oracle License Compliance — Avoid $500K Audit Penalty</div>
+            <p style="font-size:14px;">A company migrates 100 Oracle Database servers to AWS using <strong>BYOL on EC2 Dedicated Hosts</strong>. They have 200 Oracle processor licenses. Without tracking, developers spin up 250 Oracle instances over 6 months — <strong>50 over the limit</strong>. Oracle audits them → $500K penalty. After the audit, they implement <strong>AWS License Manager</strong>. They create a license rule: "Max 200 Oracle processor licenses." When a developer tries to launch the 201st instance, License Manager <strong>blocks it</strong> and sends an alert. They also use License Manager to track license usage across AWS + on-premises data center in one dashboard. Result: 100% compliance, no more audit risk.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Track and enforce software license limits" → <strong>AWS License Manager</strong><br>
+            • "Prevent over-deployment of Oracle/SQL Server licenses" → <strong>License Manager rules</strong><br>
+            • "Manage licenses across AWS and on-premises" → <strong>License Manager hybrid tracking</strong><br>
+            • License Manager works with <strong>EC2 Dedicated Hosts</strong> for BYOL scenarios<br>
+            • Integrates with <strong>AWS Systems Manager</strong> to discover software on instances
+        </div>
+    </div>
+
+    <!-- AWS CLI -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#232F3E;">
+                <svg viewBox="0 0 80 80" width="42" height="42" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="80" height="80" rx="12" fill="#232F3E"/>
+                    <text x="15" y="35" fill="white" font-family="monospace" font-size="14" opacity="0.9">$ aws</text>
+                    <text x="15" y="50" fill="#FF9900" font-family="monospace" font-size="14" opacity="0.9">ec2</text>
+                    <text x="15" y="65" fill="white" font-family="monospace" font-size="12" opacity="0.7">describe</text>
+                </svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Command Line Interface (CLI)</div>
+                <div class="service-subtitle">Terminal-Based AWS Management · Automation · Scripting</div>
+            </div>
+            <div style="margin-left:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:flex-start;">
+                <span class="tag tag-blue">Developer Tools</span>
+                <span class="tag tag-red">HIGH EXAM WEIGHT</span>
+            </div>
+        </div>
+
+        <p>The <strong>AWS CLI (Command Line Interface)</strong> is a unified tool to manage AWS services from your terminal. Instead of clicking through the Console, you run commands like <code>aws ec2 describe-instances</code> or <code>aws s3 cp file.txt s3://bucket/</code>. It's essential for <strong>automation, scripting, CI/CD pipelines</strong>, and managing AWS at scale. The CLI uses the same APIs as the Console and SDKs.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">300+ Services</div>
+                <div class="metric-label">Full Coverage</div>
+                <div class="metric-sub">Control every AWS service from the command line</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Cross-Platform</div>
+                <div class="metric-label">Works Everywhere</div>
+                <div class="metric-sub">Linux, macOS, Windows, Docker, CloudShell</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">IAM Auth</div>
+                <div class="metric-label">Secure Access</div>
+                <div class="metric-sub">Uses IAM credentials (access keys or IAM roles)</div>
+            </div>
+        </div>
+
+        <h3>Essential CLI Commands for SAA-C03</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Command</th><th>What It Does</th><th>Exam Relevance</th></tr></thead>
+                <tbody>
+                    <tr><td><code>aws configure</code></td><td>Set up CLI credentials (access key, secret key, region)</td><td>❗ HIGH — know how to configure CLI</td></tr>
+                    <tr><td><code>aws s3 cp</code></td><td>Copy files to/from S3</td><td>MEDIUM — common automation task</td></tr>
+                    <tr><td><code>aws ec2 describe-instances</code></td><td>List EC2 instances with details</td><td>HIGH — troubleshooting, inventory</td></tr>
+                    <tr><td><code>aws ec2 run-instances</code></td><td>Launch new EC2 instance</td><td>MEDIUM — automation</td></tr>
+                    <tr><td><code>aws iam create-user</code></td><td>Create IAM user</td><td>MEDIUM — user management</td></tr>
+                    <tr><td><code>aws cloudformation deploy</code></td><td>Deploy CloudFormation stack</td><td>HIGH — IaC deployment</td></tr>
+                    <tr><td><code>aws lambda invoke</code></td><td>Trigger Lambda function</td><td>MEDIUM — testing, debugging</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>CLI vs Console vs SDK</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Tool</th><th>Use Case</th><th>Pros</th><th>Cons</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>AWS Console</strong></td><td>Visual exploration, learning, one-off tasks</td><td>Easy, visual, no setup</td><td>Slow, not scriptable, manual</td></tr>
+                    <tr><td><strong>AWS CLI</strong></td><td>Automation, scripting, CI/CD, batch operations</td><td>Fast, scriptable, repeatable</td><td>Requires learning commands</td></tr>
+                    <tr><td><strong>AWS SDK</strong></td><td>Application code (Python boto3, Java, Node.js, etc.)</td><td>Programmatic, error handling, complex logic</td><td>Requires coding, more complex</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — CLI Credentials:</strong> The CLI needs credentials to authenticate. <strong>Best practice on EC2:</strong> Use <strong>IAM Role attached to instance</strong> (no access keys needed — automatic, secure). <strong>Bad practice:</strong> Store access keys in <code>~/.aws/credentials</code> on EC2 (keys can be stolen). If question says "secure way to give EC2 access to S3" → <strong>IAM Role</strong>, NOT access keys.
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🤖 Real-World Use Case</div>
+            <div class="usecase-title">Automated Backup Script — Daily S3 Sync</div>
+            <p style="font-size:14px;">A company needs to back up their application logs from 50 EC2 instances to S3 every night. They write a bash script using <strong>AWS CLI</strong>:<br><br>
+            <code style="display:block; background:#0f1520; padding:10px; border-radius:6px; margin:10px 0;">
+#!/bin/bash<br>
+# Compress logs<br>
+tar -czf /tmp/logs-$(date +%Y%m%d).tar.gz /var/log/app/<br>
+# Upload to S3<br>
+aws s3 cp /tmp/logs-$(date +%Y%m%d).tar.gz s3://company-backups/logs/<br>
+# Delete local copy<br>
+rm /tmp/logs-$(date +%Y%m%d).tar.gz
+            </code><br>
+            They schedule this script with <strong>cron</strong> to run at 2am daily. The EC2 instances have an <strong>IAM Role</strong> with S3 write permissions — no access keys needed. This saves 10 hours/week vs. manual backups. They also use CLI in their <strong>CI/CD pipeline</strong> to deploy Lambda functions: <code>aws lambda update-function-code --function-name myFunc --zip-file fileb://code.zip</code></p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Automate AWS tasks from command line" → <strong>AWS CLI</strong><br>
+            • "Script to copy files to S3" → <code>aws s3 cp</code> or <code>aws s3 sync</code><br>
+            • "EC2 instance needs to run CLI commands" → <strong>Attach IAM Role to instance</strong> (not access keys)<br>
+            • CLI uses <code>~/.aws/credentials</code> for access keys or IAM roles (preferred on EC2)<br>
+            • <strong>AWS CloudShell</strong> = browser-based CLI (pre-installed, pre-authenticated) — no setup needed<br>
+            • CLI output formats: <code>--output json</code> (default), <code>--output table</code>, <code>--output text</code>
+        </div>
+    </div>
+
+</section>
+
+<!-- ═══════════════════ BLOCK 5: PRACTICE QUESTIONS ═══════════════════ -->
+<section>
+    <h2>🎯 Block 5 — Practice Questions & Rapid Review</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 01:45 – 02:00</span>
+        <span class="cat-bar-desc">15 Exam-Style Questions · Decision Trees · Final Review</span>
+    </div>
+
+    <div class="card">
+        <p>These questions mirror the SAA-C03 exam format. Read carefully — the exam tests your ability to <strong>choose the BEST answer</strong> (all options might work, but one is optimal). Look for keywords: "most cost-effective," "least operational overhead," "highest availability," "best performance."</p>
+    </div>
+
+</section>
+</div>
+
+<footer>
+    <p>AWS SAA-C03 Cert Prep · 2-Hour Power Session 3</p>
+    <p style="margin-top:8px;">Contact: <a href="mailto:sachin1184@gmail.com" style="color:var(--orange); text-decoration:none;">sachin1184@gmail.com</a></p>
+</footer>
+
+</body>
+</html>
