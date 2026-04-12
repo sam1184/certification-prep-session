@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS SAA Cert Prep — Translation, Media, Security & Identity Power Session</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #FF9900;
+            --orange-dim: rgba(255,153,0,0.15);
+            --orange-border: rgba(255,153,0,0.3);
+            --bg: #080c14;
+            --bg2: #0f1520;
+            --bg3: #151d2e;
+            --text: #c8d6e8;
+            --text-dim: #687a92;
+            --green: #00d68f;
+            --red: #ff4757;
+            --blue: #4a90d9;
+            --purple: #a78bfa;
+            --teal: #38bdf8;
+            --card-border: rgba(255,153,0,0.18);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Lora', serif; background: var(--bg); color: var(--text); line-height: 1.75; overflow-x: hidden; }
+        body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+        .container { max-width: 1180px; margin: 0 auto; padding: 30px 24px 80px; position: relative; z-index: 1; }
+        header { position: relative; background: linear-gradient(135deg, #0f1a2e 0%, #1a1030 100%); border: 1px solid var(--orange-border); border-radius: 16px; padding: 48px 40px 40px; margin-bottom: 48px; overflow: hidden; }
+        header::after { content: ''; position: absolute; top: -60px; right: -60px; width: 320px; height: 320px; background: radial-gradient(circle, rgba(255,153,0,0.12), transparent 70%); pointer-events: none; }
+        .header-badge { display: inline-block; background: var(--orange-dim); border: 1px solid var(--orange-border); color: var(--orange); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 18px; }
+        h1 { font-family: 'Syne', sans-serif; font-size: clamp(32px, 5vw, 54px); font-weight: 800; background: linear-gradient(135deg, #FF9900 0%, #ffcc66 55%, #ff7700 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; margin-bottom: 14px; }
+        .header-meta { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-dim); }
+        .header-meta span { color: var(--orange); }
+        .toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 28px; }
+        .toc-item { background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.18); border-radius: 8px; padding: 10px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-dim); }
+        .toc-item span { color: var(--orange); font-weight: 600; }
+        h2 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; color: #fff; margin: 52px 0 24px; display: flex; align-items: center; gap: 14px; }
+        h2::before { content: ''; display: inline-block; width: 5px; height: 32px; background: var(--orange); border-radius: 3px; flex-shrink: 0; }
+        h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--orange); margin: 24px 0 12px; }
+        .card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 12px; padding: 28px 30px; margin: 20px 0; }
+        .card p { margin-bottom: 12px; }
+        .service-card { background: var(--bg2); border: 1px solid var(--card-border); border-radius: 14px; padding: 26px 28px; margin: 24px 0; position: relative; overflow: hidden; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--orange), transparent); }
+        .service-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .service-icon { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
+        .service-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: #fff; }
+        .service-subtitle { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 16px 0; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 16px 0; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin: 16px 0; }
+        .metric { background: var(--bg3); border: 1px solid rgba(255,153,0,0.15); border-radius: 10px; padding: 16px; text-align: center; }
+        .metric-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--orange); margin-bottom: 6px; }
+        .metric-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .metric-sub { font-size: 11px; color: var(--text-dim); line-height: 1.4; }
+        .table-wrap { overflow-x: auto; margin: 16px 0; }
+        table { width: 100%; border-collapse: collapse; background: var(--bg3); }
+        th { background: rgba(255,153,0,0.12); color: #fff; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; padding: 13px 15px; text-align: left; letter-spacing: 0.5px; }
+        td { padding: 12px 15px; font-size: 14px; border-bottom: 1px solid rgba(255,153,0,0.07); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,153,0,0.04); }
+        .highlight { background: linear-gradient(135deg, rgba(0,214,143,0.1), rgba(0,214,143,0.03)); border-left: 4px solid var(--green); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .warning-box { background: linear-gradient(135deg, rgba(255,71,87,0.1), rgba(255,71,87,0.03)); border-left: 4px solid var(--red); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .info-box { background: linear-gradient(135deg, rgba(74,144,217,0.12), rgba(74,144,217,0.03)); border-left: 4px solid var(--blue); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .exam-box { background: linear-gradient(135deg, rgba(167,139,250,0.12), rgba(167,139,250,0.03)); border-left: 4px solid var(--purple); padding: 20px 22px; margin: 20px 0; border-radius: 0 8px 8px 0; font-size: 14px; }
+        .tag { display: inline-block; padding: 3px 9px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-right: 4px; margin-bottom: 4px; font-family: 'IBM Plex Mono', monospace; }
+        .tag-green { background: rgba(0,214,143,0.15); color: #00d68f; border: 1px solid rgba(0,214,143,0.3); }
+        .tag-blue { background: rgba(74,144,217,0.15); color: #4a90d9; border: 1px solid rgba(74,144,217,0.3); }
+        .tag-red { background: rgba(255,71,87,0.15); color: #ff6b7a; border: 1px solid rgba(255,71,87,0.3); }
+        .tag-purple { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+        .tag-orange { background: rgba(255,153,0,0.15); color: var(--orange); border: 1px solid rgba(255,153,0,0.3); }
+        .tag-teal { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+        code { background: rgba(255,153,0,0.12); padding: 2px 7px; border-radius: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--orange); }
+        strong { color: #fff; font-weight: 600; }
+        ul, ol { margin: 12px 0 12px 24px; }
+        li { margin: 8px 0; font-size: 14.5px; }
+        .usecase { background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(56,189,248,0.02)); border: 1px solid rgba(56,189,248,0.25); border-radius: 10px; padding: 18px 20px; margin: 16px 0; }
+        .usecase-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--teal); text-transform: uppercase; margin-bottom: 6px; }
+        .usecase-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
+        .timeline { position: relative; padding-left: 32px; margin: 20px 0; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--orange), transparent); }
+        .timeline-item { position: relative; margin-bottom: 20px; }
+        .timeline-item::before { content: ''; position: absolute; left: -28px; top: 8px; width: 10px; height: 10px; background: var(--orange); border-radius: 50%; }
+        .timeline-time { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--orange); margin-bottom: 2px; }
+        .timeline-topic { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: #fff; }
+        .timeline-services { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+        footer { text-align: center; padding: 40px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-dim); border-top: 1px solid rgba(255,153,0,0.1); margin-top: 60px; }
+        .cat-bar { display: flex; align-items: center; gap: 12px; background: rgba(255,153,0,0.06); border: 1px solid rgba(255,153,0,0.15); border-radius: 8px; padding: 10px 18px; margin-bottom: 20px; }
+        .cat-bar-icon { font-size: 20px; }
+        .cat-bar-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--orange); }
+        .cat-bar-desc { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+        section { margin-bottom: 16px; }
+        .cheat-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(255,153,0,0.07); }
+        .cheat-row:last-child { border-bottom: none; }
+        .cheat-keyword { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--orange); background: var(--orange-dim); border: 1px solid var(--orange-border); border-radius: 6px; padding: 4px 10px; white-space: nowrap; min-width: 220px; text-align: center; }
+        .cheat-answer { font-size: 13px; color: var(--text); padding-top: 4px; }
+        .practice-question { background: var(--bg3); border: 1px solid rgba(167,139,250,0.25); border-radius: 10px; padding: 20px 24px; margin: 16px 0; }
+        .question-number { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--purple); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .question-text { font-size: 15px; color: var(--text); margin-bottom: 16px; line-height: 1.6; }
+        .answer-options { margin: 12px 0; }
+        .answer-option { background: var(--bg2); border: 1px solid rgba(255,153,0,0.1); border-radius: 6px; padding: 10px 14px; margin: 8px 0; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .answer-option:hover { border-color: var(--orange); background: rgba(255,153,0,0.05); }
+        .answer-option.correct { border-color: var(--green); background: rgba(0,214,143,0.08); }
+        .answer-option.wrong { border-color: var(--red); background: rgba(255,71,87,0.08); }
+        .answer-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; color: var(--orange); margin-right: 8px; }
+        .explanation { background: linear-gradient(135deg, rgba(0,214,143,0.08), rgba(0,214,143,0.02)); border-left: 3px solid var(--green); padding: 14px 18px; margin-top: 12px; border-radius: 0 6px 6px 0; display: none; }
+        .explanation-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--green); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+        .explanation-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+        .show-answer-btn { background: var(--orange); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: all 0.2s; }
+        .show-answer-btn:hover { background: #ffaa33; transform: translateY(-1px); }
+        .arch-diagram { background: var(--bg3); border: 1px solid rgba(255,153,0,0.12); border-radius: 10px; padding: 20px; margin: 16px 0; display: flex; justify-content: center; overflow-x: auto; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══ HEADER ═══ -->
+<header>
+    <div class="header-badge">AWS Certification Prep · SAA-C03 · 2-Hour Power Session · ML Services · Media · Security · Identity</div>
+    <h1>AWS Solutions Architect<br>Associate — AI/ML, Media, Security & Identity</h1>
+    <div class="header-meta">
+        <span>12 Services</span> · Translation · Media Processing · Video Streaming · Compliance · Security · Identity &nbsp;|&nbsp; By a <span>Principal AWS Architect</span> with 20+ years in the cloud
+    </div>
+    <div class="toc">
+        <div class="toc-item">🌐 <span>AI/ML & MEDIA (3)</span><br>Amazon Translate · Elastic Transcoder · Kinesis Video Streams</div>
+        <div class="toc-item">📋 <span>COMPLIANCE (3)</span><br>AWS Artifact · AWS Audit Manager · AWS Certificate Manager</div>
+        <div class="toc-item">🔐 <span>SECURITY (3)</span><br>AWS CloudHSM · Amazon Detective · AWS Firewall Manager</div>
+        <div class="toc-item">🪪 <span>IDENTITY (3)</span><br>Amazon Cognito · AWS Directory Service · Amazon GuardDuty</div>
+        <div class="toc-item">🎯 <span>EXAM PREP</span><br>12 Practice Qs · Decision Trees · Keyword Cheat Sheet</div>
+    </div>
+</header>
+
+<!-- SESSION ROADMAP -->
+<section>
+    <h2>🗺️ 2-Hour Session Roadmap</h2>
+    <div class="card">
+        <p>This session covers <strong>12 services</strong> spanning AI/ML, Media, Compliance, Security, and Identity. These are frequently tested in scenario-based questions on the SAA-C03 exam. We follow: <strong>Concept → Architecture → Exam Trap → Real-World Story → Practice</strong>. Even if you're brand new to AWS, each service is introduced from first principles.</p>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">00:00 – 00:30</div>
+                <div class="timeline-topic">🌐 Block 1 — AI/ML & Media Services</div>
+                <div class="timeline-services">Amazon Translate · Amazon Elastic Transcoder · Amazon Kinesis Video Streams</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">00:30 – 01:00</div>
+                <div class="timeline-topic">📋 Block 2 — Compliance & Certificate Services</div>
+                <div class="timeline-services">AWS Artifact · AWS Audit Manager · AWS Certificate Manager · AWS CloudHSM</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">01:00 – 01:35</div>
+                <div class="timeline-topic">🔐 Block 3 — Identity, Threat Detection & WAF</div>
+                <div class="timeline-services">Amazon Cognito · Amazon Detective · AWS Directory Service · AWS Firewall Manager · Amazon GuardDuty</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">01:35 – 02:00</div>
+                <div class="timeline-topic">🎯 Block 4 — Rapid Review</div>
+                <div class="timeline-services">12 Practice Questions · Keyword Cheat Sheet · Decision Trees</div>
+            </div>
+        </div>
+        <div class="highlight">
+            <strong>SAA-C03 Exam Strategy:</strong> These 12 services are scenario-tested. You'll never see "What is Amazon Translate?" — you'll see "A startup wants to add 10 languages to their customer portal without managing ML models. Which service?" Memorise the <strong>keyword triggers</strong>: "no ML expertise" → Translate/Transcoder. "Hardware security module" → CloudHSM. "User sign-in for web/mobile app" → Cognito. "Centralised WAF across accounts" → Firewall Manager. One trigger word per service. That's the exam.
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════ BLOCK 1: AI/ML & MEDIA ═══════════════════════════════════════ -->
+<section>
+    <h2>🌐 Block 1 — AI/ML & Media Services</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 00:00 – 00:30</span>
+        <span class="cat-bar-desc">3 Services · Managed ML, Media Pipeline, Live Video</span>
+    </div>
+
+    <!-- AMAZON TRANSLATE -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#1a2a4a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(74,144,217,0.25)" stroke="#4a90d9" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#4a90d9">🌐</text></svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Translate</div>
+                <div class="service-subtitle">Neural Machine Translation · 75+ Languages · Pay-per-character · Fully Managed</div>
+            </div>
+        </div>
+
+        <p>Amazon Translate is a <strong>fully managed neural machine translation service</strong>. Think of it as Google Translate built into AWS, accessible via API, with no ML models to train or servers to manage. You send text in, you get translated text back. It's as simple as that — which is exactly why the exam loves it.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">75+</div>
+                <div class="metric-label">Languages</div>
+                <div class="metric-sub">Arabic, Chinese, French, Hindi, Japanese, Spanish and many more</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">$15</div>
+                <div class="metric-label">Per 1M Characters</div>
+                <div class="metric-sub">Standard translation. Custom Terminology & Active Custom Translation extra</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">5 MB</div>
+                <div class="metric-label">Max Batch Doc Size</div>
+                <div class="metric-sub">Real-time: 5000 bytes. Batch jobs via S3 support up to 5 MB per document</div>
+            </div>
+        </div>
+
+        <h3>How It Works — Real-Time vs. Batch</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 720 200" width="700" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- Real-time path -->
+                <text x="10" y="22" fill="#FF9900" font-family="IBM Plex Mono" font-size="10" font-weight="600">REAL-TIME PATH</text>
+                <rect x="10" y="32" width="110" height="48" rx="8" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="65" y="52" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="9" font-weight="600">YOUR APP</text>
+                <text x="65" y="68" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">API / SDK call</text>
+                <line x1="120" y1="56" x2="160" y2="56" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr1)"/>
+                <text x="140" y="48" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">text (&lt;5KB)</text>
+                <rect x="162" y="32" width="130" height="48" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="227" y="52" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">AMAZON TRANSLATE</text>
+                <text x="227" y="67" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Neural MT Engine</text>
+                <line x1="292" y1="56" x2="332" y2="56" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr1)"/>
+                <text x="312" y="48" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">translated</text>
+                <rect x="334" y="32" width="110" height="48" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="389" y="52" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="9" font-weight="600">RESPONSE</text>
+                <text x="389" y="68" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">~milliseconds</text>
+
+                <!-- Batch path -->
+                <text x="10" y="125" fill="#FF9900" font-family="IBM Plex Mono" font-size="10" font-weight="600">BATCH PATH</text>
+                <rect x="10" y="135" width="110" height="48" rx="8" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="65" y="155" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="9" font-weight="600">S3 BUCKET</text>
+                <text x="65" y="170" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Docs / HTML / TXT</text>
+                <line x1="120" y1="159" x2="160" y2="159" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr1)"/>
+                <rect x="162" y="135" width="130" height="48" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="227" y="155" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">TRANSLATE JOB</text>
+                <text x="227" y="170" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Async Batch Processing</text>
+                <line x1="292" y1="159" x2="332" y2="159" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr1)"/>
+                <rect x="334" y="135" width="110" height="48" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="389" y="155" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">S3 OUTPUT</text>
+                <text x="389" y="170" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Translated docs</text>
+
+                <!-- Custom Terminology -->
+                <rect x="490" y="32" width="210" height="160" rx="8" fill="rgba(255,153,0,0.06)" stroke="rgba(255,153,0,0.25)" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="595" y="55" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">CUSTOM TERMINOLOGY</text>
+                <text x="595" y="75" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Your brand-specific</text>
+                <text x="595" y="90" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">glossary (CSV upload)</text>
+                <text x="595" y="115" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">"AWS Lambda" always</text>
+                <text x="595" y="130" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">stays "AWS Lambda"</text>
+                <text x="595" y="150" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">even in Japanese</text>
+                <text x="595" y="170" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="8">Brand terms protected ✓</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🛒 Real-World Use Case</div>
+            <div class="usecase-title">Global E-Commerce — Product Catalogue in 20 Languages</div>
+            <p style="font-size:14px;">An e-commerce company has 500,000 product descriptions in English. They need to launch in 20 countries within 3 months. Instead of hiring 20 translation agencies, they trigger an S3 event notification when a product description is saved — a Lambda function calls <strong>Amazon Translate</strong> with a custom terminology file (so "Prime Membership" is never mistranslated) and writes translated versions back to S3. Total infrastructure: 1 Lambda function, 1 Translate API call, $0.015 per 1000 characters. No ML team hired.</p>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — Translate ≠ Transcribe:</strong> Amazon Translate converts <strong>text between languages</strong>. Amazon Transcribe converts <strong>speech to text</strong>. The exam will describe "call centre audio in Spanish → convert to English text" and try to trick you. That's <strong>Transcribe first (speech→text) then Translate (Spanish→English)</strong>. Two services. One step each.
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Translate content without managing ML models" → <strong>Amazon Translate</strong><br>
+            • "Keep brand names / product names consistent across languages" → <strong>Custom Terminology</strong><br>
+            • "Translate large volumes of documents stored in S3" → <strong>Translate Batch Job (async)</strong><br>
+            • "Real-time chat translation for customer support" → <strong>Translate API (synchronous)</strong><br>
+            • Never confuse with <strong>Amazon Transcribe</strong> (speech-to-text) or <strong>Amazon Comprehend</strong> (NLP/sentiment)
+        </div>
+    </div>
+
+    <!-- AMAZON ELASTIC TRANSCODER -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2a1a3a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(167,139,250,0.25)" stroke="#a78bfa" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#a78bfa">🎬</text></svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Elastic Transcoder</div>
+                <div class="service-subtitle">Managed Media Conversion · S3-to-S3 · Preset-based · Pay-per-minute of video</div>
+            </div>
+        </div>
+
+        <p>Elastic Transcoder is a <strong>fully managed media transcoding service</strong>. It converts video and audio files stored in S3 into formats optimised for playback on phones, tablets, desktops, and smart TVs. Think: you upload a 4K .MOV from a camera and it outputs a 1080p MP4, a 720p MP4, and a 360p MP4 automatically using presets. Zero servers to manage.</p>
+
+        <div class="info-box">
+            <strong>💡 Key Concept — Pipelines, Jobs & Presets:</strong><br>
+            <strong>Pipeline</strong> = The queue that manages your transcoding jobs (input S3 bucket, output S3 bucket, IAM role).<br>
+            <strong>Job</strong> = One transcoding task — "take this file, apply these presets, output here."<br>
+            <strong>Preset</strong> = A template defining codec, resolution, bitrate, container format. AWS provides presets for iPhone, Android, Web, Fire TV, etc.
+        </div>
+
+        <h3>Architecture — Video-on-Demand Pipeline</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 720 180" width="700" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- Upload -->
+                <rect x="10" y="65" width="100" height="50" rx="8" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="60" y="85" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="9" font-weight="600">USER UPLOAD</text>
+                <text x="60" y="100" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Raw video file</text>
+                <text x="60" y="113" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">.MOV / .MKV</text>
+                <!-- Arrow -->
+                <line x1="110" y1="90" x2="148" y2="90" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr3)"/>
+                <!-- S3 Input -->
+                <rect x="150" y="65" width="110" height="50" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="205" y="85" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">S3 INPUT</text>
+                <text x="205" y="100" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">raw-videos/</text>
+                <text x="205" y="113" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">S3 event trigger</text>
+                <!-- Arrow + Lambda -->
+                <line x1="260" y1="90" x2="298" y2="90" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr3)"/>
+                <rect x="300" y="65" width="110" height="50" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="355" y="82" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">LAMBDA</text>
+                <text x="355" y="97" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Creates Transcoder</text>
+                <text x="355" y="110" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Job via API</text>
+                <!-- Arrow -->
+                <line x1="410" y1="90" x2="448" y2="90" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr3)"/>
+                <!-- Elastic Transcoder -->
+                <rect x="450" y="40" width="130" height="100" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="515" y="62" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="9" font-weight="600">ELASTIC TRANSCODER</text>
+                <text x="515" y="78" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Pipeline (queue)</text>
+                <text x="515" y="93" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Job + Presets:</text>
+                <text x="515" y="108" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">→ 1080p MP4 (web)</text>
+                <text x="515" y="120" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">→ 720p MP4 (tablet)</text>
+                <text x="515" y="132" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">→ 360p MP4 (mobile)</text>
+                <!-- Arrow out -->
+                <line x1="580" y1="90" x2="618" y2="90" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr3)"/>
+                <!-- S3 Output -->
+                <rect x="620" y="65" width="90" height="50" rx="8" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="665" y="85" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="9" font-weight="600">S3 OUTPUT</text>
+                <text x="665" y="100" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">transcoded/</text>
+                <text x="665" y="113" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="8">→ CloudFront</text>
+                <!-- SNS notification -->
+                <text x="515" y="158" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8">SNS notification on job complete/error</text>
+            </svg>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Feature</th><th>Elastic Transcoder</th><th>AWS MediaConvert (newer)</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Use Case</strong></td><td>Simple VOD, small-medium scale</td><td>Broadcast-grade, large scale</td></tr>
+                    <tr><td><strong>Presets</strong></td><td>Built-in + custom presets</td><td>Rich job templates, more codecs</td></tr>
+                    <tr><td><strong>Pricing</strong></td><td>Per minute of output video</td><td>Per minute, tiered by resolution</td></tr>
+                    <tr><td><strong>Exam Relevance</strong></td><td>✅ SAA-C03 still tests this</td><td>Rarely appears in SAA-C03</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">📺 Real-World Use Case</div>
+            <div class="usecase-title">Online Learning Platform — Lecture Video Processing</div>
+            <p style="font-size:14px;">An online education startup allows instructors to upload lecture videos. Raw files arrive in S3 as large .MP4 or .MOV files. An S3 event triggers a Lambda function that creates an <strong>Elastic Transcoder job</strong> with three output presets — 1080p for desktop, 720p for tablet, 360p for mobile. The outputs land in an S3 output bucket fronted by <strong>CloudFront</strong>. An SNS notification fires when the job completes — the platform updates the course database and emails the instructor. Students always get the right quality for their device. Cost: ~$0.015/minute of transcoded video.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Convert video files to multiple formats for different devices" → <strong>Elastic Transcoder</strong><br>
+            • "Input and output stored in S3" → key characteristic of Elastic Transcoder<br>
+            • "Notify when transcoding is complete" → <strong>SNS + Elastic Transcoder</strong><br>
+            • Pricing = per <strong>minute of output video</strong> (not input)<br>
+            • Never confuse with <strong>Kinesis Video Streams</strong> (live streaming, not file conversion)
+        </div>
+    </div>
+
+    <!-- AMAZON KINESIS VIDEO STREAMS -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#1a3a2a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(0,214,143,0.25)" stroke="#00d68f" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#00d68f">📹</text></svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Kinesis Video Streams</div>
+                <div class="service-subtitle">Live Video Ingestion · ML Integration · WebRTC · Playback · Durably Stored</div>
+            </div>
+        </div>
+
+        <p>Kinesis Video Streams lets you <strong>securely ingest, process, and store video from millions of devices</strong> — IP cameras, drones, satellites, smartphones, dashcams. It's not about file conversion (that's Elastic Transcoder) — it's about <strong>continuous live video streaming</strong> at scale, with built-in integration to ML services like Rekognition for real-time analysis.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">Millions</div>
+                <div class="metric-label">Concurrent Devices</div>
+                <div class="metric-sub">Scale from 1 camera to millions of IoT devices, no infra to manage</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">1–7 days</div>
+                <div class="metric-label">Data Retention</div>
+                <div class="metric-sub">Configurable stream retention for replay and ML processing</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">WebRTC</div>
+                <div class="metric-label">Two-way Video</div>
+                <div class="metric-sub">Built-in WebRTC signalling channel for peer-to-peer video calls</div>
+            </div>
+        </div>
+
+        <h3>Architecture — Smart City Surveillance</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 720 210" width="700" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- Cameras -->
+                <rect x="8" y="10" width="90" height="35" rx="6" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1"/>
+                <text x="53" y="23" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="8" font-weight="600">📹 IP CAMERA 1</text>
+                <text x="53" y="37" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">KVS SDK</text>
+                <rect x="8" y="55" width="90" height="35" rx="6" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1"/>
+                <text x="53" y="68" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="8" font-weight="600">📹 IP CAMERA 2</text>
+                <text x="53" y="82" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">KVS SDK</text>
+                <rect x="8" y="100" width="90" height="35" rx="6" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1"/>
+                <text x="53" y="113" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="8" font-weight="600">🚗 DASHCAM</text>
+                <text x="53" y="127" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">KVS SDK</text>
+                <!-- Arrow to KVS -->
+                <line x1="98" y1="27" x2="168" y2="70" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr4)"/>
+                <line x1="98" y1="72" x2="168" y2="78" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr4)"/>
+                <line x1="98" y1="117" x2="168" y2="90" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr4)"/>
+                <!-- KVS -->
+                <rect x="170" y="35" width="140" height="100" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="240" y="57" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">KINESIS VIDEO</text>
+                <text x="240" y="71" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">STREAMS</text>
+                <text x="240" y="90" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Ingests &amp; durably</text>
+                <text x="240" y="103" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">stores video frames</text>
+                <text x="240" y="118" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Retention: 1–7 days</text>
+                <text x="240" y="129" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">TLS encrypted</text>
+                <!-- Arrow to Rekognition -->
+                <line x1="310" y1="70" x2="365" y2="50" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr4)"/>
+                <rect x="367" y="20" width="130" height="60" rx="8" fill="rgba(255,71,87,0.15)" stroke="#ff4757" stroke-width="1.5"/>
+                <text x="432" y="40" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="9" font-weight="600">REKOGNITION</text>
+                <text x="432" y="55" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Face / Object detection</text>
+                <text x="432" y="70" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Real-time ML analysis</text>
+                <!-- Arrow to Lambda -->
+                <line x1="310" y1="100" x2="365" y2="105" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr4)"/>
+                <rect x="367" y="88" width="130" height="60" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="432" y="108" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="9" font-weight="600">LAMBDA</text>
+                <text x="432" y="123" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Custom processing</text>
+                <text x="432" y="138" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Alert / Notification</text>
+                <!-- Arrow to playback / S3 -->
+                <line x1="497" y1="50" x2="555" y2="50" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr4)"/>
+                <line x1="497" y1="118" x2="555" y2="118" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr4)"/>
+                <rect x="557" y="20" width="130" height="60" rx="8" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="622" y="40" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="9" font-weight="600">DASHBOARD</text>
+                <text x="622" y="55" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Live playback</text>
+                <text x="622" y="70" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">HLS / MPEG-DASH</text>
+                <rect x="557" y="90" width="130" height="60" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="622" y="110" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">SNS ALERT</text>
+                <text x="622" y="125" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Security alert sent</text>
+                <text x="622" y="140" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">to security team</text>
+                <!-- WebRTC label -->
+                <rect x="170" y="160" width="140" height="35" rx="6" fill="rgba(255,153,0,0.08)" stroke="rgba(255,153,0,0.3)" stroke-width="1" stroke-dasharray="4,2"/>
+                <text x="240" y="175" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8" font-weight="600">WEBRTC CHANNEL</text>
+                <text x="240" y="188" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Two-way peer-to-peer video (doorbell, telemedicine)</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏙️ Real-World Use Case</div>
+            <div class="usecase-title">Smart City — 10,000 Traffic Cameras + AI Safety Alerts</div>
+            <p style="font-size:14px;">A city deploys 10,000 IP cameras at intersections. Each camera runs the <strong>KVS SDK</strong> — a lightweight agent that securely streams video to Kinesis Video Streams. Video is durably stored for 7 days. A <strong>Rekognition Video</strong> integration analyses each frame for accidents, illegal parking, and pedestrian safety. When an incident is detected, a Lambda function triggers SNS — alerting emergency services in under 3 seconds. Security teams can also <strong>rewind and replay</strong> stored video for investigations. Entire system runs serverless. No video servers managed.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Ingest live video from IoT cameras at scale" → <strong>Kinesis Video Streams</strong><br>
+            • "Real-time ML analysis on live video" → <strong>KVS + Rekognition Video</strong><br>
+            • "Two-way video call / doorbell / telemedicine" → <strong>KVS WebRTC signalling channel</strong><br>
+            • NOT for batch file conversion → that's <strong>Elastic Transcoder</strong><br>
+            • NOT for audio/text streams → that's <strong>Kinesis Data Streams</strong>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════ BLOCK 2: COMPLIANCE & CERTS ═══════════════════════════════════════ -->
+<section>
+    <h2>📋 Block 2 — Compliance, Certificates & HSM</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 00:30 – 01:00</span>
+        <span class="cat-bar-desc">4 Services · Audit Docs · Compliance Automation · TLS Certs · Hardware Keys</span>
+    </div>
+
+    <!-- AWS ARTIFACT -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#1a2a1a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(0,214,143,0.25)" stroke="#00d68f" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#00d68f">📄</text></svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Artifact</div>
+                <div class="service-subtitle">Compliance Report Portal · SOC · PCI · ISO · NDA Agreements · Self-Service</div>
+            </div>
+        </div>
+
+        <p>AWS Artifact is simply a <strong>self-service portal to download AWS compliance reports and agreements</strong>. When your auditor asks "show me AWS's SOC 2 report" or your legal team needs to sign a Business Associate Agreement (BAA) for HIPAA — you go to AWS Artifact. No cost, no ticket to AWS support. Just download.</p>
+
+        <div class="highlight">
+            <strong>💡 One-sentence definition:</strong> AWS Artifact = the place you go to get AWS's compliance paperwork. It's a document repository, not a monitoring tool.
+        </div>
+
+        <div class="grid-2">
+            <div class="metric">
+                <div class="metric-value">Artifact Reports</div>
+                <div class="metric-label">What You Get</div>
+                <div class="metric-sub">SOC 1/2/3, PCI DSS, ISO 27001, FedRAMP, GDPR white papers, HIPAA eligibility</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Artifact Agreements</div>
+                <div class="metric-label">What You Sign</div>
+                <div class="metric-sub">BAA (Business Associate Agreement for HIPAA), NDA with AWS, sign on behalf of org</div>
+            </div>
+        </div>
+
+        <h3>Architecture — How Artifact Fits Into Compliance</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 680 160" width="660" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <rect x="10" y="55" width="110" height="50" rx="8" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="65" y="76" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="9" font-weight="600">AUDITOR / LEGAL</text>
+                <text x="65" y="91" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">"Show us your</text>
+                <text x="65" y="103" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">SOC 2 report"</text>
+                <line x1="120" y1="80" x2="158" y2="80" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr5)"/>
+                <rect x="160" y="35" width="130" height="90" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="225" y="56" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">AWS ARTIFACT</text>
+                <text x="225" y="72" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Self-service portal</text>
+                <text x="225" y="87" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• Download reports</text>
+                <text x="225" y="100" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• Sign agreements</text>
+                <text x="225" y="113" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• IAM controlled access</text>
+                <line x1="290" y1="60" x2="340" y2="40" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr5)"/>
+                <line x1="290" y1="90" x2="340" y2="110" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr5)"/>
+                <rect x="342" y="15" width="145" height="45" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="414" y="33" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">COMPLIANCE REPORTS</text>
+                <text x="414" y="48" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">SOC 1/2/3 · PCI DSS · ISO 27001 · FedRAMP</text>
+                <rect x="342" y="88" width="145" height="45" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="414" y="106" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="9" font-weight="600">LEGAL AGREEMENTS</text>
+                <text x="414" y="121" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">BAA (HIPAA) · NDA · Account-level sign</text>
+                <line x1="487" y1="37" x2="540" y2="50" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr5)"/>
+                <line x1="487" y1="110" x2="540" y2="100" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr5)"/>
+                <rect x="542" y="45" width="120" height="60" rx="8" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="602" y="65" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="9" font-weight="600">AUDITOR</text>
+                <text x="602" y="80" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Gets signed PDF</text>
+                <text x="602" y="95" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="8">✓ Compliance proven</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏦 Real-World Use Case</div>
+            <div class="usecase-title">FinTech Startup — PCI DSS Compliance Audit</div>
+            <p style="font-size:14px;">A payment processing startup is undergoing a PCI DSS Level 1 audit. The auditor asks for proof that their cloud provider (AWS) meets PCI DSS standards. The CTO logs into <strong>AWS Artifact</strong>, downloads the <strong>AWS PCI DSS Attestation of Compliance (AOC) report</strong> in under 2 minutes, and emails it to the auditor. The report is a third-party validated document from AWS's compliance team — no calls, no tickets, no waiting. They also sign the <strong>NDA</strong> through Artifact before sharing it. Audit checkbox: ✅.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Download SOC 2 / PCI DSS / ISO reports for AWS" → <strong>AWS Artifact</strong><br>
+            • "Sign a Business Associate Agreement (BAA) for HIPAA" → <strong>AWS Artifact Agreements</strong><br>
+            • <strong>NOT</strong> a monitoring or auditing tool — it's a <em>document download portal</em><br>
+            • Access controlled via <strong>IAM policies</strong> — restrict who can download reports<br>
+            • Free service — no cost to access compliance reports
+        </div>
+    </div>
+
+    <!-- AWS AUDIT MANAGER -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2a2a1a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(255,153,0,0.25)" stroke="#FF9900" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#FF9900">📊</text></svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Audit Manager</div>
+                <div class="service-subtitle">Continuous Audit Evidence · Automated Compliance Mapping · PCI · SOC · HIPAA</div>
+            </div>
+        </div>
+
+        <p>AWS Audit Manager <strong>continuously collects evidence</strong> that your AWS environment complies with standards like PCI DSS, SOC 2, HIPAA, and more. It maps your AWS resource configurations to audit framework controls — automatically. Instead of manually screenshots of your CloudTrail logs for auditors, Audit Manager collects, organises, and packages that evidence for you.</p>
+
+        <div class="info-box">
+            <strong>💡 Artifact vs Audit Manager — The Key Difference:</strong><br>
+            <strong>AWS Artifact</strong> = AWS's own compliance paperwork (their SOC 2 report about AWS the company).<br>
+            <strong>AWS Audit Manager</strong> = Evidence that <em>YOUR</em> workloads on AWS are compliant. It's about YOUR environment, not AWS's.
+        </div>
+
+        <h3>Architecture — Continuous Compliance Evidence Collection</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 700 185" width="680" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- Data Sources -->
+                <rect x="8" y="10" width="110" height="155" rx="8" fill="rgba(74,144,217,0.08)" stroke="rgba(74,144,217,0.3)" stroke-width="1"/>
+                <text x="63" y="28" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="8" font-weight="600">AWS SERVICES</text>
+                <rect x="16" y="35" width="92" height="24" rx="4" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1"/>
+                <text x="62" y="51" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">CloudTrail</text>
+                <rect x="16" y="65" width="92" height="24" rx="4" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1"/>
+                <text x="62" y="81" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Config</text>
+                <rect x="16" y="95" width="92" height="24" rx="4" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1"/>
+                <text x="62" y="111" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Security Hub</text>
+                <rect x="16" y="125" width="92" height="24" rx="4" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1"/>
+                <text x="62" y="141" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">IAM Access Analyser</text>
+                <!-- Arrow -->
+                <line x1="118" y1="87" x2="158" y2="87" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr6)"/>
+                <!-- Audit Manager -->
+                <rect x="160" y="30" width="150" height="115" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="235" y="52" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">AUDIT MANAGER</text>
+                <text x="235" y="70" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Framework mapping:</text>
+                <text x="235" y="85" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• PCI DSS 3.2.1</text>
+                <text x="235" y="98" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• SOC 2 (Security/Avail.)</text>
+                <text x="235" y="111" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• HIPAA</text>
+                <text x="235" y="124" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• NIST 800-53</text>
+                <text x="235" y="137" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• Custom frameworks</text>
+                <!-- Arrow -->
+                <line x1="310" y1="87" x2="350" y2="87" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr6)"/>
+                <!-- Evidence Folder -->
+                <rect x="352" y="40" width="130" height="95" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="417" y="60" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">EVIDENCE FOLDER</text>
+                <text x="417" y="78" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Auto-collected &amp;</text>
+                <text x="417" y="92" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">organised per control</text>
+                <text x="417" y="108" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Manual evidence</text>
+                <text x="417" y="121" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">upload also supported</text>
+                <!-- Arrow -->
+                <line x1="482" y1="87" x2="522" y2="87" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr6)"/>
+                <!-- Audit Report -->
+                <rect x="524" y="40" width="140" height="95" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="594" y="60" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="9" font-weight="600">ASSESSMENT REPORT</text>
+                <text x="594" y="78" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Exported to S3</text>
+                <text x="594" y="93" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Shared with auditors</text>
+                <text x="594" y="110" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="8">✓ Audit-ready evidence</text>
+                <text x="594" y="125" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Delegation to team</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏥 Real-World Use Case</div>
+            <div class="usecase-title">Healthcare SaaS — Continuous HIPAA Audit Readiness</div>
+            <p style="font-size:14px;">A healthcare SaaS company faces quarterly HIPAA audits. Previously, the compliance team spent 6 weeks manually pulling CloudTrail logs, Config snapshots, and IAM reports for each audit. They enable <strong>AWS Audit Manager</strong> with the HIPAA framework. Now Audit Manager continuously maps their CloudTrail API logs, Config compliance rules, and Security Hub findings to specific HIPAA controls — automatically. At audit time, they export a pre-organised evidence report from S3 and hand it to auditors. Audit prep time: 6 weeks → 2 days.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Automate evidence collection for compliance audits" → <strong>AWS Audit Manager</strong><br>
+            • "Continuously assess AWS environment against PCI / HIPAA / SOC 2" → <strong>Audit Manager</strong><br>
+            • "Generate audit-ready reports for your workloads" → <strong>Audit Manager</strong> (not Artifact!)<br>
+            • Audit Manager pulls from: <strong>CloudTrail, Config, Security Hub, IAM Access Analyser</strong><br>
+            • Supports <strong>custom frameworks</strong> if your company has internal audit standards
+        </div>
+    </div>
+
+    <!-- AWS CERTIFICATE MANAGER -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#1a3a3a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(56,189,248,0.25)" stroke="#38bdf8" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#38bdf8">🔒</text></svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Certificate Manager (ACM)</div>
+                <div class="service-subtitle">Free TLS/SSL Certs · Auto-Renewal · CloudFront · ALB · API Gateway Integration</div>
+            </div>
+        </div>
+
+        <p>ACM lets you <strong>provision, manage, and deploy TLS/SSL certificates for free</strong> on AWS services. No more buying certs from GoDaddy, no more 2am alerts when your cert expired. ACM automatically renews certificates before they expire. The "lock icon" in your browser — ACM makes that happen on AWS, for free.</p>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">$0</div>
+                <div class="metric-label">Cost for ACM Certs</div>
+                <div class="metric-sub">Public TLS certs are completely free when used with AWS services</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Auto</div>
+                <div class="metric-label">Renewal</div>
+                <div class="metric-sub">ACM auto-renews before expiry — no more "your cert expired" incidents</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Regional</div>
+                <div class="metric-label">Scope</div>
+                <div class="metric-sub">Certs are regional. CloudFront needs cert in <strong>us-east-1</strong> regardless of where you are</div>
+            </div>
+        </div>
+
+        <h3>Architecture — HTTPS for Web Application</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 700 160" width="680" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr7" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <rect x="10" y="55" width="90" height="50" rx="8" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="55" y="76" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="9" font-weight="600">USER</text>
+                <text x="55" y="91" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">https://app.com</text>
+                <line x1="100" y1="80" x2="140" y2="80" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr7)"/>
+                <rect x="142" y="40" width="120" height="80" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="202" y="62" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">CLOUDFRONT</text>
+                <text x="202" y="77" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">or ALB</text>
+                <text x="202" y="92" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="8">ACM Cert attached</text>
+                <text x="202" y="106" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">TLS termination here</text>
+                <line x1="262" y1="80" x2="302" y2="80" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr7)"/>
+                <rect x="304" y="55" width="110" height="50" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="359" y="76" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">EC2 / ECS</text>
+                <text x="359" y="91" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">HTTP (internal)</text>
+                <!-- ACM box -->
+                <rect x="142" y="140" width="120" height="15" rx="3" fill="rgba(56,189,248,0.1)" stroke="#38bdf8" stroke-width="1"/>
+                <text x="202" y="151" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="7">ACM manages cert lifecycle</text>
+                <!-- Private cert -->
+                <rect x="460" y="30" width="220" height="105" rx="8" fill="rgba(167,139,250,0.08)" stroke="rgba(167,139,250,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="570" y="50" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="9" font-weight="600">ACM PRIVATE CA</text>
+                <text x="570" y="67" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">For internal / private</text>
+                <text x="570" y="82" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">microservices TLS</text>
+                <text x="570" y="100" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">~$400/month per CA</text>
+                <text x="570" y="114" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="7">⚠ NOT free (unlike public certs)</text>
+                <!-- Region note -->
+                <rect x="10" y="145" width="420" height="15" rx="3" fill="rgba(255,71,87,0.08)" stroke="rgba(255,71,87,0.3)" stroke-width="1"/>
+                <text x="220" y="156" text-anchor="middle" fill="#ff6b7a" font-family="IBM Plex Mono" font-size="7">⚠ CloudFront ALWAYS needs cert in us-east-1 (N. Virginia) regardless of your app region</text>
+            </svg>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Integration</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>CloudFront</strong></td><td>✅ Supported. Cert MUST be in <code>us-east-1</code> even if distribution serves other regions</td></tr>
+                    <tr><td><strong>ALB / NLB</strong></td><td>✅ Supported. Cert must be in same region as load balancer</td></tr>
+                    <tr><td><strong>API Gateway</strong></td><td>✅ Supported. Custom domain names with ACM cert</td></tr>
+                    <tr><td><strong>EC2 directly</strong></td><td>❌ Not supported — you can't install an ACM cert directly on EC2. Use ALB in front.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏢 Real-World Use Case</div>
+            <div class="usecase-title">SaaS Company — Zero-Downtime HTTPS Across 50 Domains</div>
+            <p style="font-size:14px;">A B2B SaaS company powers white-label portals for 50 enterprise customers, each on a custom domain. They request a <strong>wildcard ACM cert</strong> (*.saas.com) and individual certs for each customer domain — all attached to a single ALB. ACM automatically renews every cert 60 days before expiry — no alerts, no human intervention. Before ACM, they had a cert expiry incident every 6 months causing an outage. After ACM: zero expiry incidents in 3 years.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Free SSL/TLS cert for ALB or CloudFront" → <strong>AWS Certificate Manager (ACM)</strong><br>
+            • "CloudFront cert must be in..." → <strong>us-east-1 (N. Virginia) always</strong><br>
+            • "Cannot install ACM cert directly on EC2" → <strong>Must use ALB or CloudFront in front</strong><br>
+            • "Internal microservices TLS cert" → <strong>ACM Private Certificate Authority</strong> (not free)<br>
+            • ACM is about <strong>TLS/HTTPS</strong>. Not encryption at rest (that's KMS).
+        </div>
+    </div>
+
+    <!-- AWS CLOUDHSM -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#3a1a1a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(255,71,87,0.25)" stroke="#ff4757" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#ff4757">🔑</text></svg>
+            </div>
+            <div>
+                <div class="service-title">AWS CloudHSM</div>
+                <div class="service-subtitle">Hardware Security Module · FIPS 140-2 Level 3 · You Own the Keys · Single-Tenant</div>
+            </div>
+        </div>
+
+        <p>CloudHSM gives you a <strong>dedicated hardware security module (HSM) device inside AWS</strong> that only you control. Unlike KMS (where AWS manages the hardware and can technically access keys), CloudHSM means <strong>AWS has zero access to your keys</strong>. The hardware is yours. The key material never leaves the HSM. Required for the strictest regulatory requirements.</p>
+
+        <div class="highlight">
+            <strong>💡 KMS vs CloudHSM — The Mental Model:</strong><br>
+            <strong>KMS</strong> = AWS-managed key service. AWS operates the hardware. Multi-tenant. AWS can comply with law enforcement requests.<br>
+            <strong>CloudHSM</strong> = You rent dedicated hardware. AWS cannot see or access your keys. Single-tenant HSM. FIPS 140-2 Level 3 certified.
+        </div>
+
+        <div class="grid-3">
+            <div class="metric">
+                <div class="metric-value">FIPS 140-2</div>
+                <div class="metric-label">Level 3 Certified</div>
+                <div class="metric-sub">Highest hardware certification for cryptographic modules. Required for some government/banking regulations</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Single-Tenant</div>
+                <div class="metric-label">Hardware</div>
+                <div class="metric-sub">Dedicated HSM hardware for your account only — not shared with other AWS customers</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">~$1.60/hr</div>
+                <div class="metric-label">Per HSM</div>
+                <div class="metric-sub">~$1,150/month per HSM device. Use 2+ for HA (cluster). Much more expensive than KMS.</div>
+            </div>
+        </div>
+
+        <h3>Architecture — CloudHSM Cluster for Database Encryption</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 700 185" width="680" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr8" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- App -->
+                <rect x="10" y="70" width="100" height="45" rx="8" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="60" y="89" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="9" font-weight="600">APPLICATION</text>
+                <text x="60" y="104" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">EC2 + HSM Client</text>
+                <!-- Arrow -->
+                <line x1="110" y1="92" x2="148" y2="92" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr8)"/>
+                <!-- VPC CloudHSM cluster -->
+                <rect x="150" y="10" width="270" height="155" rx="8" fill="rgba(255,71,87,0.06)" stroke="rgba(255,71,87,0.3)" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="285" y="28" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="8" font-weight="600">VPC — CloudHSM CLUSTER (HA)</text>
+                <!-- HSM 1 -->
+                <rect x="165" y="40" width="110" height="75" rx="8" fill="rgba(255,71,87,0.15)" stroke="#ff4757" stroke-width="1.5"/>
+                <text x="220" y="60" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="9" font-weight="600">HSM 1</text>
+                <text x="220" y="75" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">AZ-a</text>
+                <text x="220" y="90" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">FIPS 140-2 L3</text>
+                <text x="220" y="103" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Keys never leave HW</text>
+                <!-- HSM 2 -->
+                <rect x="295" y="40" width="110" height="75" rx="8" fill="rgba(255,71,87,0.15)" stroke="#ff4757" stroke-width="1.5"/>
+                <text x="350" y="60" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="9" font-weight="600">HSM 2</text>
+                <text x="350" y="75" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">AZ-b</text>
+                <text x="350" y="90" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">FIPS 140-2 L3</text>
+                <text x="350" y="103" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Keys synced in cluster</text>
+                <!-- AWS zero access -->
+                <text x="285" y="145" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8">⚠ AWS has ZERO access to key material</text>
+                <text x="285" y="157" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">You manage users/keys via HSM client SDK</text>
+                <!-- Arrow to DB -->
+                <line x1="420" y1="92" x2="468" y2="92" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr8)"/>
+                <!-- RDS -->
+                <rect x="470" y="65" width="110" height="55" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="525" y="85" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">RDS / Oracle</text>
+                <text x="525" y="100" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">TDE encryption</text>
+                <text x="525" y="113" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Key from CloudHSM</text>
+                <!-- KMS custom key store -->
+                <rect x="470" y="135" width="200" height="45" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+                <text x="570" y="153" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="8" font-weight="600">KMS CUSTOM KEY STORE</text>
+                <text x="570" y="168" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">KMS API + CloudHSM backing = best of both worlds</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏦 Real-World Use Case</div>
+            <div class="usecase-title">Investment Bank — Regulatory Requirement for HSM</div>
+            <p style="font-size:14px;">A global investment bank is subject to regulations requiring that encryption keys for trading system data are stored in FIPS 140-2 Level 3 certified hardware that the bank exclusively controls — not shared with any cloud provider. They deploy a <strong>2-node CloudHSM cluster</strong> across two AZs. Their Oracle databases use Transparent Data Encryption (TDE) with keys stored exclusively in CloudHSM. AWS cannot access the keys under any circumstance — not even with a subpoena, because the keys are in hardware AWS cannot access. The bank owns the key material, AWS just provides the physical hardware and networking.</p>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — If You Lose Your HSM Keys, They're Gone Forever:</strong> Unlike KMS (where AWS has backup mechanisms), if you lose the HSM credentials and have no backup, your encrypted data is permanently inaccessible. CloudHSM is single-tenant — AWS cannot recover your keys. Always deploy an HSM cluster (minimum 2 nodes) and maintain key backups in a separate HSM cluster.
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "FIPS 140-2 Level 3, regulatory requirement for HSM" → <strong>AWS CloudHSM</strong><br>
+            • "AWS must not have access to encryption keys" → <strong>CloudHSM</strong> (KMS doesn't meet this)<br>
+            • "TDE (Transparent Data Encryption) for Oracle/SQL Server on AWS" → <strong>CloudHSM</strong><br>
+            • "KMS-compatible but HSM-backed" → <strong>KMS Custom Key Store backed by CloudHSM</strong><br>
+            • CloudHSM is <strong>much more expensive</strong> than KMS — exam uses cost/regulatory tradeoff questions
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════ BLOCK 3: IDENTITY & THREAT DETECTION ═══════════════════════════════════════ -->
+<section>
+    <h2>🔐 Block 3 — Identity, Threat Detection & Firewall</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 01:00 – 01:35</span>
+        <span class="cat-bar-desc">5 Services · App Auth · Threat Intel · AD Integration · WAF · GuardDuty</span>
+    </div>
+
+    <!-- AMAZON COGNITO -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2a1a4a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(167,139,250,0.25)" stroke="#a78bfa" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#a78bfa">👤</text></svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Cognito</div>
+                <div class="service-subtitle">User Pools (AuthN) · Identity Pools (AuthZ) · Social Login · MFA · Millions of Users</div>
+            </div>
+        </div>
+
+        <p>Amazon Cognito lets you <strong>add user sign-up, sign-in, and access control to web/mobile apps in minutes</strong>. It handles the authentication heavy lifting — passwords, MFA, social logins (Google, Facebook, Apple), SAML federation — so you don't build it yourself. It scales to hundreds of millions of users.</p>
+
+        <div class="info-box">
+            <strong>💡 Two Components — You MUST Know the Difference:</strong><br>
+            <strong>User Pools</strong> = Authentication (AuthN). Who are you? Sign-up/sign-in, password management, MFA, JWT tokens. Think: user directory.<br>
+            <strong>Identity Pools</strong> = Authorization (AuthZ). What can you access? Exchanges a User Pool JWT (or social token) for <strong>temporary AWS credentials</strong> (via STS). Grants access to AWS resources directly.
+        </div>
+
+        <h3>Architecture — Web App with Social Login + S3 Access</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 720 200" width="700" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr9" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- User -->
+                <rect x="5" y="80" width="80" height="40" rx="8" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="45" y="98" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="8" font-weight="600">📱 USER</text>
+                <text x="45" y="111" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Mobile / Web</text>
+                <!-- Login options -->
+                <rect x="5" y="135" width="80" height="55" rx="6" fill="rgba(255,153,0,0.06)" stroke="rgba(255,153,0,0.2)" stroke-width="1"/>
+                <text x="45" y="152" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="7">Login via:</text>
+                <text x="45" y="165" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6.5">• Email/Password</text>
+                <text x="45" y="177" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6.5">• Google / Facebook</text>
+                <text x="45" y="189" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6.5">• SAML / OIDC</text>
+                <!-- Arrow to User Pool -->
+                <line x1="85" y1="100" x2="125" y2="100" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr9)"/>
+                <!-- User Pool -->
+                <rect x="127" y="60" width="120" height="80" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="187" y="80" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="9" font-weight="600">USER POOL</text>
+                <text x="187" y="96" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">AuthN — Who are you?</text>
+                <text x="187" y="111" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Returns JWT token</text>
+                <text x="187" y="124" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">MFA, password policy</text>
+                <!-- Arrow JWT to API GW -->
+                <line x1="247" y1="80" x2="288" y2="55" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr9)"/>
+                <rect x="290" y="25" width="120" height="50" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="350" y="45" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">API GATEWAY</text>
+                <text x="350" y="60" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Validates JWT from Cognito</text>
+                <!-- Arrow JWT to Identity Pool -->
+                <line x1="247" y1="120" x2="288" y2="135" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr9)"/>
+                <!-- Identity Pool -->
+                <rect x="290" y="120" width="130" height="75" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="355" y="140" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="9" font-weight="600">IDENTITY POOL</text>
+                <text x="355" y="155" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">AuthZ — What can you do?</text>
+                <text x="355" y="170" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Exchanges JWT → AWS</text>
+                <text x="355" y="183" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">temp credentials (STS)</text>
+                <!-- Arrows from Identity Pool -->
+                <line x1="420" y1="80" x2="460" y2="60" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr9)"/>
+                <line x1="420" y1="157" x2="460" y2="150" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr9)"/>
+                <rect x="462" y="20" width="110" height="55" rx="8" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="517" y="40" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="9" font-weight="600">S3 / DynamoDB</text>
+                <text x="517" y="55" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Direct AWS resource</text>
+                <text x="517" y="68" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">access with temp creds</text>
+                <rect x="462" y="115" width="110" height="55" rx="8" fill="rgba(255,71,87,0.15)" stroke="#ff4757" stroke-width="1.5"/>
+                <text x="517" y="135" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="9" font-weight="600">LAMBDA</text>
+                <text x="517" y="150" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Backend logic</text>
+                <text x="517" y="165" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">IAM role enforced</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">📱 Real-World Use Case</div>
+            <div class="usecase-title">Fitness App — 5 Million Users, Google & Apple Login</div>
+            <p style="font-size:14px;">A fitness app needs user registration, login with Google/Apple, MFA for premium users, and the ability to upload workout videos directly to their S3 bucket from the mobile app. With <strong>Cognito User Pool</strong>, they get sign-up/sign-in, Google/Apple OAuth federation, and MFA out of the box. With <strong>Cognito Identity Pool</strong>, authenticated users receive temporary AWS credentials scoped to their own S3 "folder" (prefix) — the mobile app uploads directly to S3 without going through a backend server. Zero auth code written from scratch. Scales to 5M users automatically.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "User sign-up / sign-in for web or mobile app" → <strong>Cognito User Pool</strong><br>
+            • "Grant AWS resource access (S3, DynamoDB) to app users" → <strong>Cognito Identity Pool</strong><br>
+            • "Social login (Google, Facebook, Apple)" → <strong>Cognito User Pool</strong> federated IdP<br>
+            • "Mobile app directly access S3 — no backend server" → <strong>Identity Pool → STS temp creds</strong><br>
+            • "Millions of users" → Cognito is designed for this scale
+        </div>
+    </div>
+
+    <!-- AMAZON DETECTIVE -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#2a2a3a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(74,144,217,0.25)" stroke="#4a90d9" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#4a90d9">🔍</text></svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon Detective</div>
+                <div class="service-subtitle">Security Investigation · Root Cause Analysis · Graph Analysis · GuardDuty Integration</div>
+            </div>
+        </div>
+
+        <p>Amazon Detective uses <strong>machine learning and graph analysis</strong> to help you investigate security incidents and find the root cause quickly. It automatically collects log data from your AWS resources (VPC Flow Logs, CloudTrail, GuardDuty findings) and builds an interactive graph model — so when GuardDuty alerts on suspicious activity, Detective helps you understand <em>who did what, when, and from where</em>.</p>
+
+        <div class="info-box">
+            <strong>💡 The Key Distinction — Detective vs GuardDuty vs Security Hub:</strong><br>
+            <strong>GuardDuty</strong> = Detects threats (raises the alert — "This looks suspicious!")<br>
+            <strong>Amazon Detective</strong> = Investigates the alert (answers "How did this happen? What's the blast radius?")<br>
+            <strong>Security Hub</strong> = Aggregates findings from GuardDuty, Inspector, Macie etc. into a single dashboard
+        </div>
+
+        <h3>Architecture — Security Investigation Flow</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 700 175" width="680" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr10" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- Data Sources -->
+                <rect x="5" y="15" width="100" height="145" rx="8" fill="rgba(74,144,217,0.08)" stroke="rgba(74,144,217,0.25)" stroke-width="1"/>
+                <text x="55" y="32" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="7.5" font-weight="600">LOG SOURCES</text>
+                <rect x="12" y="40" width="85" height="20" rx="4" fill="rgba(74,144,217,0.12)" stroke="#4a90d9" stroke-width="0.5"/>
+                <text x="54" y="54" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">VPC Flow Logs</text>
+                <rect x="12" y="66" width="85" height="20" rx="4" fill="rgba(74,144,217,0.12)" stroke="#4a90d9" stroke-width="0.5"/>
+                <text x="54" y="80" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">CloudTrail</text>
+                <rect x="12" y="92" width="85" height="20" rx="4" fill="rgba(74,144,217,0.12)" stroke="#4a90d9" stroke-width="0.5"/>
+                <text x="54" y="106" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">GuardDuty Findings</text>
+                <rect x="12" y="118" width="85" height="20" rx="4" fill="rgba(74,144,217,0.12)" stroke="#4a90d9" stroke-width="0.5"/>
+                <text x="54" y="132" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">EKS Audit Logs</text>
+                <!-- Arrow -->
+                <line x1="105" y1="88" x2="145" y2="88" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr10)"/>
+                <!-- Detective -->
+                <rect x="147" y="35" width="155" height="105" rx="8" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="224" y="56" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="9" font-weight="600">AMAZON DETECTIVE</text>
+                <text x="224" y="73" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">ML-powered graph model</text>
+                <text x="224" y="90" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• Who did this action?</text>
+                <text x="224" y="103" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• From which IP / role?</text>
+                <text x="224" y="116" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• What else did they access?</text>
+                <text x="224" y="129" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">• Timeline of events</text>
+                <!-- Arrow to investigation -->
+                <line x1="302" y1="88" x2="342" y2="88" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr10)"/>
+                <!-- Visual graph -->
+                <rect x="344" y="35" width="150" height="105" rx="8" fill="rgba(255,71,87,0.1)" stroke="#ff4757" stroke-width="1.5"/>
+                <text x="419" y="54" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="9" font-weight="600">INVESTIGATION</text>
+                <text x="419" y="54" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="9" font-weight="600"></text>
+                <text x="419" y="70" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="9" font-weight="600">GRAPH</text>
+                <circle cx="390" cy="100" r="8" fill="rgba(255,153,0,0.3)" stroke="#FF9900" stroke-width="1"/>
+                <text x="390" y="104" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="6">IAM</text>
+                <circle cx="420" cy="115" r="8" fill="rgba(255,71,87,0.3)" stroke="#ff4757" stroke-width="1"/>
+                <text x="420" y="119" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="6">EC2</text>
+                <circle cx="450" cy="100" r="8" fill="rgba(0,214,143,0.3)" stroke="#00d68f" stroke-width="1"/>
+                <text x="450" y="104" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="6">S3</text>
+                <line x1="398" y1="100" x2="412" y2="108" stroke="#FF9900" stroke-width="1"/>
+                <line x1="442" y1="107" x2="428" y2="108" stroke="#FF9900" stroke-width="1"/>
+                <text x="419" y="135" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Entity relationship map</text>
+                <!-- Arrow to SOC -->
+                <line x1="494" y1="88" x2="534" y2="88" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr10)"/>
+                <rect x="536" y="55" width="140" height="65" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="606" y="75" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">SOC TEAM</text>
+                <text x="606" y="91" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">Root cause identified</text>
+                <text x="606" y="106" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Minutes vs days/weeks</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🕵️ Real-World Use Case</div>
+            <div class="usecase-title">Security Incident — Compromised IAM Credential Investigation</div>
+            <p style="font-size:14px;">GuardDuty raises a <strong>UnauthorizedAccess:IAMUser/TorIPCaller</strong> finding. Someone is using a compromised IAM access key from a Tor exit node. The security team pivots to <strong>Amazon Detective</strong> with one click from the GuardDuty console. Detective's graph immediately shows: which IAM user, all API calls made in the last 30 days, which EC2 instances accessed, S3 buckets listed, and the originating IPs. What would take days of log analysis takes 10 minutes. The team revokes the key and patches the exfiltrated data scope — all before the attacker can extract anything meaningful.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Investigate root cause of a security finding" → <strong>Amazon Detective</strong><br>
+            • "Understand the scope and impact of a security incident" → <strong>Amazon Detective</strong><br>
+            • "Detect threats in real time" → <strong>GuardDuty</strong> (not Detective)<br>
+            • Detective consumes: <strong>VPC Flow Logs, CloudTrail, GuardDuty, EKS audit logs</strong><br>
+            • No agents to install — fully managed, ML-based, passive analysis
+        </div>
+    </div>
+
+    <!-- AWS DIRECTORY SERVICE -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#1a3a1a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(0,214,143,0.25)" stroke="#00d68f" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#00d68f">🗂️</text></svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Directory Service</div>
+                <div class="service-subtitle">Managed Microsoft AD · AD Connector · Simple AD · Corporate Identity in AWS</div>
+            </div>
+        </div>
+
+        <p>AWS Directory Service lets you <strong>run Microsoft Active Directory (AD) on AWS or connect your on-premises AD to AWS</strong>. This is how enterprises let their employees use their existing corporate Windows login (Active Directory) to access AWS services — without maintaining AD infrastructure themselves.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Type</th><th>What It Is</th><th>Use When</th><th>Exam Keyword</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>AWS Managed Microsoft AD</strong></td><td>Full AD in AWS (AWS managed DCs)</td><td>Need real AD features, MFA, trust with on-prem AD</td><td>"Full Microsoft AD on AWS"</td></tr>
+                    <tr><td><strong>AD Connector</strong></td><td>Proxy — redirects to on-prem AD</td><td>Existing on-prem AD, don't want to replicate users to AWS</td><td>"Use existing on-prem AD, no replication"</td></tr>
+                    <tr><td><strong>Simple AD</strong></td><td>Samba 4 AD-compatible, cheapest</td><td>Small scale, basic AD features, no trust with on-prem</td><td>"Simple, cost-effective AD, small company"</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Architecture — Hybrid AD for Enterprise AWS Access</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 700 180" width="680" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr11" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- On-prem -->
+                <rect x="5" y="25" width="145" height="130" rx="8" fill="rgba(74,144,217,0.08)" stroke="rgba(74,144,217,0.3)" stroke-width="1" stroke-dasharray="4,2"/>
+                <text x="77" y="45" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="8" font-weight="600">ON-PREMISES</text>
+                <rect x="15" y="55" width="120" height="45" rx="6" fill="rgba(74,144,217,0.15)" stroke="#4a90d9" stroke-width="1"/>
+                <text x="75" y="73" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="8" font-weight="600">CORPORATE AD</text>
+                <text x="75" y="89" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Windows Domain Controllers</text>
+                <rect x="15" y="110" width="120" height="35" rx="6" fill="rgba(56,189,248,0.1)" stroke="#38bdf8" stroke-width="1"/>
+                <text x="75" y="125" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="7">Employees login</text>
+                <text x="75" y="137" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6">with Windows creds</text>
+                <!-- VPN/DX -->
+                <line x1="150" y1="77" x2="205" y2="77" stroke="#FF9900" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr11)"/>
+                <text x="177" y="68" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">VPN / DX</text>
+                <!-- AD Connector or Managed AD -->
+                <rect x="207" y="35" width="155" height="115" rx="8" fill="rgba(0,214,143,0.15)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="284" y="56" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">AWS DIRECTORY</text>
+                <text x="284" y="70" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="9" font-weight="600">SERVICE</text>
+                <rect x="217" y="80" width="130" height="25" rx="5" fill="rgba(0,214,143,0.1)" stroke="#00d68f" stroke-width="0.5"/>
+                <text x="282" y="96" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">AWS Managed Microsoft AD</text>
+                <rect x="217" y="110" width="130" height="25" rx="5" fill="rgba(0,214,143,0.1)" stroke="#00d68f" stroke-width="0.5"/>
+                <text x="282" y="126" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">AD Connector (proxy)</text>
+                <!-- Arrows to AWS services -->
+                <line x1="362" y1="77" x2="402" y2="50" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr11)"/>
+                <line x1="362" y1="100" x2="402" y2="100" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr11)"/>
+                <line x1="362" y1="125" x2="402" y2="150" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr11)"/>
+                <!-- AWS Services -->
+                <rect x="404" y="25" width="110" height="40" rx="6" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="459" y="43" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8" font-weight="600">AWS CONSOLE</text>
+                <text x="459" y="57" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">SSO with AD creds</text>
+                <rect x="404" y="80" width="110" height="40" rx="6" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="459" y="98" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="8" font-weight="600">EC2 WINDOWS</text>
+                <text x="459" y="112" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Domain-joined instances</text>
+                <rect x="404" y="135" width="110" height="40" rx="6" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="459" y="153" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="8" font-weight="600">AMAZON RDS</text>
+                <text x="459" y="167" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Windows Auth</text>
+                <!-- IAM Identity Center -->
+                <rect x="530" y="50" width="155" height="80" rx="6" fill="rgba(255,153,0,0.06)" stroke="rgba(255,153,0,0.25)" stroke-width="1" stroke-dasharray="4,2"/>
+                <text x="607" y="70" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8" font-weight="600">IAM IDENTITY</text>
+                <text x="607" y="83" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8" font-weight="600">CENTER (SSO)</text>
+                <text x="607" y="100" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Often paired with</text>
+                <text x="607" y="113" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Directory Service for</text>
+                <text x="607" y="126" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">multi-account SSO</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏢 Real-World Use Case</div>
+            <div class="usecase-title">Enterprise Migration — 5,000 Employees, Existing Windows AD</div>
+            <p style="font-size:14px;">A 5,000-person manufacturer migrates workloads to AWS. They have an existing on-premises Windows AD with 5,000 user accounts — they're not rebuilding that in AWS. They deploy an <strong>AD Connector</strong> (connected via Direct Connect) which acts as a proxy — when an employee signs into the AWS Console, the AD Connector forwards the authentication request to the on-premises AD. Employees use the same username/password they've always had. EC2 Windows instances join the existing domain. RDS SQL Server uses Windows Authentication. No user migration, no password reset, zero user disruption.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Use on-prem AD credentials for AWS, no user replication" → <strong>AD Connector</strong><br>
+            • "Full managed Microsoft AD in the cloud, trust with on-prem" → <strong>AWS Managed Microsoft AD</strong><br>
+            • "Small company, cost-effective AD, no trust needed" → <strong>Simple AD</strong><br>
+            • EC2 Windows domain join → needs <strong>Directory Service</strong><br>
+            • RDS SQL Server Windows Authentication → needs <strong>Directory Service</strong>
+        </div>
+    </div>
+
+    <!-- AWS FIREWALL MANAGER -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#3a1a2a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(255,71,87,0.25)" stroke="#ff4757" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#ff4757">🛡️</text></svg>
+            </div>
+            <div>
+                <div class="service-title">AWS Firewall Manager</div>
+                <div class="service-subtitle">Centralised WAF · Shield · Security Groups · Org-wide · Multi-Account</div>
+            </div>
+        </div>
+
+        <p>AWS Firewall Manager lets you <strong>centrally configure and manage firewall rules across all accounts and applications in your AWS Organization</strong>. Instead of configuring WAF rules in 50 different AWS accounts, you define the policy once in Firewall Manager and it enforces it everywhere — new accounts included, automatically.</p>
+
+        <div class="info-box">
+            <strong>💡 The Key Insight — Why Firewall Manager Exists:</strong><br>
+            Large enterprises have 100s of AWS accounts. Without Firewall Manager, security teams must manually configure WAF rules in every account — and new accounts start unprotected. Firewall Manager solves this: <strong>define once, enforce everywhere, auto-remediate violations</strong>.
+        </div>
+
+        <h3>Architecture — Organisation-Wide WAF Policy</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 700 190" width="680" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr12" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- Security admin account -->
+                <rect x="5" y="35" width="165" height="120" rx="8" fill="rgba(255,71,87,0.1)" stroke="#ff4757" stroke-width="1.5"/>
+                <text x="87" y="55" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="8" font-weight="600">SECURITY ADMIN ACCOUNT</text>
+                <rect x="15" y="64" width="145" height="80" rx="6" fill="rgba(255,71,87,0.12)" stroke="#ff4757" stroke-width="1"/>
+                <text x="87" y="82" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="8" font-weight="600">FIREWALL MANAGER</text>
+                <text x="87" y="97" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Define policies:</text>
+                <text x="87" y="110" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6.5">• WAF rules (OWASP Top 10)</text>
+                <text x="87" y="122" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6.5">• Shield Advanced protection</text>
+                <text x="87" y="134" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6.5">• Security Group policies</text>
+                <!-- Arrows to member accounts -->
+                <line x1="170" y1="75" x2="225" y2="45" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr12)"/>
+                <line x1="170" y1="95" x2="225" y2="95" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr12)"/>
+                <line x1="170" y1="125" x2="225" y2="150" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr12)"/>
+                <!-- Member accounts -->
+                <rect x="227" y="15" width="130" height="55" rx="6" fill="rgba(0,214,143,0.1)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="292" y="33" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="8" font-weight="600">ACCOUNT A — PROD</text>
+                <text x="292" y="48" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">WAF auto-applied to ALB</text>
+                <text x="292" y="60" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="6">✓ Compliant</text>
+                <rect x="227" y="73" width="130" height="45" rx="6" fill="rgba(0,214,143,0.1)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="292" y="91" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="8" font-weight="600">ACCOUNT B — DEV</text>
+                <text x="292" y="107" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Same WAF rules enforced</text>
+                <rect x="227" y="125" width="130" height="55" rx="6" fill="rgba(255,153,0,0.1)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="292" y="143" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8" font-weight="600">NEW ACCOUNT (just created)</text>
+                <text x="292" y="158" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Auto-enrolled in policy</text>
+                <text x="292" y="172" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="6">✓ Protected from day 1</text>
+                <!-- Arrow to violation remediation -->
+                <line x1="357" y1="95" x2="405" y2="95" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr12)"/>
+                <rect x="407" y="30" width="145" height="130" rx="8" fill="rgba(74,144,217,0.1)" stroke="#4a90d9" stroke-width="1.5"/>
+                <text x="479" y="50" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="8" font-weight="600">WHAT FMR MANAGES</text>
+                <text x="479" y="68" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">• AWS WAF on ALBs / CF</text>
+                <text x="479" y="83" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">• Shield Advanced enrolment</text>
+                <text x="479" y="98" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">• Security Group compliance</text>
+                <text x="479" y="113" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">• Network Firewall policies</text>
+                <text x="479" y="128" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">• Route 53 Resolver DNS FW</text>
+                <text x="479" y="148" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="7">Auto-remediation option</text>
+                <!-- Security Hub -->
+                <rect x="570" y="50" width="120" height="90" rx="6" fill="rgba(167,139,250,0.1)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="630" y="70" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="8" font-weight="600">SECURITY HUB</text>
+                <text x="630" y="88" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Violation findings</text>
+                <text x="630" y="103" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">sent here for</text>
+                <text x="630" y="118" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">central visibility</text>
+                <!-- Requirement -->
+                <rect x="5" y="168" width="400" height="18" rx="4" fill="rgba(255,153,0,0.05)" stroke="rgba(255,153,0,0.2)" stroke-width="1"/>
+                <text x="205" y="180" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="7">Requires: AWS Organizations + Firewall Manager admin account designated</text>
+            </svg>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🏢 Real-World Use Case</div>
+            <div class="usecase-title">Global Enterprise — 200 AWS Accounts, WAF in Every One</div>
+            <p style="font-size:14px;">A global retail company has 200 AWS accounts across business units. After a WAF bypass attack on one account, leadership mandates WAF rules on every public ALB and CloudFront distribution — across all 200 accounts. The security team uses <strong>AWS Firewall Manager</strong> to define a WAF policy with OWASP Top 10 rules. Firewall Manager automatically applies and enforces the policy across all 200 accounts. When a developer accidentally removes a WAF rule, Firewall Manager auto-remediates within minutes. New accounts automatically inherit protection. One policy, zero gaps.</p>
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Centrally manage WAF rules across multiple AWS accounts" → <strong>AWS Firewall Manager</strong><br>
+            • "Automatically protect new accounts in an AWS Organisation" → <strong>Firewall Manager</strong><br>
+            • "Ensure all ALBs have WAF enabled — auto-remediate violations" → <strong>Firewall Manager</strong><br>
+            • Requires: <strong>AWS Organizations + Designated Firewall Manager admin account</strong><br>
+            • Manages: WAF, Shield Advanced, Security Groups, Network Firewall, DNS Firewall
+        </div>
+    </div>
+
+    <!-- AMAZON GUARDDUTY -->
+    <div class="service-card">
+        <div class="service-header">
+            <div class="service-icon" style="background:#1a2a3a;">
+                <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="16" fill="rgba(56,189,248,0.25)" stroke="#38bdf8" stroke-width="1.5"/><text x="17" y="22" text-anchor="middle" font-size="16" fill="#38bdf8">👁️</text></svg>
+            </div>
+            <div>
+                <div class="service-title">Amazon GuardDuty</div>
+                <div class="service-subtitle">Intelligent Threat Detection · No Agents · ML-Powered · CloudTrail · DNS · VPC Flow</div>
+            </div>
+        </div>
+
+        <p>GuardDuty is a <strong>fully managed threat detection service</strong> that continuously monitors your AWS accounts for malicious activity and unauthorised behaviour. It analyses CloudTrail events, VPC Flow Logs, and DNS logs using machine learning and threat intelligence feeds — <strong>without you installing any agents or configuring log pipelines</strong>. Enable with one click.</p>
+
+        <div class="grid-4">
+            <div class="metric">
+                <div class="metric-value">One Click</div>
+                <div class="metric-label">To Enable</div>
+                <div class="metric-sub">No agents. No log configuration. Instant coverage.</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">3</div>
+                <div class="metric-label">Data Sources</div>
+                <div class="metric-sub">CloudTrail, VPC Flow Logs, DNS logs (all analysed automatically)</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">30 Days</div>
+                <div class="metric-label">Free Trial</div>
+                <div class="metric-sub">Full features, no charge. Estimate your cost before committing.</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">Multi-Acct</div>
+                <div class="metric-label">Delegated Admin</div>
+                <div class="metric-sub">One master account manages GuardDuty across your entire Org</div>
+            </div>
+        </div>
+
+        <h3>Architecture — GuardDuty Threat Detection + Auto-Response</h3>
+        <div class="arch-diagram">
+            <svg viewBox="0 0 720 200" width="700" xmlns="http://www.w3.org/2000/svg">
+                <defs><marker id="arr13" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#FF9900"/></marker></defs>
+                <!-- Data feeds -->
+                <rect x="5" y="10" width="115" height="165" rx="8" fill="rgba(74,144,217,0.06)" stroke="rgba(74,144,217,0.2)" stroke-width="1"/>
+                <text x="62" y="28" text-anchor="middle" fill="#4a90d9" font-family="IBM Plex Mono" font-size="7.5" font-weight="600">DATA SOURCES</text>
+                <rect x="12" y="36" width="100" height="25" rx="4" fill="rgba(74,144,217,0.12)" stroke="#4a90d9" stroke-width="0.5"/>
+                <text x="62" y="53" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7.5">CloudTrail Logs</text>
+                <rect x="12" y="67" width="100" height="25" rx="4" fill="rgba(74,144,217,0.12)" stroke="#4a90d9" stroke-width="0.5"/>
+                <text x="62" y="84" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7.5">VPC Flow Logs</text>
+                <rect x="12" y="98" width="100" height="25" rx="4" fill="rgba(74,144,217,0.12)" stroke="#4a90d9" stroke-width="0.5"/>
+                <text x="62" y="115" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7.5">DNS Query Logs</text>
+                <rect x="12" y="129" width="100" height="35" rx="4" fill="rgba(56,189,248,0.1)" stroke="#38bdf8" stroke-width="0.5"/>
+                <text x="62" y="145" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="7">Threat Intel</text>
+                <text x="62" y="158" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="6.5">Known bad IPs/domains</text>
+                <!-- Arrow -->
+                <line x1="120" y1="90" x2="162" y2="90" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr13)"/>
+                <!-- GuardDuty -->
+                <rect x="164" y="35" width="155" height="110" rx="8" fill="rgba(56,189,248,0.15)" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="241" y="56" text-anchor="middle" fill="#38bdf8" font-family="IBM Plex Mono" font-size="9" font-weight="600">AMAZON GUARDDUTY</text>
+                <text x="241" y="73" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="8">ML + Anomaly Detection</text>
+                <text x="241" y="90" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">Finds: Crypto-mining, recon,</text>
+                <text x="241" y="103" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">C&amp;C comms, data exfil,</text>
+                <text x="241" y="116" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">compromised IAM creds,</text>
+                <text x="241" y="129" text-anchor="middle" fill="#687a92" font-family="IBM Plex Mono" font-size="7">unusual API calls</text>
+                <!-- Arrow to findings -->
+                <line x1="319" y1="90" x2="359" y2="75" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr13)"/>
+                <line x1="319" y1="100" x2="359" y2="115" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr13)"/>
+                <!-- Security Hub -->
+                <rect x="361" y="40" width="130" height="55" rx="8" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+                <text x="426" y="58" text-anchor="middle" fill="#a78bfa" font-family="IBM Plex Mono" font-size="8" font-weight="600">SECURITY HUB</text>
+                <text x="426" y="73" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Aggregated findings</text>
+                <text x="426" y="86" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">SIEM / SOC dashboard</text>
+                <!-- EventBridge rule -->
+                <rect x="361" y="100" width="130" height="55" rx="8" fill="rgba(255,153,0,0.15)" stroke="#FF9900" stroke-width="1.5"/>
+                <text x="426" y="118" text-anchor="middle" fill="#FF9900" font-family="IBM Plex Mono" font-size="8" font-weight="600">EVENTBRIDGE</text>
+                <text x="426" y="133" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Rule: GuardDuty Finding</text>
+                <text x="426" y="148" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">→ Trigger Lambda</text>
+                <!-- Lambda responses -->
+                <line x1="491" y1="127" x2="535" y2="100" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr13)"/>
+                <line x1="491" y1="137" x2="535" y2="160" stroke="#FF9900" stroke-width="1.5" marker-end="url(#arr13)"/>
+                <rect x="537" y="60" width="160" height="55" rx="6" fill="rgba(255,71,87,0.12)" stroke="#ff4757" stroke-width="1.5"/>
+                <text x="617" y="78" text-anchor="middle" fill="#ff4757" font-family="IBM Plex Mono" font-size="8" font-weight="600">AUTO-RESPONSE</text>
+                <text x="617" y="93" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Isolate EC2 instance</text>
+                <text x="617" y="106" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Revoke IAM credentials</text>
+                <rect x="537" y="130" width="160" height="45" rx="6" fill="rgba(0,214,143,0.12)" stroke="#00d68f" stroke-width="1.5"/>
+                <text x="617" y="150" text-anchor="middle" fill="#00d68f" font-family="IBM Plex Mono" font-size="8" font-weight="600">SNS → SLACK ALERT</text>
+                <text x="617" y="165" text-anchor="middle" fill="#c8d6e8" font-family="IBM Plex Mono" font-size="7">Security team notified</text>
+            </svg>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Finding Type</th><th>What It Means</th></tr></thead>
+                <tbody>
+                    <tr><td><code>CryptoCurrency:EC2/BitcoinTool.B</code></td><td>Your EC2 instance is mining cryptocurrency — likely compromised</td></tr>
+                    <tr><td><code>UnauthorizedAccess:IAMUser/TorIPCaller</code></td><td>IAM API calls from Tor exit node — credentials possibly stolen</td></tr>
+                    <tr><td><code>Recon:EC2/PortProbeUnprotectedPort</code></td><td>External party scanning your EC2 ports — reconnaissance phase</td></tr>
+                    <tr><td><code>Trojan:EC2/BlackholeTraffic</code></td><td>EC2 communicating with known command-and-control (C2) server</td></tr>
+                    <tr><td><code>Stealth:IAMUser/PasswordPolicyChange</code></td><td>Attacker weakening your password policy — insider threat signal</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="usecase">
+            <div class="usecase-label">🚨 Real-World Use Case</div>
+            <div class="usecase-title">Startup — Crypto-Mining Attack Caught in 10 Minutes</div>
+            <p style="font-size:14px;">A startup's developer accidentally committed AWS access keys to a public GitHub repo. Within hours, an attacker found the keys and launched 50 EC2 GPU instances to mine cryptocurrency — racking up $4,000/hour. <strong>GuardDuty</strong> detected the <code>CryptoCurrency:EC2/BitcoinTool.B</code> finding within minutes. An EventBridge rule triggered a Lambda that revoked the compromised access key and sent a Slack alert. The security team logged in, terminated the instances, and rotated credentials. Total bill: $800 (caught in 12 minutes). Without GuardDuty estimate: $50,000+ over a weekend.</p>
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 Exam Trap — GuardDuty Must Be Enabled (It's NOT On By Default):</strong> GuardDuty is opt-in. Many exam questions describe a scenario where GuardDuty "would have" caught something — the answer is often simply "enable GuardDuty." Also: disabling GuardDuty for even 30 seconds creates a blind spot — and GuardDuty alerts if it's disabled.
+        </div>
+
+        <div class="exam-box">
+            <strong>🎯 SAA-C03 Exam Tips:</strong><br>
+            • "Detect threats across your AWS account, no agents" → <strong>Amazon GuardDuty</strong><br>
+            • "Identify crypto-mining on EC2, compromised IAM creds" → <strong>GuardDuty</strong><br>
+            • "Automatically respond to GuardDuty findings" → <strong>GuardDuty → EventBridge → Lambda</strong><br>
+            • "Single pane of glass for all GuardDuty findings across org" → <strong>GuardDuty Delegated Admin + Security Hub</strong><br>
+            • <strong>NOT</strong> for in-depth investigation → use <strong>Amazon Detective</strong> after GuardDuty raises a finding
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════ BLOCK 4: PRACTICE QUESTIONS ═══════════════════════════════════════ -->
+<section>
+    <h2>🎯 Block 4 — Practice Questions</h2>
+    <div class="cat-bar">
+        <span class="cat-bar-icon">⏱️</span>
+        <span class="cat-bar-label">Time: 01:35 – 02:00</span>
+        <span class="cat-bar-desc">12 Exam-Style Questions · SAA-C03 Format · Scenario-Based</span>
+    </div>
+
+    <!-- Q1 -->
+    <div class="practice-question">
+        <div class="question-number">Question 01 / 12 — Amazon Translate</div>
+        <div class="question-text">A company wants to add real-time chat translation to their customer support platform. Support agents speak English only, but customers chat in 15 different languages. The solution must not require the company to manage any ML infrastructure. Which is the MOST appropriate solution?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> Train a custom neural network model in Amazon SageMaker and deploy it behind an API Gateway endpoint.</div>
+            <div class="answer-option"><span class="answer-label">B</span> Use Amazon Translate's real-time API to translate each incoming message before displaying it to the agent.</div>
+            <div class="answer-option"><span class="answer-label">C</span> Use Amazon Transcribe to transcribe messages and Amazon Comprehend to translate them.</div>
+            <div class="answer-option"><span class="answer-label">D</span> Store all messages in S3 and run an Amazon Translate batch job every 5 minutes.</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: B</div>
+            <div class="explanation-text"><strong>B is correct</strong> — Amazon Translate's synchronous (real-time) API is purpose-built for this. No ML infrastructure to manage. A is wrong — SageMaker requires ML expertise and infra management. C is wrong — Transcribe converts speech to text (not text-to-text), and Comprehend does NLP/sentiment analysis, not translation. D is wrong — batch jobs every 5 minutes aren't real-time (messages would be 5 minutes stale).</div>
+        </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="practice-question">
+        <div class="question-number">Question 02 / 12 — Elastic Transcoder</div>
+        <div class="question-text">A media company stores raw video uploads in an Amazon S3 bucket. When a video is uploaded, they need it automatically converted into three formats: 1080p MP4 for web, 720p MP4 for tablet, and 360p MP4 for mobile. The engineering team should receive an email when each conversion job completes or fails. Which architecture meets these requirements with the LEAST operational overhead?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> S3 Event → Lambda → Elastic Transcoder Job (3 presets) → SNS notification on completion.</div>
+            <div class="answer-option"><span class="answer-label">B</span> Deploy FFmpeg on EC2 Auto Scaling Group, triggered by S3 events. EC2 sends SNS notification after conversion.</div>
+            <div class="answer-option"><span class="answer-label">C</span> Use Amazon Kinesis Video Streams to ingest uploads and apply transformations using Rekognition.</div>
+            <div class="answer-option"><span class="answer-label">D</span> S3 Event → AWS Glue job to transcode the video → SES email on completion.</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: A</div>
+            <div class="explanation-text"><strong>A is correct</strong> — S3 event notification triggers Lambda which creates an Elastic Transcoder job with 3 output presets. Elastic Transcoder natively supports SNS notifications on job complete/error. Zero servers. B has high operational overhead (managing EC2 fleet). C is wrong — KVS is for live video streaming, not file format conversion. D is wrong — AWS Glue is an ETL service for data (not video transcoding).</div>
+        </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="practice-question">
+        <div class="question-number">Question 03 / 12 — Kinesis Video Streams</div>
+        <div class="question-text">A home security company manufactures smart doorbell cameras. Customers expect to see a live video stream in their mobile app and receive alerts when motion is detected. The backend must handle 2 million concurrent camera streams and perform real-time face recognition. Which combination of AWS services should the Solutions Architect recommend?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> Amazon Elastic Transcoder + Amazon Rekognition Image</div>
+            <div class="answer-option"><span class="answer-label">B</span> Amazon Kinesis Video Streams + Amazon Rekognition Video</div>
+            <div class="answer-option"><span class="answer-label">C</span> Amazon Kinesis Data Streams + AWS Lambda + OpenCV on EC2</div>
+            <div class="answer-option"><span class="answer-label">D</span> Amazon S3 video upload + Amazon Rekognition Video (batch)</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: B</div>
+            <div class="explanation-text"><strong>B is correct</strong> — Kinesis Video Streams ingests live streams from millions of cameras. Rekognition Video natively integrates with KVS for real-time face/object detection. KVS WebRTC can power the live view in the mobile app. A is wrong — Elastic Transcoder is for file conversion (not live streaming). C requires managing EC2 infrastructure for OpenCV — high operational overhead. D is batch processing — not real-time (5-minute delay minimum).</div>
+        </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="practice-question">
+        <div class="question-number">Question 04 / 12 — AWS Artifact</div>
+        <div class="question-text">A healthcare startup's compliance officer needs to provide their auditors with evidence that AWS meets HIPAA requirements, and also needs to formally sign a Business Associate Agreement (BAA) with AWS before handling Protected Health Information (PHI). What is the SIMPLEST way to accomplish both tasks?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> Contact AWS Support and request the SOC 2 report and BAA via a support ticket.</div>
+            <div class="answer-option"><span class="answer-label">B</span> Use AWS Audit Manager to generate a HIPAA compliance report and sign the BAA there.</div>
+            <div class="answer-option"><span class="answer-label">C</span> Use AWS Artifact to download the HIPAA Eligibility documentation and sign the BAA agreement.</div>
+            <div class="answer-option"><span class="answer-label">D</span> Use AWS Config to assess HIPAA compliance and generate an agreement from the Config console.</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: C</div>
+            <div class="explanation-text"><strong>C is correct</strong> — AWS Artifact is specifically designed for this: download AWS compliance reports (HIPAA eligibility, SOC, PCI, ISO) and sign legal agreements (BAA, NDA). It's self-service, no support ticket needed. A is wrong — opening tickets is unnecessary; Artifact is self-service. B is wrong — Audit Manager collects evidence about YOUR environment's compliance, not AWS's compliance documents. D is wrong — AWS Config assesses resource configuration, not compliance document retrieval.</div>
+        </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="practice-question">
+        <div class="question-number">Question 05 / 12 — AWS Audit Manager</div>
+        <div class="question-text">A financial services company undergoes a PCI DSS audit every quarter. Their compliance team spends 6 weeks before each audit manually pulling CloudTrail logs, security group configurations, and IAM reports to prove compliance. Which service would MOST reduce this manual effort?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> AWS Artifact — download the PCI DSS report from AWS</div>
+            <div class="answer-option"><span class="answer-label">B</span> AWS Audit Manager with the PCI DSS framework — continuously collect and organise evidence</div>
+            <div class="answer-option"><span class="answer-label">C</span> AWS Config with a custom rule set mapped to PCI DSS controls</div>
+            <div class="answer-option"><span class="answer-label">D</span> Amazon Inspector scans for PCI DSS vulnerabilities and generates reports</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: B</div>
+            <div class="explanation-text"><strong>B is correct</strong> — Audit Manager continuously collects evidence (CloudTrail, Config, Security Hub) and maps it to PCI DSS controls automatically. At audit time, you export a pre-organised evidence package. A is wrong — Artifact gives you AWS's PCI DSS report (about AWS), not evidence about your environment. C is a component that feeds INTO Audit Manager, but doesn't organise/package audit evidence. D — Inspector finds software vulnerabilities, not a comprehensive compliance evidence collector.</div>
+        </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="practice-question">
+        <div class="question-number">Question 06 / 12 — AWS Certificate Manager</div>
+        <div class="question-text">A company is deploying a web application using Amazon CloudFront in the us-west-2 region. They want to use a custom domain name (app.example.com) with HTTPS. They request an ACM certificate in us-west-2 and try to attach it to CloudFront, but it is not appearing as an option. What is the MOST likely cause?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> CloudFront does not support custom SSL certificates.</div>
+            <div class="answer-option"><span class="answer-label">B</span> The ACM certificate must be requested in us-east-1 (N. Virginia) to be used with CloudFront.</div>
+            <div class="answer-option"><span class="answer-label">C</span> The domain must be registered in Route 53 to use ACM with CloudFront.</div>
+            <div class="answer-option"><span class="answer-label">D</span> ACM certificates cannot be used with CloudFront — they are only for ALBs.</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: B</div>
+            <div class="explanation-text"><strong>B is correct</strong> — This is one of the most commonly tested ACM facts: CloudFront is a global service, and ACM certificates for CloudFront must ALWAYS be requested in us-east-1 (N. Virginia), regardless of where your origin or users are. Certs in any other region simply won't appear when configuring CloudFront. A, C, D are all false. The domain does not need to be in Route 53 (any registrar works), and ACM absolutely supports CloudFront.</div>
+        </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="practice-question">
+        <div class="question-number">Question 07 / 12 — AWS CloudHSM</div>
+        <div class="question-text">A government agency requires that all encryption keys for classified data must be stored in FIPS 140-2 Level 3 certified hardware that the agency exclusively controls. AWS must have zero ability to access or recover these keys. Which solution meets this requirement?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> AWS KMS with a Customer Managed Key (CMK)</div>
+            <div class="answer-option"><span class="answer-label">B</span> AWS KMS with an AWS Managed Key</div>
+            <div class="answer-option"><span class="answer-label">C</span> AWS CloudHSM with a dedicated HSM cluster</div>
+            <div class="answer-option"><span class="answer-label">D</span> AWS KMS Custom Key Store backed by CloudHSM, managed by AWS</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: C</div>
+            <div class="explanation-text"><strong>C is correct</strong> — CloudHSM provides single-tenant dedicated HSM hardware that is FIPS 140-2 Level 3 certified. Critically, AWS has ZERO access to key material — only the customer controls HSM users and keys. A is wrong — KMS CMKs are on AWS-managed hardware (multi-tenant in the HSM layer). AWS can theoretically access KMS key material (though they have policies against it). B is wrong — AWS Managed Keys are even more AWS-controlled. D describes a KMS Custom Key Store, but "managed by AWS" in the answer makes it wrong — you manage the HSM cluster yourself.</div>
+        </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="practice-question">
+        <div class="question-number">Question 08 / 12 — Amazon Cognito</div>
+        <div class="question-text">A mobile gaming company wants users to sign in with their Google account, and then have the mobile app directly upload their game replay videos to an S3 bucket (the user's own folder only). There should be NO backend server involved in the upload process. Which Cognito feature enables direct S3 uploads from mobile?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> Cognito User Pool — returns a JWT token that the app uses to call S3 API directly</div>
+            <div class="answer-option"><span class="answer-label">B</span> Cognito Identity Pool — exchanges the Google token for temporary AWS credentials (IAM role) scoped to the user's S3 prefix</div>
+            <div class="answer-option"><span class="answer-label">C</span> Cognito User Pool with an S3 trigger Lambda that generates a pre-signed URL</div>
+            <div class="answer-option"><span class="answer-label">D</span> Cognito Sync — synchronises S3 data to mobile devices automatically</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: B</div>
+            <div class="explanation-text"><strong>B is correct</strong> — Cognito Identity Pool takes the Google OAuth token (or Cognito User Pool JWT) and exchanges it for temporary AWS credentials via STS AssumeRoleWithWebIdentity. The IAM role policy can scope access to only the user's S3 prefix (using cognito-identity.amazonaws.com:sub). The app uploads directly to S3 — zero backend. A is wrong — JWTs from User Pools are for authenticating to your app's APIs (API Gateway), not for AWS service APIs. C introduces a backend Lambda, violating the "no backend server" requirement. D — Cognito Sync is for syncing app data (key-value), not file uploads.</div>
+        </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="practice-question">
+        <div class="question-number">Question 09 / 12 — Amazon Detective</div>
+        <div class="question-text">GuardDuty has raised a high-severity finding: an EC2 instance is communicating with a known command-and-control server. The security team needs to understand WHICH IAM role launched this instance, WHAT other API calls were made from this role in the last 30 days, and WHICH other resources may be affected. Which service is purpose-built for this investigation?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> AWS CloudTrail — manually search through event history for the IAM role's API calls</div>
+            <div class="answer-option"><span class="answer-label">B</span> Amazon GuardDuty — drill into the finding details for the full investigation</div>
+            <div class="answer-option"><span class="answer-label">C</span> Amazon Detective — use graph analysis to map the entity relationships and timeline</div>
+            <div class="answer-option"><span class="answer-label">D</span> AWS Security Hub — open the finding and view remediation recommendations</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: C</div>
+            <div class="explanation-text"><strong>C is correct</strong> — Amazon Detective is specifically built for investigation. It builds an ML-powered graph model from CloudTrail, VPC Flow Logs, and GuardDuty findings, letting you quickly see entity relationships, timelines, and blast radius. A is wrong — manually searching CloudTrail is extremely time-consuming and error-prone. B is wrong — GuardDuty raises the alert but doesn't provide deep investigative graph analysis. D is wrong — Security Hub aggregates findings but is a dashboard, not an investigation tool.</div>
+        </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="practice-question">
+        <div class="question-number">Question 10 / 12 — AWS Directory Service</div>
+        <div class="question-text">A large enterprise is migrating to AWS. They have 10,000 employees already using Microsoft Active Directory on-premises. They want employees to use their existing Windows credentials to sign in to AWS services and access domain-joined EC2 Windows instances. The on-premises AD must remain the authoritative source — no user accounts should be replicated to AWS. Which Directory Service option is BEST?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> AWS Managed Microsoft AD — deploy a full managed AD in AWS and set up a two-way trust</div>
+            <div class="answer-option"><span class="answer-label">B</span> Simple AD — deploy Samba 4 compatible directory in AWS</div>
+            <div class="answer-option"><span class="answer-label">C</span> AD Connector — proxy authentication requests to the on-premises AD without replicating users</div>
+            <div class="answer-option"><span class="answer-label">D</span> Amazon Cognito — federate with the on-premises AD using SAML 2.0</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: C</div>
+            <div class="explanation-text"><strong>C is correct</strong> — AD Connector is a proxy: all authentication requests from AWS are forwarded to the on-premises AD. No user data is stored in AWS. On-prem AD remains the single source of truth. EC2 Windows instances can domain-join through it. A is wrong — Managed Microsoft AD replicates users to AWS (not desired), and sets up a trust (more complex than needed). B is wrong — Simple AD can't proxy to on-premises AD and doesn't support trusts. D is wrong — Cognito is for application-level user authentication, not corporate domain joining for EC2 or AWS Console SSO at scale.</div>
+        </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="practice-question">
+        <div class="question-number">Question 11 / 12 — AWS Firewall Manager</div>
+        <div class="question-text">A company has 150 AWS accounts in their AWS Organization. The security team must ensure that all Application Load Balancers across all accounts have a specific set of AWS WAF rules applied. New accounts created in the future must automatically inherit these WAF rules. Non-compliant resources must be automatically remediated. Which service meets ALL these requirements?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> Deploy an AWS WAF WebACL in each account using AWS CloudFormation StackSets</div>
+            <div class="answer-option"><span class="answer-label">B</span> Use AWS Security Hub to detect missing WAF rules and trigger a Lambda to apply them</div>
+            <div class="answer-option"><span class="answer-label">C</span> Use AWS Firewall Manager with a WAF policy applied to the entire AWS Organization</div>
+            <div class="answer-option"><span class="answer-label">D</span> Use AWS Config with a custom rule to check WAF association and a remediation action</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: C</div>
+            <div class="explanation-text"><strong>C is correct</strong> — Firewall Manager is purpose-built for this exact scenario: centrally define WAF policies, apply them to all accounts in an AWS Organization, auto-enroll new accounts, and auto-remediate violations. A is wrong — CloudFormation StackSets deploys initially but doesn't continuously enforce or auto-remediate. B involves custom engineering with Security Hub + Lambda — high complexity. D is partial — Config can detect non-compliance but lacks the centralised org-wide WAF policy enforcement that Firewall Manager provides natively.</div>
+        </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="practice-question">
+        <div class="question-number">Question 12 / 12 — Amazon GuardDuty</div>
+        <div class="question-text">A company's AWS account has been running for 2 years with no threat detection in place. Their CTO wants to enable intelligent threat detection that analyses CloudTrail, VPC Flow Logs, and DNS logs for malicious activity — with ZERO agent installation and ZERO log pipeline configuration. When a threat is found, on-call engineers must be notified via Slack within 5 minutes. What is the SIMPLEST architecture?</div>
+        <div class="answer-options">
+            <div class="answer-option"><span class="answer-label">A</span> Set up a SIEM with CloudWatch agent on all EC2 instances, export logs to Splunk, configure Splunk alerts to post to Slack.</div>
+            <div class="answer-option"><span class="answer-label">B</span> Enable Amazon GuardDuty → EventBridge rule on GuardDuty findings → SNS topic → Lambda → Slack webhook.</div>
+            <div class="answer-option"><span class="answer-label">C</span> Enable AWS Security Hub → subscribe to the GuardDuty integration → export findings to S3 → trigger Lambda every 5 minutes.</div>
+            <div class="answer-option"><span class="answer-label">D</span> Configure CloudTrail to deliver logs to S3 → EMR job to analyse logs for threats → SNS notification.</div>
+        </div>
+        <button class="show-answer-btn" onclick="toggleAnswer(this)">Show Answer</button>
+        <div class="explanation">
+            <div class="explanation-label">✅ Answer: B</div>
+            <div class="explanation-text"><strong>B is correct</strong> — GuardDuty is one-click enable, no agents, no log configuration. It natively analyses CloudTrail, VPC Flow Logs, and DNS. EventBridge has built-in GuardDuty finding events, which trigger SNS → Lambda → Slack webhook. Near-real-time notification (under 5 minutes). A requires installing agents, managing Splunk, and complex infrastructure — contradicts "simplest." C introduces unnecessary S3 polling (5-minute lag) and Security Hub is an aggregator, not the threat detector. D requires building a custom analytics pipeline — extremely complex compared to just enabling GuardDuty.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════ KEYWORD CHEAT SHEET ═══════════════════════════════════════ -->
+<section>
+    <h2>⚡ Keyword Cheat Sheet — 12 Services in 60 Seconds</h2>
+    <div class="card">
+        <p>When you see these keywords in the exam, <strong>immediately think of this service</strong>. This is the fastest path to eliminating wrong answers.</p>
+        <div class="cheat-row"><div class="cheat-keyword">Translate text, 75+ languages, no ML team</div><div class="cheat-answer">→ <strong>Amazon Translate</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Batch translate 10,000 docs in S3</div><div class="cheat-answer">→ <strong>Amazon Translate</strong> async batch job (not real-time API)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Convert video to MP4/HLS for different devices</div><div class="cheat-answer">→ <strong>Amazon Elastic Transcoder</strong> (or MediaConvert for broadcast-grade)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Notify team when video conversion finishes</div><div class="cheat-answer">→ <strong>Elastic Transcoder + SNS</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Ingest live video from 1M IP cameras</div><div class="cheat-answer">→ <strong>Amazon Kinesis Video Streams</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Real-time ML on live video (face/object)</div><div class="cheat-answer">→ <strong>KVS + Amazon Rekognition Video</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Two-way video call / smart doorbell / telemedicine</div><div class="cheat-answer">→ <strong>KVS WebRTC signalling channel</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Download AWS's SOC 2 / PCI DSS / ISO report</div><div class="cheat-answer">→ <strong>AWS Artifact</strong> (their compliance docs, not yours)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Sign BAA (HIPAA) or NDA with AWS</div><div class="cheat-answer">→ <strong>AWS Artifact Agreements</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Continuously collect audit evidence for YOUR env</div><div class="cheat-answer">→ <strong>AWS Audit Manager</strong> (not Artifact — that's AWS's docs)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Free HTTPS cert for ALB or CloudFront</div><div class="cheat-answer">→ <strong>AWS Certificate Manager (ACM)</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">CloudFront cert region</div><div class="cheat-answer">→ <strong>ALWAYS us-east-1</strong> (N. Virginia) — regardless of app region</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">FIPS 140-2 Level 3, AWS cannot access keys</div><div class="cheat-answer">→ <strong>AWS CloudHSM</strong> (not KMS — AWS manages KMS hardware)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">TDE for Oracle/SQL Server on AWS</div><div class="cheat-answer">→ <strong>AWS CloudHSM</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">User sign-up / sign-in for web or mobile app</div><div class="cheat-answer">→ <strong>Amazon Cognito User Pool</strong> (AuthN)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Mobile app directly accesses S3 / DynamoDB (no backend)</div><div class="cheat-answer">→ <strong>Cognito Identity Pool</strong> → STS temp creds (AuthZ)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Google / Facebook / Apple login for app</div><div class="cheat-answer">→ <strong>Cognito User Pool</strong> federated IdPs</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Investigate root cause of a GuardDuty finding</div><div class="cheat-answer">→ <strong>Amazon Detective</strong> (graph + timeline analysis)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Use existing on-prem AD creds in AWS, no replication</div><div class="cheat-answer">→ <strong>AD Connector</strong> (proxy to on-prem AD)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Full Microsoft AD on AWS, trust with on-prem</div><div class="cheat-answer">→ <strong>AWS Managed Microsoft AD</strong></div></div>
+        <div class="cheat-row"><div class="cheat-keyword">WAF rules across 100 AWS accounts, auto new accounts</div><div class="cheat-answer">→ <strong>AWS Firewall Manager</strong> (requires AWS Organizations)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Detect crypto-mining / compromised creds / port scan</div><div class="cheat-answer">→ <strong>Amazon GuardDuty</strong> (enable it — it's opt-in!)</div></div>
+        <div class="cheat-row"><div class="cheat-keyword">Auto-respond to GuardDuty threat (isolate / revoke)</div><div class="cheat-answer">→ <strong>GuardDuty → EventBridge → Lambda</strong></div></div>
+    </div>
+
+    <div class="highlight" style="margin-top: 30px;">
+        <strong>🏆 You've covered all 12 services!</strong> You're now equipped to tackle AI/ML, Media, Compliance, Security, and Identity scenarios in the SAA-C03 exam. Remember the three golden rules:<br>
+        <br>
+        1️⃣ <strong>Keyword first</strong> — find the trigger word before reading the options. "No ML expertise" → Translate. "No agents" → GuardDuty. "FIPS 140-2" → CloudHSM.<br>
+        2️⃣ <strong>Rule out wrong answers</strong> — "Investigate" → Detective (not GuardDuty). "Download AWS's reports" → Artifact (not Audit Manager).<br>
+        3️⃣ <strong>Most specific wins</strong> — "Centrally manage WAF across accounts" → Firewall Manager beats "configure WAF in each account."
+    </div>
+</section>
+
+<footer>
+    <p>AWS SAA-C03 Prep · AI/ML · Media · Compliance · Security · Identity · 12 Services · 2-Hour Session</p>
+    <p style="margin-top:8px;">Built by a <strong style="color:var(--orange)">Principal AWS Architect</strong> · 20+ Years in the Cloud</p>
+    <p style="margin-top:8px; opacity:0.5;">Concepts accurate as of 2025 · Always verify with AWS official documentation</p>
+</footer>
+
+</div><!-- /container -->
+
+<script>
+    function toggleAnswer(btn) {
+        const explanation = btn.nextElementSibling;
+        const question = btn.closest('.practice-question');
+        if (explanation.style.display === 'none' || !explanation.style.display) {
+            explanation.style.display = 'block';
+            btn.textContent = 'Hide Answer';
+            btn.style.background = '#444';
+            btn.style.color = '#fff';
+            const options = question.querySelectorAll('.answer-option');
+            const correctLetter = explanation.querySelector('.explanation-label').textContent.match(/Answer: ([A-D])/);
+            if (correctLetter) {
+                options.forEach(opt => {
+                    const label = opt.querySelector('.answer-label').textContent;
+                    if (label === correctLetter[1]) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+        } else {
+            explanation.style.display = 'none';
+            btn.textContent = 'Show Answer';
+            btn.style.background = 'var(--orange)';
+            btn.style.color = '#000';
+            question.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.remove('correct', 'wrong');
+            });
+        }
+    }
+
+    document.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const question = this.closest('.practice-question');
+            const explanation = question.querySelector('.explanation');
+            if (explanation.style.display === 'block') return;
+            question.querySelectorAll('.answer-option').forEach(o => {
+                o.style.borderColor = '';
+                o.style.background = '';
+            });
+            this.style.borderColor = 'var(--orange)';
+            this.style.background = 'rgba(255,153,0,0.08)';
+        });
+    });
+</script>
+</body>
+</html>
